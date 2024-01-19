@@ -75,7 +75,7 @@ class Core extends Model
             $Authorization = explode(" ", service('request')->getHeaderLine('Authorization'));
             if (strtoupper($Authorization[0]) == 'BEARER') { 
                 $decoded = JWT::decode($Authorization[1], new Key($key, 'HS256'));
-                return $decoded->token; 
+                return $decoded->jti; 
             }else{
                 return false;
             }

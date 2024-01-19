@@ -40,54 +40,49 @@ class Auth extends BaseController
             $table = $this->prefix."account";
             $key = $this->key;
                    
-           $q = "SELECT id, email, tenantId
+           $q = "SELECT id, email, tenantId, name
                 FROM  $table  
-                WHERE email='$email' AND password = '$pass' AND presence = 1  ";
+                WHERE email='$email' AND password = '$pass' AND presence = 1 ORDER BY priority DESC  ";
  
             $query =  $this->db->query($q)->getResultArray();
 
             if (count($query)) {
-                    
-                $app = [];
+                $jti  = md5(rand(0,99) . date("Y-m-d H:i:s") . uniqid());     
+                $access = [];
 
-                foreach($query as $rec){
-                    $token = md5(rand(0,99) . date("Y-m-d H:i:s") . uniqid());
-                  
-                    $payload = [ 
-                        'iss' => 'http://localhost',
-                        'aud' => 'http://localhost',
-                        "query" => $rec, 
-                        "token" => $token,
-                        "tenantId" => $rec['tenantId'],
-                        "prefix" => $this->prefix,
-                        'iat' => time() . microtime(),
-                        'nbf' => strtotime(date("Y-m-d H:i:s")),
-                    ];
-                    $app[] = array(
+                foreach($query as $rec){ 
+                    $access[] = array( 
                         "tenantId" => $rec['tenantId'],  
-                        "account" => $rec,
+                        "account" => array(
+                            "id" => $rec['id'],
+                            "email" => $rec['email'],
+                            "name" => $rec['name'],  
+                        ),
                         "company" => model("Core")->select("company","tenant","id = '".$rec['tenantId']."' "),
-                        "token" => JWT::encode($payload, $key, 'HS256'),
-                    );
+                    ); 
+                } 
 
+                $payload = [ 
+                    'iss' => 'http://localhost',
+                    'aud' => 'http://localhost',
+                    "access" => $access, 
+                    "jti" => $jti, 
+                    'iat' => time(),
+                    'nbf' => strtotime(date("Y-m-d H:i:s")),
+                ];
 
-                }
-
-                // $this->db->table("account_auth")->insert([
-                //     "accountId" => $id,
-                //     "ipAddress" => $this->request->getIPAddress(),
-                //     "token" => $token,
-                //     "input_date" => date("Y-m-d H:i:s"),
-                // ]);
-
+                $authorization = JWT::encode($payload, $key, 'HS256');
+ 
                 $data = array(
                     "error" => false,
-                    "app" => $app,
+                    "code" => 200,
+                    "authorization " => $authorization,
                     "post" => $post, 
                 );
             } else {
                 $data = array(
                     "post" => $post,
+                    "code" => 401,
                     "error" => true,
                     "note" => "Wrong password or email",
                 );
@@ -103,12 +98,73 @@ class Auth extends BaseController
         $data = array( 
             "error" => true, 
         );
-        if ($post) {
-            
-            $data = array(
+        if ($post) { 
+            $token = $this->request->getVar()['token'];
+            $data = array( 
+                "error" => true, 
+                "code" => 401,
                 "get" => $post,
-                "error" => false, 
             );
+            $id = model("Core")->select("accountId","account_otp","requestCode = '$token' and presence = 1 ");
+            if(  $id  ){
+                $this->db->table($this->prefix."account_otp")->update([
+                    "updateDate" => date("Y-m-d H:i:s"),
+                    "presence" => 0,
+                ]," requestCode = '$token' ");
+
+
+                $table = $this->prefix."account";
+                $key = $this->key;
+                       
+               $q = "SELECT id, email, tenantId, name
+                    FROM  $table  
+                    WHERE id = '$id' AND presence = 1 ORDER BY priority DESC  ";
+     
+                $query =  $this->db->query($q)->getResultArray();
+    
+                if (count($query)) {
+                  //  $token  = md5(rand(0,99) . date("Y-m-d H:i:s") . uniqid());     
+                    $access = [];
+    
+                    foreach($query as $rec){ 
+                        $access[] = array( 
+                            "tenantId" => $rec['tenantId'],  
+                            "account" => array(
+                                "id" => $rec['id'],
+                                "email" => $rec['email'],
+                                "name" => $rec['name'],  
+                            ),
+                            "company" => model("Core")->select("company","tenant","id = '".$rec['tenantId']."' "),
+                        ); 
+                    } 
+    
+                    $payload = [ 
+                        'iss' => 'http://localhost',
+                        'aud' => 'http://localhost',
+                        "access" => $access, 
+                        'iat' => time() . microtime(),
+                        'nbf' => strtotime(date("Y-m-d H:i:s")),
+                    ];
+    
+                    $authorization = JWT::encode($payload, $key, 'HS256');
+     
+                    $data = array(
+                        "error" => false,
+                        "code" => 202,
+                        "authorization" => $authorization,
+                        "post" => $post, 
+                    );
+                } else {
+                    $data = array( 
+                        "error" => false, 
+                        "code" => 401,
+                        "get" => $post,
+                    );
+                }
+
+               
+            }
+           
         }
       
         return $this->response->setJSON($data);
@@ -128,6 +184,7 @@ class Auth extends BaseController
             $decoded = JWT::decode($token, new Key($key, 'HS256')); 
             $data = array(
                 "post" => $post,
+                "note" => "development only",
                 "error" => false,
                 "decoded" => $decoded, 
             );
@@ -141,19 +198,21 @@ class Auth extends BaseController
         if (model("Core")->checkValidToken() == '') { 
             $data = array(  
                 "error" => true, 
-                "code" => 500,
+                "code" => 401,
             ); 
           //  exit;
         }else{
             $data = array(  
                 "error" => false, 
+                "code" => 202,
                 "get" => $this->request->getVar(),
-                "token" => model("Core")->checkValidToken(),
-                "code" => 200,
+                "jti" => model("Core")->checkValidToken(),
+                
             ); 
         } 
          
         return $this->response->setJSON($data);
 
     }
+ 
 }
