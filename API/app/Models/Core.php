@@ -55,8 +55,8 @@ class Core extends Model
 
     function checkValidToken()
     {
-          $request = request();
-         $token =  $request->header('Token');
+        $request = request();
+        $token = $request->header('Authorization');
         //
         // echo $token;
         // $authorizationHeader = $headers['Token'];
@@ -67,25 +67,24 @@ class Core extends Model
         $key = $_ENV['SECRETKEY'];
         //  list($headersB64, $payloadB64, $sig) = explode('.',  $token);
         //  $decoded = json_decode(base64_decode($payloadB64), true);
-       
+
 
         $var = false;
-        if (service('request')->getHeaderLine('Token')) {
-            $decoded = JWT::decode( service('request')->getHeaderLine('Token'), new Key($key, 'HS256'));
-            return $decoded->token;
-          //  print_r( $decoded );
-            // if (!$decoded->account) {
-              
-            //     return true;
-            // } else {
-               
-            //     return false;
-            // }
-        }else{
+        if (service('request')->getHeaderLine('Authorization')) {
+
+            $Authorization = explode(" ", service('request')->getHeaderLine('Authorization'));
+            if (strtoupper($Authorization[0]) == 'BEARER') { 
+                $decoded = JWT::decode($Authorization[1], new Key($key, 'HS256'));
+                return $decoded->token; 
+            }else{
+                return false;
+            }
+            
+        } else {
             return false;
         }
-      //  return self::header() != false ? self::header()['account']['id'] : "";
-   
+        //  return self::header() != false ? self::header()['account']['id'] : "";
+
     }
 
 
@@ -116,8 +115,8 @@ class Core extends Model
         }
     }
 
- 
-  
+
+
 
 
     function isUrlValid($url)
@@ -125,6 +124,6 @@ class Core extends Model
         // Menggunakan fungsi strpos untuk mencari "http://" atau "https://"
         return (strpos($url, "http://") === 0 || strpos($url, "https://") === 0);
     }
- 
- 
+
+
 }

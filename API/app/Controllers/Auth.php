@@ -17,23 +17,8 @@ class Auth extends BaseController
     }
     function index()
     {
-        // $json = file_get_contents('php://input');
-        // $post = json_decode($json, true);
-
-        $key = $_ENV['SECRETKEY'];
-        $payload = [
-            'iss' => 'http://localhost',
-            'aud' => 'http://localhost',
-            "token" => uniqid(),
-            'iat' => time() . microtime(),
-            'nbf' => strtotime(date("Y-m-d H:i:s")),
-        ];
-        $jwt = JWT::encode($payload, $key, 'HS256');
-
         $data = array(
-            "error" => false,
-            "token" => $jwt,
-            "payload" => $payload,
+            "error" => false, 
         );
         return $this->response->setJSON($data);
     }
@@ -136,7 +121,7 @@ class Auth extends BaseController
         $data = array( 
             "error" => true, 
         );
-        if ($post) {
+        if ($post && $_ENV['CI_ENVIRONMENT'] != 'production') {
             $token = $post['token'];
             $key = $_ENV['SECRETKEY'];
  
@@ -156,13 +141,15 @@ class Auth extends BaseController
         if (model("Core")->checkValidToken() == '') { 
             $data = array(  
                 "error" => true, 
-                "note" => "Error 500",
+                "code" => 500,
             ); 
           //  exit;
         }else{
             $data = array(  
                 "error" => false, 
-                "rest" => model("Core")->checkValidToken(),
+                "get" => $this->request->getVar(),
+                "token" => model("Core")->checkValidToken(),
+                "code" => 200,
             ); 
         } 
          
