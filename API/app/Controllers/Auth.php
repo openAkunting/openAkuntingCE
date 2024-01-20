@@ -8,12 +8,13 @@ use Firebase\JWT\Key;
 class Auth extends BaseController
 {
     protected $prefix = null; 
-    protected $key = null; 
-
+    protected $key = null;  
     function __construct()
     {
         $this->prefix =  $_ENV['PREFIX']; 
         $this->key = $_ENV['SECRETKEY'];  
+    //   $this->request = \Config\Services::request();
+    //    $this->db = \Config\Database::connect();
     }
     function index()
     {
@@ -25,6 +26,7 @@ class Auth extends BaseController
 
     function signin()
     {
+       
 
         $json = file_get_contents('php://input');
         $post = json_decode($json, true);
@@ -209,9 +211,7 @@ class Auth extends BaseController
                 "jti" => model("Token")->checkValidToken(),
                 "data" =>  model("Token")->getData(),
                 "x-index" =>  model("Token")->getIndex(),
-                "user" =>  model("Token")->getCurrentUser(),
-                
-                
+                "user" =>  model("Token")->getCurrentUser(), 
             ); 
         } 
          
