@@ -195,7 +195,7 @@ class Auth extends BaseController
     function checkToken()
     {
 
-        if (model("Core")->checkValidToken() == '') { 
+        if (model("Token")->checkValidToken() == '') { 
             $data = array(  
                 "error" => true, 
                 "code" => 401,
@@ -206,7 +206,11 @@ class Auth extends BaseController
                 "error" => false, 
                 "code" => 202,
                 "get" => $this->request->getVar(),
-                "jti" => model("Core")->checkValidToken(),
+                "jti" => model("Token")->checkValidToken(),
+                "data" =>  model("Token")->getData(),
+                "x-index" =>  model("Token")->getIndex(),
+                "user" =>  model("Token")->getCurrentUser(),
+                
                 
             ); 
         } 

@@ -35,65 +35,7 @@ class Core extends Model
             $data = null;
         }
         return $data;
-    }
-    function header()
-    {
-        if (service('request')->getHeaderLine('Token')) {
-            $jwtObj = explode('.', service('request')->getHeaderLine('Token'));
-            $user = base64_decode($jwtObj[1]);
-            $data = json_decode($user, true);
-        } else {
-            $data = false;
-        }
-        return $data;
-    }
-
-    function getJwtToken()
-    {
-        return service('request')->getHeaderLine('Token');
-    }
-
-    function checkValidToken()
-    {
-        $request = request();
-        $token = $request->header('Authorization');
-        //
-        // echo $token;
-        // $authorizationHeader = $headers['Token'];
-        // echo    $authorizationHeader." \n";
-        // echo service('request')->getHeaderLine('Authorization');
-        //$token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50Ijp7ImlkIjoiMTAwMSIsInVzZXJuYW1lIjoiVEVTUyIsImFjY291bnRUeXBlSWQiOiIwIiwibmFtZSI6IiJ9LCJ0b2tlbk5hbWUiOiJmYzg3NGt2dlhvU2RTdzVxQTI5MjA1Q1MxRE1GdW1hMkpVWllvVXRLV3c3bEMwZGNESCIsInRva2VuIjoiNDY1NGU5MThmMGVkOTdhMGNkMWIxMzFjMDMyNDk3MDUiLCJpYXQiOiIxNzAzNTg1NDgyMC45MjAzNTMwMCAxNzAzNTg1NDgyIiwibmJmIjoxNzAzNTg1NDgyfQ.lhdFS4qSbrOWG4qTpFcGp7GrFQG3pla_GZeQNgfo9hQ";
-
-        $key = $_ENV['SECRETKEY'];
-        //  list($headersB64, $payloadB64, $sig) = explode('.',  $token);
-        //  $decoded = json_decode(base64_decode($payloadB64), true);
-
-
-        $var = false;
-        if (service('request')->getHeaderLine('Authorization')) {
-
-            $Authorization = explode(" ", service('request')->getHeaderLine('Authorization'));
-            if (strtoupper($Authorization[0]) == 'BEARER') { 
-                $decoded = JWT::decode($Authorization[1], new Key($key, 'HS256'));
-                return $decoded->jti; 
-            }else{
-                return false;
-            }
-            
-        } else {
-            return false;
-        }
-        //  return self::header() != false ? self::header()['account']['id'] : "";
-
-    }
-
-
-
-    function accountId()
-    {
-        return self::header() != false ? self::header()['account']['id'] : "";
-    }
-
+    } 
 
     function number($name = "")
     {
