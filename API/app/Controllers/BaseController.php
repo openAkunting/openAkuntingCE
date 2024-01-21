@@ -28,6 +28,8 @@ abstract class BaseController extends Controller
      */
     protected $request;
     protected $db;
+    protected $prefix = null; 
+    protected $key = null;  
     /**
      * An array of helpers to be loaded automatically upon
      * class instantiation. These helpers will be available
@@ -56,5 +58,7 @@ abstract class BaseController extends Controller
         // E.g.: $this->session = \Config\Services::session();
         $this->request = \Config\Services::request();
         $this->db = \Config\Database::connect();
+        $this->prefix =  $_ENV['PREFIX']; 
+        $this->key = $_ENV['SECRETKEY'];   
     }
 }

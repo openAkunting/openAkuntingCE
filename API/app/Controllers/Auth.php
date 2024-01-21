@@ -6,15 +6,10 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 class Auth extends BaseController
-{
-    protected $prefix = null; 
-    protected $key = null;  
+{ 
     function __construct()
     {
-        $this->prefix =  $_ENV['PREFIX']; 
-        $this->key = $_ENV['SECRETKEY'];  
-    //   $this->request = \Config\Services::request();
-    //    $this->db = \Config\Database::connect();
+         
     }
     function index()
     {
