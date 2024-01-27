@@ -11,3 +11,5 @@ Coming soon
 [![GitHub license](https://img.shields.io/github/license/codeigniter4/CodeIgniter4)](https://github.com/codeigniter4/CodeIgniter4/blob/develop/LICENSE)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/codeigniter4/CodeIgniter4/pulls)
 <br>
+
+[![GitHub stars](https://img.shields.io/github/stars/openAkunting/openAkuntingCE)](https://img.shields.io/github/stars/openAkunting/openAkuntingCE)
