@@ -14,9 +14,9 @@
 # ENVIRONMENT
 #--------------------------------------------------------------------
   
-# SECRETKEY =  your-SECRETKEY-2021
-# CI_ENVIRONMENT = development
-# PREFIX = a1_
+SECRETKEY =  your-SECRETKEY-2021
+CI_ENVIRONMENT = development
+PREFIX = a1_
 
 #--------------------------------------------------------------------
 # APP
@@ -32,10 +32,10 @@
 # DATABASE
 #--------------------------------------------------------------------
 
-# database.default.hostname = localhost
-# database.default.database = ci4
-# database.default.username = root
-# database.default.password = root
+database.default.hostname = localhost
+database.default.database = open_akunting
+database.default.username = root
+database.default.password = change_To_Your_Password
 # database.default.DBDriver = MySQLi
 # database.default.DBPrefix =
 # database.default.port = 3306

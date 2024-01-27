@@ -26,7 +26,7 @@ class Home extends BaseController
 
             $tenantId = model("Token")->getCurrentUser()->tenantId;
             $q = "SELECT *
-            FROM  " . $this->prefix . "journal  
+            FROM  a1_journal  
             WHERE  tenantId = '$tenantId' ";
             $items = $this->db->query($q)->getResultArray();
 

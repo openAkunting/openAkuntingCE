@@ -68,6 +68,19 @@ $app->initialize();
 $context = is_cli() ? 'php-cli' : 'web';
 $app->setContext($context);
 
+
+/*
+ *---------------------------------------------------------------
+ * CORS policy without SSL
+ *---------------------------------------------------------------
+ * Unlock CORS policy: No 'Access-Control-Allow-Origin' 
+ * header is present on the requested resource.
+ */
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Token, Authorization"); 
+header("Access-Control-Allow-Credentials: true");
+
 /*
  *---------------------------------------------------------------
  * LAUNCH THE APPLICATION
