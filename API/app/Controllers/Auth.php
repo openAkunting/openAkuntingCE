@@ -7,8 +7,11 @@ use Firebase\JWT\Key;
 
 class Auth extends BaseController
 {
+    protected $prefix = null;
+
     function __construct()
     {
+        $this->prefix = $_ENV['PREFIX'];
     }
 
     function index()
@@ -36,7 +39,7 @@ class Auth extends BaseController
             $key = $this->key;
 
             $q = "SELECT id, email, tenantId, name
-                FROM  a1_account
+                FROM  ".$this->prefix."account
                 WHERE email='$email' AND password = '$pass' AND presence = 1 ORDER BY priority DESC  ";
 
             $query = $this->db->query($q)->getResultArray();
@@ -76,7 +79,7 @@ class Auth extends BaseController
                     "post" => $post,
                 );
 
-                $this->db->table("a1_account_jti")->insert([
+                $this->db->table($this->prefix."account_jti")->insert([
                     "email" => $email,
                     "jti" =>  $jti ,
                     "inputDate" => date("Y-m-d H:i:s"),
