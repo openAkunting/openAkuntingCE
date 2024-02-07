@@ -107,7 +107,7 @@ class Auth extends BaseController
                 $data = array(
                     "error" => false,
                     "code" => 200,
-                    "authorization " => $authorization,
+                    "authorization" => $authorization,
                     "jti" => $jti,
                     "post" => $post,
                 );

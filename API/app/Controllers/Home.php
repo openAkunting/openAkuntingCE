@@ -20,8 +20,13 @@ class Home extends BaseController
      * )
      */
     public function index()
-    {
-        return view('welcome_message');
+    { 
+        $data = array(
+            "error" => false,
+            "code" => 200,
+            "UTC" => date("H:i:s")
+        );
+        return $this->response->setJSON($data);
     }
 
 
