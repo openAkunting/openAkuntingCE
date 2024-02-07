@@ -17,7 +17,10 @@
 SECRETKEY =  your-SECRETKEY-2021
 CI_ENVIRONMENT = development
 PREFIX = a1_
-app_baseURL = 
+baseUrl =  http://localhost/
+baseUrl.dev = http://localhost/
+baseUrl.staging = http://localhost/
+
 #--------------------------------------------------------------------
 # APP
 #--------------------------------------------------------------------
