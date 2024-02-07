@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Controllers;
-
+/**
+ * @OA\Info(title="My First API", version="0.1")
+ */
 class Install extends BaseController
 {
     function __construct()

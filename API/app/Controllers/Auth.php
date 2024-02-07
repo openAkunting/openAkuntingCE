@@ -2,9 +2,17 @@
 
 namespace App\Controllers;
 
+use OpenApi\Annotations as OA;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
+/**
+ * @OA\Info(
+ *  title="Auth REST API", 
+ *  version="1.0",
+ *  description ="You can authenticate to the REST API to access more endpoints and have a higher rate limit."
+ * )
+ */
 class Auth extends BaseController
 {
     protected $prefix = null;
@@ -14,6 +22,7 @@ class Auth extends BaseController
         $this->prefix = $_ENV['PREFIX'];
     }
 
+
     function index()
     {
         $data = array(
@@ -22,6 +31,30 @@ class Auth extends BaseController
         return $this->response->setJSON($data);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/openAkunting/API/public/Auth/signin",
+     *     summary =" Post Signin",
+     *     tags={"Auth"}, 
+     *      @OA\RequestBody(
+     *           @OA\MediaType(
+     *               mediaType="raw",
+     *                 @OA\Schema(
+     *                     @OA\Property(
+     *                            property="email",
+     *                            type= "string",
+     *                      ),
+     *                      @OA\Property(
+     *                            property="password",
+     *                            type= "string | MD5",
+     *                      )
+     *                 ),  
+     *           ),
+     *      ),
+     *     @OA\Response(response="400", description="Succces"),
+     *     @OA\Response(response="200", description="Error"),
+     * )
+     */
     function signin()
     {
         $json = file_get_contents('php://input');
@@ -39,7 +72,7 @@ class Auth extends BaseController
             $key = $this->key;
 
             $q = "SELECT id, email, tenantId, name
-                FROM  ".$this->prefix."account
+                FROM  " . $this->prefix . "account
                 WHERE email='$email' AND password = '$pass' AND presence = 1 ORDER BY priority DESC  ";
 
             $query = $this->db->query($q)->getResultArray();
@@ -75,20 +108,20 @@ class Auth extends BaseController
                     "error" => false,
                     "code" => 200,
                     "authorization " => $authorization,
-                    "jti" =>  $jti ,
+                    "jti" => $jti,
                     "post" => $post,
                 );
 
-                $this->db->table($this->prefix."account_jti")->insert([
+                $this->db->table($this->prefix . "account_jti")->insert([
                     "email" => $email,
-                    "jti" =>  $jti ,
+                    "jti" => $jti,
                     "inputDate" => date("Y-m-d H:i:s"),
                 ]);
 
             } else {
                 $data = array(
                     "post" => $post,
-                    "code" => 401,
+                    "code" => 400,
                     "error" => true,
                     "note" => "Wrong password or email",
                 );
@@ -98,6 +131,30 @@ class Auth extends BaseController
         return $this->response->setJSON($data);
     }
 
+    /**
+     * @OA\GET(
+     *     path="/openAkunting/API/public/Auth/getToken",
+     *     summary ="Get Check Token",
+     *     tags={"Posts1"}, 
+     *      @OA\RequestBody(
+     *           @OA\MediaType(
+     *               mediaType="raw",
+     *                 @OA\Schema(
+     *                     @OA\Property(
+     *                            property="email",
+     *                            type= "string",
+     *                      ),
+     *                      @OA\Property(
+     *                            property="password",
+     *                            type= "string | MD5",
+     *                      )
+     *                 ),  
+     *           ),
+     *      ),
+     *     @OA\Response(response="400", description="Succces"),
+     *     @OA\Response(response="200", description="Error"),
+     * )
+     */
     function getToken()
     {
 
@@ -224,5 +281,5 @@ class Auth extends BaseController
         return $this->response->setJSON($data);
 
     }
- 
+
 }

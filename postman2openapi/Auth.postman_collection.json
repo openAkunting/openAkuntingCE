@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "91c43b1b-9898-43be-a2a8-04c706d6ce01",
+		"name": "Auth",
+		"description": "Auth untuk login user, jika sudah berhasil maka anda akan mendapatkan token,\n\nuntuk POST gunakan body type data json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1602684",
+		"_collection_link": "https://www.postman.com/speeding-astronaut-158921/workspace/openakunting/collection/1602684-91c43b1b-9898-43be-a2a8-04c706d6ce01?action=share&source=collection_link&creator=1602684"
+	},
+	"item": [
+		{
+			"name": "Index",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}openAkunting/API/public/auth/index",
+					"host": [
+						"{{baseUrl}}openAkunting"
+					],
+					"path": [
+						"API",
+						"public",
+						"auth",
+						"index"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\" : \"admin@localhost.com\",\r\n    \"password\" : \"4297f44b13955235245b2497399d7a93\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}openAkunting/API/public/auth/signin",
+					"host": [
+						"{{baseUrl}}openAkunting"
+					],
+					"path": [
+						"API",
+						"public",
+						"auth",
+						"signin"
+					]
+				},
+				"description": "**This manual login**\n\nThis endpoint allows users to sign in and authenticate their account via HTTP POST request to {{baseUrl}}/openAkunting/API/public/auth/signin. The request should include a JSON payload in the raw request body type with the keys \"email\" and \"password\" for user authentication.\n\nUpon successful execution, the endpoint returns a status code of 200 along with a JSON response. The response contains an \"error\" flag indicating the success or failure of the authentication process, an \"app\" object with \"tenantId\", \"account\", \"company\", and \"token\" fields, as well as a \"post\" object with \"email\" and \"password\" fields.\n\nPlease refer to the API documentation for more details on the request and response parameters."
+			},
+			"response": []
+		},
+		{
+			"name": "checkToken",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdCIsImFjY2VzcyI6W3sidGVuYW50SWQiOiJ0MiIsImFjY291bnQiOnsiaWQiOiIxYiIsImVtYWlsIjoiYWRtaW5AbG9jYWxob3N0LmNvbSIsIm5hbWUiOiJKb2huIn0sImNvbXBhbnkiOiJ5b3VyIElOQyJ9LHsidGVuYW50SWQiOiJ0MSIsImFjY291bnQiOnsiaWQiOiIxYSIsImVtYWlsIjoiYWRtaW5AbG9jYWxob3N0LmNvbSIsIm5hbWUiOiJXb28ifSwiY29tcGFueSI6IkRlbW8gSU5DIn1dLCJqdGkiOiI3NTFkYzFjZDQ5NzZkZDYzOTVjYWM3YmE4NTgyYzljNSIsImlhdCI6MTcwNTcyOTk4NCwibmJmIjoxNzA1NzI5OTg0fQ.HujBs6R409bqYTTjYhNU0Dxr8SBU5VQBNTY7x846xBs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-index",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}openAkunting/API/public/auth/checkToken?name=John",
+					"host": [
+						"{{baseUrl}}openAkunting"
+					],
+					"path": [
+						"API",
+						"public",
+						"auth",
+						"checkToken"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "John"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getToken",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}openAkunting/API/public/auth/getToken?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9",
+					"host": [
+						"{{baseUrl}}openAkunting"
+					],
+					"path": [
+						"API",
+						"public",
+						"auth",
+						"getToken"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

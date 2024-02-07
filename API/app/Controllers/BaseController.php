@@ -1,14 +1,16 @@
 <?php
 
 namespace App\Controllers;
-
+use OpenApi\Annotations as OA;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
-
+/**
+ * @OA\Info(title="My First API", version="0.1")
+ */
 /**
  * Class BaseController
  *

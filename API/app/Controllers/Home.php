@@ -1,20 +1,36 @@
 <?php
 
 namespace App\Controllers;
-
+use OpenApi\Annotations as OA;
+/**
+ * @OA\Info(title="My First API", version="0.1")
+ */
 class Home extends BaseController
 {
     function __construct()
     {
-        if (model("Token")->checkValidToken() == '') {
-            exit;
+        if ( model("Token")->checkValidToken() == '' ) {
+        //    exit;
         } 
     }
+    /**
+     * @OA\Get(
+     *     path="/api/resource.json",
+     *     @OA\Response(response="200", description="An example resource")
+     * )
+     */
     public function index()
     {
         return view('welcome_message');
     }
 
+
+    /**
+     * @OA\Get(
+     *     path="/api/hello",
+     *     @OA\Response(response="200", description="An example resource")
+     * )
+     */
     public function hello()
     {
         if (model("Token")->checkValidToken() == '') {
