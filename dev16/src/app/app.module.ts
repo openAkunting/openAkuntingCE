@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { GeneralLedgerParameterComponent } from './masterData/general-ledger-parameter/general-ledger-parameter.component';
 import { AutoNumberComponent } from './masterData/auto-number/auto-number.component';
+import { AccountComponent } from './masterData/account/account.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { AutoNumberComponent } from './masterData/auto-number/auto-number.compon
     LoginComponent,
     ReloginComponent,
     GeneralLedgerParameterComponent,
-    AutoNumberComponent
+    AutoNumberComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,

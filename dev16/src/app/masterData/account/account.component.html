@@ -1,0 +1,96 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12 my-5">
+            <table class="table table-sm table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        
+                        <th>Id</th>
+                        <th>Description</th>
+                        <th>Parent Id</th>
+                        <th>Type</th>
+                        <th>Nature</th>
+                        <th>Cash Bank</th>
+
+                        <th>Status</th>
+                        <th>Update Date Time</th>
+                        <th>Add Child</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let x of items; let i = index">
+                        <td>
+                            <div *ngIf="!disable">
+                                <div *ngIf="x.checkBox == '' " (click)="onCheck(x, true)">
+                                    <i class="bi bi-square"></i>
+                                </div>
+
+                                <div *ngIf="x.checkBox != '' " (click)="onCheck(x, false)">
+                                    <i class="bi bi-check-square-fill"></i>
+                                </div>
+                            </div>
+                        </td>
+                      
+                        <td>{{x.id}}</td>
+                        <td> <input type="text" class="form-control form-control-sm" [(ngModel)]="x.description"
+                                [disabled]="disable"> </td>
+                        <td>{{x.parentId}}</td>
+                        <td>
+                            <select class="form-control form-control-sm" [disabled]="disable"
+                                [(ngModel)]="x.typeOfAccount">
+                                <option value="BS">[BS] Balance Sheet</option>
+                                <option value="PL">[PL] Profit & Loss</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control form-control-sm" [disabled]="disable" [(ngModel)]="x.nature">
+                                <option value="D">[D] Debit</option>
+                                <option value="C">[C] Credit</option>
+                            </select>
+                        </td>
+                        <td [ngClass]="{'disable': disable}">
+
+                            <div *ngIf="x.cashBank == '0'" (click)="onCheckBox(x,'0','cashBank')">
+                                <i class="bi bi-square"></i>
+                            </div>
+
+                            <div *ngIf="x.cashBank == '1'" (click)="onCheckBox(x,'1','cashBank')">
+                                <i class="bi bi-check-square-fill"></i>
+                            </div>
+                        </td>
+                        <td [ngClass]="{'disable': disable}">
+                            <div *ngIf="x.status == '0'" (click)="onCheckBox(x,'0','status')">
+                                <i class="bi bi-square"></i>
+                            </div>
+
+                            <div *ngIf="x.status == '1'" (click)="onCheckBox(x,'1','status')">
+                                <i class="bi bi-check-square-fill"></i>
+                            </div>
+                        </td>
+
+                        <td>{{x.updateDate}}</td>
+                        <td>  <a href="javascript:;" (click)="open()">Add Item</a> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="col-12">
+            <div class="text-end">
+                <button type="button" class="btn btn-sm btn-danger mx-1" (click)="fnDelete()"
+                    [hidden]="disable">Delete Check</button>
+                <button type="button" class="btn btn-sm btn-warning mx-1" (click)="fnRollback()"
+                    [hidden]="disable">Cancel</button>
+                <button type="button" class="btn btn-sm btn-warning mx-1" (click)="disable=false"
+                    [hidden]="!disable">Edit</button>
+
+                <button type="button" class="btn btn-sm btn-primary mx-1" (click)="fnUpdate()"
+                    [hidden]="disable">Save</button>
+            </div>
+
+        </div>
+        {{items | json}}
+    </div>
+</div>

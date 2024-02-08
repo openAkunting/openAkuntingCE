@@ -6,6 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { ReloginComponent } from './login/relogin/relogin.component';
 import { GeneralLedgerParameterComponent } from './masterData/general-ledger-parameter/general-ledger-parameter.component';
 import { AutoNumberComponent } from './masterData/auto-number/auto-number.component';
+import { AccountComponent } from './masterData/account/account.component';
 
 const routes: Routes = [
   { path: "", component: HomeComponent, data: { active: "home" }, },
@@ -14,8 +15,9 @@ const routes: Routes = [
   { path: "relogin", component: ReloginComponent, data: { active: "relogin" }, },
   
 
-  { path: "glp", component: GeneralLedgerParameterComponent, data: { active: "glp" }, },
-  { path: "an", component: AutoNumberComponent, data: { active: "an" }, },
+  { path: "md/glp", component: GeneralLedgerParameterComponent, data: { active: "md/glp" }, },
+  { path: "md/an", component: AutoNumberComponent, data: { active: "md/an" }, },
+  { path: "md/a", component: AccountComponent, data: { active: "md/a" }, },
   
 
 

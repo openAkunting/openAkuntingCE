@@ -91,6 +91,12 @@ class Token extends Model
 
         return $data;
     }
+
+    function userId(){
+       return self::getData()->access[0]->account->id;
+    }
+
+
     function getCurrentUser()
     {
         $data = false;
