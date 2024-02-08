@@ -1,0 +1,37 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-sm table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th> 
+                        
+                        <th>Running Number</th> 
+                        <th>Prefix</th>
+                        <th>Digit</th>
+                        <th>Last Record</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let x of items">
+                        <td> {{x.id}} </td>
+                        <td> {{x.name | uppercase}} </td> 
+                        <td>{{x.runningNumber}}   </td>
+                        <td> <input type="text" class="form-control form-control-sm" [disabled]="disable" [(ngModel)]="x.prefix" id="id{{x.id}}"> </td>
+                        <td> <input type="number" class="form-control form-control-sm" [disabled]="disable" [(ngModel)]="x.digit" id="id{{x.id}}"></td> 
+                        <td>{{x.lastRecord}}   </td>
+                    </tr>
+                </tbody>
+                
+            </table>
+            <div class="text-end">
+                <button type="button" class="btn btn-sm btn-warning mx-1" (click)="fnRollback()" [hidden]="disable">Cancel</button>
+                <button type="button" class="btn btn-sm btn-warning mx-1" (click)="disable=false" [hidden]="!disable">Edit</button>
+
+                
+                <button type="button" class="btn btn-sm btn-primary mx-1" (click)="fnUpdate()" [hidden]="disable">Save</button> 
+            </div>
+        </div>
+    </div>
+</div>

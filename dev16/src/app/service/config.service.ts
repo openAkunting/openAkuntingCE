@@ -46,11 +46,12 @@ export class ConfigService {
   jti(){
     return this.account()['jti'];
   }
-  headers() {
+  headers() { 
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Token': this.getToken(),
+      'Authorization': 'BEARER '+this.getToken(), 
     });
+  
   }
 
   removeToken(): Observable<boolean> {

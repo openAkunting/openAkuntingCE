@@ -3,7 +3,7 @@
 namespace Config;
 
 use CodeIgniter\Database\Config;
-
+  
 /**
  * Database Configuration
  */
@@ -24,6 +24,7 @@ class Database extends Config
     /**
      * The default database connection.
      */
+    
     public array $default = [
         'DSN'          => '',
         'hostname'     => 'localhost',
@@ -74,6 +75,10 @@ class Database extends Config
     public function __construct()
     {
         parent::__construct();
+
+        // For Multy tenant or  SAAS
+       // $this->default['database'] = isset($_GET['db'] ) ? $_GET['db'] : "";
+
 
         // Ensure that we always set the database group to 'tests' if
         // we are currently running an automated test suite, so that

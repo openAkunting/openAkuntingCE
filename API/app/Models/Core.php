@@ -48,10 +48,14 @@ class Core extends Model
 
             $this->db->table("auto_number")->update([
                 "runningNumber" => $number,
-                "updateDate" => time(),
+                "updateDate" => time(), 
             ], "name = '" . $name . "' ");
 
             $new_number = str_pad($number, self::select('digit', 'auto_number', "name = '" . $name . "'"), "0", STR_PAD_LEFT);
+
+            $this->db->table("auto_number")->update([  
+                "lastRecord" => $prefix . $new_number, 
+            ], "name = '" . $name . "' ");
 
             return $prefix . $new_number;
         }

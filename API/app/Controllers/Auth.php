@@ -72,7 +72,7 @@ class Auth extends BaseController
             $key = $this->key;
 
             $q = "SELECT id, email, tenantId, name
-                FROM  " . $this->prefix . "account
+                FROM  " . $this->prefix . "user
                 WHERE email='$email' AND password = '$pass' AND presence = 1 ORDER BY priority DESC  ";
 
             $query = $this->db->query($q)->getResultArray();
@@ -84,7 +84,7 @@ class Auth extends BaseController
                 foreach ($query as $rec) {
                     $access[] = array(
                         "tenantId" => $rec['tenantId'],
-                        "account" => array(
+                        "user" => array(
                             "id" => $rec['id'],
                             "email" => $rec['email'],
                             "name" => $rec['name'],
@@ -112,7 +112,7 @@ class Auth extends BaseController
                     "post" => $post,
                 );
 
-                $this->db->table($this->prefix . "account_jti")->insert([
+                $this->db->table($this->prefix . "user_jti")->insert([
                     "email" => $email,
                     "jti" => $jti,
                     "inputDate" => date("Y-m-d H:i:s"),
@@ -130,31 +130,7 @@ class Auth extends BaseController
 
         return $this->response->setJSON($data);
     }
-
-    /**
-     * @OA\GET(
-     *     path="/openAkunting/API/public/Auth/getToken",
-     *     summary ="Get Check Token",
-     *     tags={"Posts1"}, 
-     *      @OA\RequestBody(
-     *           @OA\MediaType(
-     *               mediaType="raw",
-     *                 @OA\Schema(
-     *                     @OA\Property(
-     *                            property="email",
-     *                            type= "string",
-     *                      ),
-     *                      @OA\Property(
-     *                            property="password",
-     *                            type= "string | MD5",
-     *                      )
-     *                 ),  
-     *           ),
-     *      ),
-     *     @OA\Response(response="400", description="Succces"),
-     *     @OA\Response(response="200", description="Error"),
-     * )
-     */
+ 
     function getToken()
     {
 
@@ -169,15 +145,15 @@ class Auth extends BaseController
                 "code" => 401,
                 "get" => $post,
             );
-            $id = model("Core")->select("accountId", "account_otp", "requestCode = '$token' and presence = 1 ");
+            $id = model("Core")->select("userId", "user_otp", "requestCode = '$token' and presence = 1 ");
             if ($id) {
-                $this->db->table($this->prefix . "account_otp")->update([
+                $this->db->table($this->prefix . "user_otp")->update([
                     "updateDate" => date("Y-m-d H:i:s"),
                     "presence" => 0,
                 ], " requestCode = '$token' ");
 
 
-                $table = $this->prefix . "account";
+                $table = $this->prefix . "user";
                 $key = $this->key;
 
                 $q = "SELECT id, email, tenantId, name
@@ -193,7 +169,7 @@ class Auth extends BaseController
                     foreach ($query as $rec) {
                         $access[] = array(
                             "tenantId" => $rec['tenantId'],
-                            "account" => array(
+                            "user" => array(
                                 "id" => $rec['id'],
                                 "email" => $rec['email'],
                                 "name" => $rec['name'],

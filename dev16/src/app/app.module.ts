@@ -10,6 +10,8 @@ import { ReloginComponent } from './login/relogin/relogin.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { GeneralLedgerParameterComponent } from './masterData/general-ledger-parameter/general-ledger-parameter.component';
+import { AutoNumberComponent } from './masterData/auto-number/auto-number.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { CommonModule } from '@angular/common';
     HomeComponent,
     NotFoundComponent,
     LoginComponent,
-    ReloginComponent
+    ReloginComponent,
+    GeneralLedgerParameterComponent,
+    AutoNumberComponent
   ],
   imports: [
     BrowserModule,
