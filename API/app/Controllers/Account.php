@@ -16,8 +16,11 @@ class Account extends BaseController
     public function index()
     {
 
-        $q = "SELECT *, '' as 'checkBox' FROM account WHERE presence = 1 and parentId != '0'
-        ORDER BY id ASC, parentId ASC";
+        $q = "SELECT a.*, '' as 'checkBox' , p.description as 'parent'
+        FROM ".$this->prefix."account as a  
+        left join ".$this->prefix."account as p on p.id = a.parentId
+        WHERE a.presence = 1 and a.parentId != '0'
+        ORDER BY a.id ASC, a.parentId ASC";
 
         $view = isset($this->request->getVar()['view']) ? $this->request->getVar()['view'] : false;
         $data = [
