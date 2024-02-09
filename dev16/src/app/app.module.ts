@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { GeneralLedgerParameterComponent } from './masterData/general-ledger-parameter/general-ledger-parameter.component';
 import { AutoNumberComponent } from './masterData/auto-number/auto-number.component';
 import { AccountComponent } from './masterData/account/account.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { AccountComponent } from './masterData/account/account.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    CommonModule
+    CommonModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

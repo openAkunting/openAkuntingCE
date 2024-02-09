@@ -1,8 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { environment } from 'src/environments/environment';
 
+export class NewCoA {
+  constructor(
+    public id: number,
+    public name: string,
+    public accountTypeId: string, 
+  ) {  }
+}
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
@@ -13,22 +21,28 @@ export class AccountComponent implements OnInit {
   disable: boolean = true;
   items: any = [];
   itemsOrigin: any = [];
+  accountType : any = [];
+  item : any;
+  newCoA : any = new NewCoA(0,"","");
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
+    private modalService: NgbModal
   ) { }
   ngOnInit() {
     this.httpGet();
   }
 
   httpGet() {
-    this.http.get<any>(environment.api + "account/index", {
+    this.http.get<any>(environment.api + "account/chartOfAccount", {
       headers: this.configService.headers(),
     }).subscribe(
       data => {
         console.log(data);
         this.items = JSON.parse(JSON.stringify(data['items']));
         this.itemsOrigin = JSON.parse(JSON.stringify(data['items']));
+        this.accountType =  data['acccountType'];
+        
       },
       error => {
         console.log(error);
@@ -44,8 +58,7 @@ export class AccountComponent implements OnInit {
       else if (status == '1') {
         x[name] = '0';
       }
-    }
-
+    } 
   }
 
   fnRollback() {
@@ -95,7 +108,49 @@ export class AccountComponent implements OnInit {
     }
   }
 
-  open(){
-    
+  addItemChild(x: any){
+    const body = {
+      addItemChild: true,
+      item : x
+    }
+    this.http.post<any>(environment.api + "account/addItemChild", body, {
+      headers: this.configService.headers(),
+    }).subscribe(
+      data => {
+        this.httpGet();
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  fnDetailAccountType( id : string, name : string ){
+    const item = this.accountType.find((item: { id: string; }) => item.id === id);
+    return item ? item[name] : '';
+  }
+ 
+  open(content: any, item : any) {
+    this.item = item;
+		this.modalService.open(content);
+  }
+
+  onSubmit(){
+    const body = {
+      item: this.item,
+      newCoA : this.newCoA
+    }
+    this.http.post<any>(environment.api + "account/masterAccountInsert", body, {
+      headers: this.configService.headers(),
+    }).subscribe(
+      data => {
+        this.itemsOrigin = JSON.parse(JSON.stringify(this.items));
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
 }

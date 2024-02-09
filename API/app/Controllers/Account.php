@@ -13,19 +13,37 @@ class Account extends BaseController
         }
     }
 
-    public function index()
-    {
+    public function chartOfAccount()
+    { 
 
-        $q = "SELECT a.*, '' as 'checkBox' , p.description as 'parent'
+        $q = "SELECT a.*, '' as 'checkBox' , p.name as 'parent', t.name as 'accountType'
         FROM ".$this->prefix."account as a  
-        left join ".$this->prefix."account as p on p.id = a.parentId
+        left join ".$this->prefix."account AS p ON p.id = a.parentId
+        left join ".$this->prefix."account_type AS t ON t.id = a.accountTypeId
         WHERE a.presence = 1 and a.parentId != '0'
         ORDER BY a.id ASC, a.parentId ASC";
+
+        $acccountType =  "SELECT *
+        FROM ".$this->prefix."account_type as a  
+        WHERE presence = 1 
+        ORDER BY id ASC ";
+
+        $acccountType = $this->db->query($acccountType)->getResultArray();
+        $i = 0;
+        foreach(  $acccountType as $row){ 
+            $acccountType[$i]['normalBalance'] = $row['normalBalance'] == 'D' ? '[D] Debit' :'[C] Credit';
+            $acccountType[$i]['position'] = $row['position'] == 'BS' ? '[BS] Balance Sheet' :'[PL] Profit & Loss';
+
+            $i++;
+        }
+
 
         $view = isset($this->request->getVar()['view']) ? $this->request->getVar()['view'] : false;
         $data = [
             "error" => false,
             "items" => $view == 'tree' ? self::generatePyramid() : $this->db->query($q)->getResult(),
+            "acccountType" => $acccountType,
+            
         ];
         return $this->response->setJSON($data);
     }
@@ -76,12 +94,10 @@ class Account extends BaseController
         if ($post) {
             $this->db->table($this->prefix . "account")->insert([
                 "id" => $post['items']['id'],
-                "parentId" => $post['items']['parentId'],
-                "nature" => $post['items']['nature'],
-                "cashBank" => $post['items']['cashBank'],
+                "parentId" => $post['items']['parentId'], 
                 "status" => $post['items']['status'],
-                "typeOfAccount" => $post['items']['typeOfAccount'],
-                "description" => $post['items']['description'],
+                "accountTypeId" => $post['items']['accountTypeId'],
+                "name" => $post['items']['name'],
                 "updateDate" => date("Y-m-d H:i:s"),
                 "updateBy" => model("Token")->userId(),
                 "insertDate" => date("Y-m-d H:i:s"),
@@ -133,8 +149,8 @@ class Account extends BaseController
                 "nature" => $post['items']['nature'],
                 "cashBank" => $post['items']['cashBank'],
                 "status" => $post['items']['status'],
-                "typeOfAccount" => $post['items']['typeOfAccount'],
-                "description" => $post['items']['description'],
+                "accountTypeId" => $post['items']['accountTypeId'],
+                "name" => $post['items']['name'],
                 "updateDate" => date("Y-m-d H:i:s"),
                 "updateBy" => model("Token")->userId()
             ], "id = '" . $post['items']['id'] . "' ");
@@ -164,8 +180,8 @@ class Account extends BaseController
                     "nature" => $row['nature'],
                     "cashBank" => $row['cashBank'],
                     "status" => $row['status'],
-                    "typeOfAccount" => $row['typeOfAccount'],
-                    "description" => $row['description'],
+                    "accountTypeId" => $row['accountTypeId'],
+                    "name" => $row['name'],
                     "updateDate" => date("Y-m-d H:i:s"),
                     "updateBy" => model("Token")->userId()
                 ], "id = '" . $row['id'] . "' ");

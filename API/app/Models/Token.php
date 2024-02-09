@@ -93,7 +93,7 @@ class Token extends Model
     }
 
     function userId(){
-       return self::getData()->access[0]->account->id;
+       return self::getData()->access[0]->user->id;
     }
 
 
