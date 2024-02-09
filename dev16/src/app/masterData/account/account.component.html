@@ -1,23 +1,26 @@
 <div class="container">
     <div class="row">
         <div class="col-12 my-5">
-            <table class="table table-sm table-bordered">
+            <table class="table table-sm table-bordered table-hover">
                 <thead>
                     <tr>
                         <th *ngIf="!disable"></th>
 
+                        <th *ngIf="!disable">Add Child</th>
                         <th>Code</th>
-                        <th>Parent Id</th>
                         <th>Name Account </th>
+
+                        <th>Parent Id</th>
                         <th>Type of Account</th>
                         <th>Normal Balance</th>
                         <th>Position</th>
 
                         <th>Cash Bank</th>
+                        <th>Balance</th>
 
                         <th>Status</th>
-                        <th>Update Date Time</th>
-                        <th>Add Child</th>
+
+
                     </tr>
                 </thead>
                 <tbody>
@@ -33,12 +36,13 @@
                             </div>
 
                         </td>
+                        <td *ngIf="!disable"> <a href="javascript:;" (click)="open(content, x)">Add Child</a> </td>
 
                         <td>{{x.id}}</td>
-                        <td>{{x.parent}}</td>
+
                         <td> <input type="text" class="form-control form-control-sm" [(ngModel)]="x.name"
                                 [disabled]="disable"> </td>
-
+                        <td>{{x.parent}}</td>
                         <td>
                             <select class="form-control form-control-sm" [disabled]="disable"
                                 [(ngModel)]="x.accountTypeId">
@@ -60,6 +64,10 @@
                                 <i class="bi bi-check-square-fill"></i>
                             </div>
                         </td>
+                        <td>
+                            <input type="text" currencyMask class="form-control form-control-sm"
+                                [options]="currencyOptions" [disabled]="disable" [(ngModel)]="x.balance">
+                        </td>
                         <td [ngClass]="{'disable': disable}">
                             <div *ngIf="x.status == '0'" (click)="onCheckBox(x,'0','status')">
                                 <i class="bi bi-square"></i>
@@ -70,8 +78,8 @@
                             </div>
                         </td>
 
-                        <td>{{x.updateDate}}</td>
-                        <td> <a href="javascript:;" (click)="open(content, x)">Add Child</a> </td>
+
+
                     </tr>
                 </tbody>
             </table>
@@ -80,6 +88,9 @@
 
         <div class="col-12">
             <div class="text-end">
+                <button type="button" class="btn btn-sm btn-primary mx-5" (click)="open(content, { 'id':'1' })"
+                    [hidden]="disable">Add Item</button>
+
                 <button type="button" class="btn btn-sm btn-danger mx-1" (click)="fnDelete()" [hidden]="disable">Delete
                     Check</button>
                 <button type="button" class="btn btn-sm btn-warning mx-1" (click)="fnRollback()"
@@ -92,10 +103,6 @@
             </div>
 
         </div>
-
-        <code>{{accountType | json}}</code>
-        <code> {{items | json}}</code>
-
     </div>
 </div>
 
@@ -111,14 +118,14 @@
 
             <div class="mb-3">
                 <label for="id">Parent Account</label>
-                <div class="form-control  bg-light">{{item.name}}</div>
+                <div class="form-control  bg-light">{{item.name}} &nbsp;</div>
             </div>
 
 
             <div class="mb-3">
                 <label for="id">Code</label>
                 <div class="input-group ">
-                    <span class="input-group-text" id="basic-addon1">{{item.id}}.</span>
+                    <span *ngIf="item.id != '1'" class="input-group-text" id="basic-addon1">{{item.id}}.</span>
                     <input type="text" class="form-control " id="id" required [(ngModel)]="newCoA.id" name="id"
                         #id="ngModel">
                 </div>
@@ -126,6 +133,8 @@
                     <small> Id is required for Account Code</small>
                 </div>
             </div>
+
+
 
 
             <div class="mb-3">
@@ -150,23 +159,22 @@
 
             <div class="mb-3">
                 <label for="name">Normal Balance</label>
-                <div class="form-control  bg-light">{{fnDetailAccountType(newCoA.accountTypeId, 'normalBalance')}}  &nbsp; </div>
+                <div class="form-control  bg-light">{{fnDetailAccountType(newCoA.accountTypeId, 'normalBalance')}}
+                    &nbsp; </div>
             </div>
 
             <div class="mb-3">
                 <label for="name">Position</label>
-                <div class="form-control  bg-light">{{fnDetailAccountType(newCoA.accountTypeId, 'position')}} &nbsp; </div>
+                <div class="form-control  bg-light">{{fnDetailAccountType(newCoA.accountTypeId, 'position')}} &nbsp;
+                </div>
             </div>
-
-             
-
 
             {{newCoA | json}}
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-dark mx-1" (click)="modal.close('Save click')">Save</button>
             <button type="submit" class="btn btn-success mx-1" [disabled]="!heroForm.form.valid">Submit</button>
-            
+
         </div>
     </form>
 </ng-template>

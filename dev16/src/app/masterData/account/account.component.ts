@@ -24,6 +24,7 @@ export class AccountComponent implements OnInit {
   accountType : any = [];
   item : any;
   newCoA : any = new NewCoA(0,"","");
+  currencyOptions : any = { prefix: '', thousands: '.', decimal: ',',  precision: 0, }
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
@@ -34,6 +35,7 @@ export class AccountComponent implements OnInit {
   }
 
   httpGet() {
+    this.newCoA = new NewCoA(0,"","");
     this.http.get<any>(environment.api + "account/chartOfAccount", {
       headers: this.configService.headers(),
     }).subscribe(
@@ -70,7 +72,7 @@ export class AccountComponent implements OnInit {
     const body = {
       items: this.items,
     }
-    this.http.post<any>(environment.api + "account/masterAccountUpdateAll", body, {
+    this.http.post<any>(environment.api + "account/chartOfAccountUpdate", body, {
       headers: this.configService.headers(),
     }).subscribe(
       data => {
@@ -94,7 +96,7 @@ export class AccountComponent implements OnInit {
       const body = {
         items: this.items,
       }
-      this.http.post<any>(environment.api + "account/masterAccountDelete", body, {
+      this.http.post<any>(environment.api + "account/chartOfAccountDelete", body, {
         headers: this.configService.headers(),
       }).subscribe(
         data => {
@@ -141,11 +143,12 @@ export class AccountComponent implements OnInit {
       item: this.item,
       newCoA : this.newCoA
     }
-    this.http.post<any>(environment.api + "account/masterAccountInsert", body, {
+    this.http.post<any>(environment.api + "account/chartOfAccountInsert", body, {
       headers: this.configService.headers(),
     }).subscribe(
       data => {
-        this.itemsOrigin = JSON.parse(JSON.stringify(this.items));
+       this.httpGet();
+       this.modalService.dismissAll();
         console.log(data);
       },
       error => {

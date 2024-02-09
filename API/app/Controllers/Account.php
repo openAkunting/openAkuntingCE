@@ -83,7 +83,7 @@ class Account extends BaseController
         return $account;
     }
 
-    public function masterAccountInsert()
+    public function chartOfAccountInsert()
     {
         $json = file_get_contents('php://input');
         $post = json_decode($json, true);
@@ -91,26 +91,27 @@ class Account extends BaseController
             "error" => true,
             "code" => 400
         ];
-        if ($post) {
+        if ($post) { 
+            $id = $post['item']['id'] == '1' ? $post['newCoA']['id'] : $post['item']['id'].'.'.$post['newCoA']['id'];
             $this->db->table($this->prefix . "account")->insert([
-                "id" => $post['items']['id'],
-                "parentId" => $post['items']['parentId'], 
-                "status" => $post['items']['status'],
-                "accountTypeId" => $post['items']['accountTypeId'],
-                "name" => $post['items']['name'],
+                "id" =>  $id ,
+                "parentId" =>   $post['item']['id'],  
+                "accountTypeId" => $post['newCoA']['accountTypeId'],
+                "name" => $post['newCoA']['name'],
                 "updateDate" => date("Y-m-d H:i:s"),
                 "updateBy" => model("Token")->userId(),
-                "insertDate" => date("Y-m-d H:i:s"),
-                "insertBy" => model("Token")->userId(),
+                "inputDate" => date("Y-m-d H:i:s"),
+                "inputBy" => model("Token")->userId(),
             ]);
 
             $data = [
                 "error" => false,
                 "code" => 200
             ];
+            return $this->response->setJSON($data);
         }
     }
-    public function masterAccountDelete()
+    public function chartOfAccountDelete()
     {
         $json = file_get_contents('php://input');
         $post = json_decode($json, true);
@@ -135,37 +136,8 @@ class Account extends BaseController
         }
         return $this->response->setJSON($data);
     }
-
-    public function masterAccountUpdate()
-    {
-        $json = file_get_contents('php://input');
-        $post = json_decode($json, true);
-        $data = [
-            "error" => true,
-            "code" => 400
-        ];
-        if ($post) {
-            $this->db->table($this->prefix . "account")->update([
-                "nature" => $post['items']['nature'],
-                "cashBank" => $post['items']['cashBank'],
-                "status" => $post['items']['status'],
-                "accountTypeId" => $post['items']['accountTypeId'],
-                "name" => $post['items']['name'],
-                "updateDate" => date("Y-m-d H:i:s"),
-                "updateBy" => model("Token")->userId()
-            ], "id = '" . $post['items']['id'] . "' ");
-
-            $data = [
-                "error" => false,
-                "code" => 200
-            ];
-        }
-
-        return $this->response->setJSON($data);
-
-    }
-
-    public function masterAccountUpdateAll()
+  
+    public function chartOfAccountUpdate()
     {
         $json = file_get_contents('php://input');
         $post = json_decode($json, true);
@@ -180,6 +152,7 @@ class Account extends BaseController
                     "nature" => $row['nature'],
                     "cashBank" => $row['cashBank'],
                     "status" => $row['status'],
+                    "balance" => $row['balance'],
                     "accountTypeId" => $row['accountTypeId'],
                     "name" => $row['name'],
                     "updateDate" => date("Y-m-d H:i:s"),
@@ -192,6 +165,32 @@ class Account extends BaseController
             ];
         }
 
+        return $this->response->setJSON($data);
+
+    }
+
+
+    function typeOfAccount() {
+       
+
+        $acccountType =  "SELECT *
+        FROM ".$this->prefix."account_type as a  
+        WHERE presence = 1 
+        ORDER BY id ASC ";
+
+        $acccountType = $this->db->query($acccountType)->getResultArray();
+        // $i = 0;
+        // foreach(  $acccountType as $row){ 
+        //     $acccountType[$i]['normalBalance'] = $row['normalBalance'] == 'D' ? '[D] Debit' :'[C] Credit';
+        //     $acccountType[$i]['position'] = $row['position'] == 'BS' ? '[BS] Balance Sheet' :'[PL] Profit & Loss';
+
+        //     $i++;
+        // }
+  
+        $data = [
+            "error" => false, 
+            "items" => $acccountType, 
+        ];
         return $this->response->setJSON($data);
 
     }
