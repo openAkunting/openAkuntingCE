@@ -7,18 +7,20 @@ import { ReloginComponent } from './login/relogin/relogin.component';
 import { GeneralLedgerParameterComponent } from './masterData/general-ledger-parameter/general-ledger-parameter.component';
 import { AutoNumberComponent } from './masterData/auto-number/auto-number.component';
 import { AccountComponent } from './masterData/account/account.component';
+import { AccountTypeComponent } from './masterData/account-type/account-type.component';
 
 const routes: Routes = [
   { path: "", component: HomeComponent, data: { active: "home" }, },
   { path: "home", component: HomeComponent, data: { active: "home" }, }, 
   { path: "login", component: LoginComponent, data: { active: "Login" }, },
   { path: "relogin", component: ReloginComponent, data: { active: "relogin" }, },
-  
-
+   
   { path: "md/glp", component: GeneralLedgerParameterComponent, data: { active: "md/glp" }, },
   { path: "md/an", component: AutoNumberComponent, data: { active: "md/an" }, },
   { path: "md/a", component: AccountComponent, data: { active: "md/a" }, },
+  { path: "md/at", component: AccountTypeComponent, data: { active: "md/at" }, },
   
+
 
 
   { path: "**", component: NotFoundComponent, data: { active: "404" },  canActivate:[]  }, 

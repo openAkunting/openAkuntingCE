@@ -14,25 +14,25 @@ class Account extends BaseController
     }
 
     public function chartOfAccount()
-    { 
+    {
 
         $q = "SELECT a.*, '' as 'checkBox' , p.name as 'parent', t.name as 'accountType'
-        FROM ".$this->prefix."account as a  
-        left join ".$this->prefix."account AS p ON p.id = a.parentId
-        left join ".$this->prefix."account_type AS t ON t.id = a.accountTypeId
+        FROM " . $this->prefix . "account as a  
+        left join " . $this->prefix . "account AS p ON p.id = a.parentId
+        left join " . $this->prefix . "account_type AS t ON t.id = a.accountTypeId
         WHERE a.presence = 1 and a.parentId != '0'
         ORDER BY a.id ASC, a.parentId ASC";
 
-        $acccountType =  "SELECT *
-        FROM ".$this->prefix."account_type as a  
+        $acccountType = "SELECT *
+        FROM " . $this->prefix . "account_type as a  
         WHERE presence = 1 
         ORDER BY id ASC ";
 
         $acccountType = $this->db->query($acccountType)->getResultArray();
         $i = 0;
-        foreach(  $acccountType as $row){ 
-            $acccountType[$i]['normalBalance'] = $row['normalBalance'] == 'D' ? '[D] Debit' :'[C] Credit';
-            $acccountType[$i]['position'] = $row['position'] == 'BS' ? '[BS] Balance Sheet' :'[PL] Profit & Loss';
+        foreach ($acccountType as $row) {
+            $acccountType[$i]['normalBalance'] = $row['normalBalance'] == 'D' ? '[D] Debit' : '[C] Credit';
+            $acccountType[$i]['position'] = $row['position'] == 'BS' ? '[BS] Balance Sheet' : '[PL] Profit & Loss';
 
             $i++;
         }
@@ -43,7 +43,7 @@ class Account extends BaseController
             "error" => false,
             "items" => $view == 'tree' ? self::generatePyramid() : $this->db->query($q)->getResult(),
             "acccountType" => $acccountType,
-            
+
         ];
         return $this->response->setJSON($data);
     }
@@ -91,11 +91,11 @@ class Account extends BaseController
             "error" => true,
             "code" => 400
         ];
-        if ($post) { 
-            $id = $post['item']['id'] == '1' ? $post['newCoA']['id'] : $post['item']['id'].'.'.$post['newCoA']['id'];
+        if ($post) {
+            $id = $post['item']['id'] == '1' ? $post['newCoA']['id'] : $post['item']['id'] . '.' . $post['newCoA']['id'];
             $this->db->table($this->prefix . "account")->insert([
-                "id" =>  $id ,
-                "parentId" =>   $post['item']['id'],  
+                "id" => $id,
+                "parentId" => $post['item']['id'],
                 "accountTypeId" => $post['newCoA']['accountTypeId'],
                 "name" => $post['newCoA']['name'],
                 "updateDate" => date("Y-m-d H:i:s"),
@@ -121,7 +121,7 @@ class Account extends BaseController
         ];
         if ($post) {
             foreach ($post['items'] as $row) {
-                if ($row['checkBox'] == 'true') { 
+                if ($row['checkBox'] == 'true') {
                     $this->db->table($this->prefix . "account")->update([
                         "presence" => 0,
                         "updateDate" => date("Y-m-d H:i:s"),
@@ -136,7 +136,7 @@ class Account extends BaseController
         }
         return $this->response->setJSON($data);
     }
-  
+
     public function chartOfAccountUpdate()
     {
         $json = file_get_contents('php://input');
@@ -170,28 +170,104 @@ class Account extends BaseController
     }
 
 
-    function typeOfAccount() {
-       
-
-        $acccountType =  "SELECT *
-        FROM ".$this->prefix."account_type as a  
+    function accountType()
+    {
+        $acccountType = "SELECT *, '' as 'checkBox'
+        FROM " . $this->prefix . "account_type 
         WHERE presence = 1 
         ORDER BY id ASC ";
-
         $acccountType = $this->db->query($acccountType)->getResultArray();
-        // $i = 0;
-        // foreach(  $acccountType as $row){ 
-        //     $acccountType[$i]['normalBalance'] = $row['normalBalance'] == 'D' ? '[D] Debit' :'[C] Credit';
-        //     $acccountType[$i]['position'] = $row['position'] == 'BS' ? '[BS] Balance Sheet' :'[PL] Profit & Loss';
-
-        //     $i++;
-        // }
-  
         $data = [
-            "error" => false, 
-            "items" => $acccountType, 
+            "error" => false,
+            "items" => $acccountType,
         ];
         return $this->response->setJSON($data);
+    }
 
+    public function accountTypeUpdate()
+    {
+        $json = file_get_contents('php://input');
+        $post = json_decode($json, true);
+        $data = [
+            "error" => true,
+            "code" => 400
+        ];
+        if ($post) {
+            foreach ($post['items'] as $row) {
+
+                $this->db->table($this->prefix . "account_type")->update([
+                    "position" => $row['position'],
+                    "normalBalance" => $row['normalBalance'],
+                    "name" => $row['name'],
+                    "status" => $row['status'],
+                    "updateDate" => date("Y-m-d H:i:s"),
+                    "updateBy" => model("Token")->userId()
+                ], "id = '" . $row['id'] . "' ");
+            }
+            $data = [
+                "error" => false,
+                "code" => 200
+            ];
+        }
+
+        return $this->response->setJSON($data);
+
+    }
+    public function accountTypeInsert()
+    {
+        $json = file_get_contents('php://input');
+        $post = json_decode($json, true);
+        $data = [
+            "error" => true,
+            "code" => 400
+        ];
+        if ($post) {
+            $row = $post['model']; 
+            $this->db->table($this->prefix . "account_type")->insert([
+                "position" => $row['position'],
+                "normalBalance" => $row['normalBalance'],
+                "name" => $row['name'],
+                "status" => 1,
+                "id" => $row['id'],
+                "updateDate" => date("Y-m-d H:i:s"),
+                "updateBy" => model("Token")->userId(),
+                "inputDate" => date("Y-m-d H:i:s"),
+                "inputBy" => model("Token")->userId() 
+            ]);
+           
+            $data = [
+                "error" => false,
+                "code" => 200
+            ];
+        }
+
+        return $this->response->setJSON($data);
+
+    }
+
+    public function accountTypeDelete()
+    {
+        $json = file_get_contents('php://input');
+        $post = json_decode($json, true);
+        $data = [
+            "error" => true,
+            "code" => 400
+        ];
+        if ($post) {
+            foreach ($post['items'] as $row) {
+                if ($row['checkBox'] == 'true') {
+                    $this->db->table($this->prefix . "account_type")->update([
+                        "presence" => 0,
+                        "updateDate" => date("Y-m-d H:i:s"),
+                        "updateBy" => model("Token")->userId()
+                    ], "id = '" . $row['id'] . "' ");
+                }
+            }
+            $data = [
+                "error" => false,
+                "code" => 200
+            ];
+        }
+        return $this->response->setJSON($data);
     }
 }

@@ -4,27 +4,28 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { environment } from 'src/environments/environment';
 
-export class NewCoA {
+export class Modal {
   constructor(
     public id: number,
     public name: string,
-    public accountTypeId: string, 
-  ) {  }
+    public normalBalance: string,
+    public position: string,
+    public status: string,
+  ) { }
 }
 @Component({
-  selector: 'app-account',
-  templateUrl: './account.component.html',
-  styleUrls: ['./account.component.css']
+  selector: 'app-account-type',
+  templateUrl: './account-type.component.html',
+  styleUrls: ['./account-type.component.css']
 })
-export class AccountComponent implements OnInit {
+export class AccountTypeComponent implements OnInit {
   note: string = "";
   disable: boolean = true;
   items: any = [];
   itemsOrigin: any = [];
-  accountType : any = [];
-  item : any;
-  newCoA : any = new NewCoA(0,"","");
-  currencyOptions : any = { prefix: '', thousands: '.', decimal: ',',  precision: 0, }
+  item: any;
+  model: any = new Modal(0, "", "", "", "");
+  currencyOptions: any = { prefix: '', thousands: '.', decimal: ',', precision: 0, }
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
@@ -35,16 +36,14 @@ export class AccountComponent implements OnInit {
   }
 
   httpGet() {
-    this.newCoA = new NewCoA(0,"","");
-    this.http.get<any>(environment.api + "account/chartOfAccount", {
+    this.model = new Modal(0, "", "", "", "");
+    this.http.get<any>(environment.api + "account/accountType", {
       headers: this.configService.headers(),
     }).subscribe(
       data => {
         console.log(data);
         this.items = JSON.parse(JSON.stringify(data['items']));
         this.itemsOrigin = JSON.parse(JSON.stringify(data['items']));
-        this.accountType =  data['acccountType'];
-        
       },
       error => {
         console.log(error);
@@ -60,7 +59,7 @@ export class AccountComponent implements OnInit {
       else if (status == '1') {
         x[name] = '0';
       }
-    } 
+    }
   }
 
   fnRollback() {
@@ -72,7 +71,7 @@ export class AccountComponent implements OnInit {
     const body = {
       items: this.items,
     }
-    this.http.post<any>(environment.api + "account/chartOfAccountUpdate", body, {
+    this.http.post<any>(environment.api + "account/accountTypeUpdate", body, {
       headers: this.configService.headers(),
     }).subscribe(
       data => {
@@ -92,11 +91,10 @@ export class AccountComponent implements OnInit {
 
   fnDelete() {
     if (confirm("Delete this check ?")) {
- 
       const body = {
         items: this.items,
       }
-      this.http.post<any>(environment.api + "account/chartOfAccountDelete", body, {
+      this.http.post<any>(environment.api + "account/accountTypeDelete", body, {
         headers: this.configService.headers(),
       }).subscribe(
         data => {
@@ -108,68 +106,30 @@ export class AccountComponent implements OnInit {
         }
       )
     }
+  } 
+
+  open(content: any) {
+    this.modalService.open(content);
   }
 
-  addItemChild(x: any){
-    const body = {
-      addItemChild: true,
-      item : x
+  onSubmit() {
+    this.note = 'Loading';
+    const body = { 
+      model: this.model
     }
-    this.http.post<any>(environment.api + "account/addItemChild", body, {
+    this.http.post<any>(environment.api + "account/accountTypeInsert", body, {
       headers: this.configService.headers(),
     }).subscribe(
       data => {
+        this.note = 'Save';
         this.httpGet();
+        this.modalService.dismissAll();
         console.log(data);
       },
       error => {
         console.log(error);
+        this.note = error['error']['message'];
       }
     )
-  }
-
-  fnDetailAccountType( id : string, name : string ){
-    const item = this.accountType.find((item: { id: string; }) => item.id === id);
-    return item ? item[name] : '';
-  }
- 
-  open(content: any, item : any) {
-    this.item = item;
-		this.modalService.open(content);
-  }
-
-  onSubmit(){
-    const body = {
-      item: this.item,
-      newCoA : this.newCoA
-    }
-    this.http.post<any>(environment.api + "account/chartOfAccountInsert", body, {
-      headers: this.configService.headers(),
-    }).subscribe(
-      data => {
-       this.httpGet();
-       this.modalService.dismissAll();
-        console.log(data);
-      },
-      error => {
-        console.log(error);
-      }
-    )
-  }
-
-
-
-  countPossibleIPs(str : string ) {
-    // Memisahkan string menjadi oktet-oktet yang terpisah
-    const octets = str.split('.');
-    
-    // Jumlah oktet yang sudah diketahui
-    const t = octets.length - 1;
-    var a = "";
-    for(let i = 0 ; i < t ; i++){
-      a += "&nbsp; &nbsp;";
-    }
-     
-    return a ;
-}
+  } 
 }

@@ -1,28 +1,18 @@
 <div class="container my-5">
     <div class="row">
         <div class="col-12">
-            <strong>Chart Of Account</strong>
+            <strong>Type Of Account</strong>
         </div>
         <div class="col-12 ">
             <table class="table table-sm table-bordered table-hover">
                 <thead>
                     <tr>
                         <th *ngIf="!disable"></th>
-
-                        <th *ngIf="!disable">Add Child</th>
                         <th>Code</th>
                         <th>Name Account </th>
-
-                        <th>Parent Id</th>
-                        <th>Type of Account</th>
                         <th>Normal Balance</th>
                         <th>Position</th>
-
-                        <th>Cash Bank</th>
-                        <th>Balance</th>
-
-                        <th>Status</th>
-
+                        <th class="text-center">Status</th>
 
                     </tr>
                 </thead>
@@ -39,49 +29,38 @@
                             </div>
 
                         </td>
-                        <td *ngIf="!disable"> <a href="javascript:;" (click)="open(content, x)">Add Child</a> </td>
 
-                        <td>  <span [innerHTML]="countPossibleIPs(x.id)"></span> {{x.id}}</td>
+                        <td> {{x.id}}</td>
 
                         <td> <input type="text" class="form-control form-control-sm" [(ngModel)]="x.name"
                                 [disabled]="disable"> </td>
-                        <td>{{x.parent}}</td>
+
+
                         <td>
-                            <select class="form-control form-control-sm" [disabled]="disable"
-                                [(ngModel)]="x.accountTypeId">
-                                <option [value]="a.id" *ngFor="let a of accountType">{{a.name}}</option>
+                            <select [(ngModel)]="x.normalBalance" class="form-control form-control-sm"
+                                [disabled]="disable">
+                                <option value="D">Debit</option>
+                                <option value="C">Credit</option>
                             </select>
                         </td>
 
-                        <td>{{fnDetailAccountType(x.accountTypeId, 'normalBalance')}}</td>
-                        <td>{{fnDetailAccountType(x.accountTypeId, 'position')}}</td>
-
-
-                        <td [ngClass]="{'disable': disable}">
-
-                            <div *ngIf="x.cashBank == '0'" (click)="onCheckBox(x,'0','cashBank')">
-                                <i class="bi bi-square"></i>
-                            </div>
-
-                            <div *ngIf="x.cashBank == '1'" (click)="onCheckBox(x,'1','cashBank')">
-                                <i class="bi bi-check-square-fill"></i>
-                            </div>
-                        </td>
                         <td>
-                            <input type="text" currencyMask class="form-control form-control-sm"
-                                [options]="currencyOptions" [disabled]="disable" [(ngModel)]="x.balance">
+                            <select [(ngModel)]="x.position" class="form-control form-control-sm" [disabled]="disable">
+                                <option value="BS">Balance Sheet</option>
+                                <option value="PL">Profit & Loss</option>
+                            </select>
                         </td>
-                        <td [ngClass]="{'disable': disable}">
+
+                        <td [ngClass]="{'disable': disable}" class="text-center">
+
                             <div *ngIf="x.status == '0'" (click)="onCheckBox(x,'0','status')">
-                                <i class="bi bi-square"></i>
+                                <i class="bi bi-toggle-off fx-2"></i>
                             </div>
 
                             <div *ngIf="x.status == '1'" (click)="onCheckBox(x,'1','status')">
-                                <i class="bi bi-check-square-fill"></i>
+                                <i class="bi bi-toggle-on  fx-2"></i>
                             </div>
                         </td>
-
-
 
                     </tr>
                 </tbody>
@@ -91,8 +70,9 @@
 
         <div class="col-12">
             <div class="text-end">
-                <button type="button" class="btn btn-sm btn-primary mx-5" (click)="open(content, { 'id':'1' })"
-                    [hidden]="disable">Add Item</button>
+                
+                <button type="button" class="btn btn-sm btn-primary mx-5" (click)="open(content)" [hidden]="disable">Add
+                    Item</button>
 
                 <button type="button" class="btn btn-sm btn-danger mx-1" (click)="fnDelete()" [hidden]="disable">Delete
                     Check</button>
@@ -120,18 +100,10 @@
             {{item | json}}
 
             <div class="mb-3">
-                <label for="id">Parent Account</label>
-                <div class="form-control  bg-light">{{item.name}} &nbsp;</div>
-            </div>
-
-
-            <div class="mb-3">
                 <label for="id">Code</label>
-                <div class="input-group ">
-                    <span *ngIf="item.id != '1'" class="input-group-text" id="basic-addon1">{{item.id}}.</span>
-                    <input type="text" class="form-control " id="id" required [(ngModel)]="newCoA.id" name="id"
-                        #id="ngModel">
-                </div>
+
+                <input type="text" class="form-control " id="id" required [(ngModel)]="model.id" name="id"
+                    #id="ngModel">
                 <div [hidden]="id.valid || id.pristine" class="text-danger">
                     <small> Id is required for Account Code</small>
                 </div>
@@ -142,39 +114,43 @@
 
             <div class="mb-3">
                 <label for="nameOfAccountOP">Account Name</label>
-                <input type="text" class="form-control " id="nameOfAccountOP" required [(ngModel)]="newCoA.name"
+                <input type="text" class="form-control " id="nameOfAccountOP" required [(ngModel)]="model.name"
                     name="nameOfAccountOP" #nameOfAccountOP="ngModel">
                 <div [hidden]="nameOfAccountOP.valid || nameOfAccountOP.pristine" class="text-danger">
                     <small> Name is required for Account Code</small>
                 </div>
             </div>
 
-            <div class="mb-3">
-                <label for="accountTypeId">Type Of Account</label>
-                <select class="form-control" id="accountTypeId" required [(ngModel)]="newCoA.accountTypeId"
-                    name="accountTypeId" #accountTypeId="ngModel">
-                    <option [value]="a.id" *ngFor="let a of accountType">{{a.name}}</option>
-                </select>
-                <div [hidden]="accountTypeId.valid || accountTypeId.pristine" class="text-danger">
-                    <small> Account Type Id required for Account Code</small>
-                </div>
-            </div>
+
 
             <div class="mb-3">
                 <label for="name">Normal Balance</label>
-                <div class="form-control  bg-light">{{fnDetailAccountType(newCoA.accountTypeId, 'normalBalance')}}
-                    &nbsp; </div>
+                <select [(ngModel)]="model.normalBalance" class="form-control form-control-sm" required
+                    [disabled]="disable" name="normalBalance" #normalBalance="ngModel">
+                    <option value="D">Debit</option>
+                    <option value="C">Credit</option>
+                </select>
+                <div [hidden]="normalBalance.valid || normalBalance.pristine" class="text-danger">
+                    <small> Name is required </small>
+                </div>
             </div>
 
             <div class="mb-3">
                 <label for="name">Position</label>
-                <div class="form-control  bg-light">{{fnDetailAccountType(newCoA.accountTypeId, 'position')}} &nbsp;
+                <select [(ngModel)]="model.position" class="form-control form-control-sm" required [disabled]="disable"
+                    name="position" #position="ngModel">
+                    <option value="BS">Balance Sheet</option>
+                    <option value="PL">Profit & Loss</option>
+                </select>
+                <div [hidden]="position.valid || position.pristine" class="text-danger">
+                    <small> Position is required</small>
                 </div>
             </div>
 
-            {{newCoA | json}}
+            {{model | json}}
         </div>
         <div class="modal-footer">
+            {{note}}
             <button type="button" class="btn btn-outline-dark mx-1" (click)="modal.close('Save click')">Save</button>
             <button type="submit" class="btn btn-success mx-1" [disabled]="!heroForm.form.valid">Submit</button>
 

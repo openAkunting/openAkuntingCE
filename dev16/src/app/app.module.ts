@@ -15,6 +15,8 @@ import { GeneralLedgerParameterComponent } from './masterData/general-ledger-par
 import { AutoNumberComponent } from './masterData/auto-number/auto-number.component';
 import { AccountComponent } from './masterData/account/account.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AccountTypeComponent } from './masterData/account-type/account-type.component';
+import { UserComponent } from './masterData/user/user.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ReloginComponent,
     GeneralLedgerParameterComponent,
     AutoNumberComponent,
-    AccountComponent
+    AccountComponent,
+    AccountTypeComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
