@@ -8,6 +8,9 @@ import { GeneralLedgerParameterComponent } from './masterData/general-ledger-par
 import { AutoNumberComponent } from './masterData/auto-number/auto-number.component';
 import { AccountComponent } from './masterData/account/account.component';
 import { AccountTypeComponent } from './masterData/account-type/account-type.component';
+import { UserComponent } from './masterData/user/user.component';
+import { UserDetailComponent } from './masterData/user/user-detail/user-detail.component';
+import { UserRoleComponent } from './masterData/user/user-role/user-role.component';
 
 const routes: Routes = [
   { path: "", component: HomeComponent, data: { active: "home" }, },
@@ -19,8 +22,10 @@ const routes: Routes = [
   { path: "md/an", component: AutoNumberComponent, data: { active: "md/an" }, },
   { path: "md/a", component: AccountComponent, data: { active: "md/a" }, },
   { path: "md/at", component: AccountTypeComponent, data: { active: "md/at" }, },
-  
-
+  { path: "md/u", component: UserComponent, data: { active: "md/u" }, },
+  { path: "md/ud", component: UserDetailComponent, data: { active: "md/ud" }, },
+  { path: "md/ur", component: UserRoleComponent, data: { active: "md/ur" }, },
+   
 
 
   { path: "**", component: NotFoundComponent, data: { active: "404" },  canActivate:[]  }, 

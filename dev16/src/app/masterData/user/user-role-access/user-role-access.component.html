@@ -1,0 +1,76 @@
+<div class="modal-header">
+    <h4 class="modal-title">Hi there!</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <p>Hello, {{ id }}!</p>
+    <a href="javascript:;" (click)="reload()">reload module</a>
+    <table class="table table-sm table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Module</th> 
+                
+                <th>Create</th>
+                <th>Read</th>
+                <th>Update</th>
+                <th>Delete</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let x of items; let i = index">
+                <td>{{i+1}}</td> 
+                <td>{{x.module}} </td>
+                
+                <td>
+                    <div *ngIf="x._read == '0' " (click)="onCheckBox(x, '0','_read')">
+                        <i class="bi bi-square"></i>
+                    </div>
+
+                    <div *ngIf="x._read == '1' " (click)="onCheckBox(x, '1','_read')">
+                        <i class="bi bi-check-square-fill"></i>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="x._create == '0' " (click)="onCheckBox(x, '0','_create')">
+                        <i class="bi bi-square"></i>
+                    </div>
+
+                    <div *ngIf="x._create == '1' " (click)="onCheckBox(x, '1','_create')">
+                        <i class="bi bi-check-square-fill"></i>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="x._update == '0' " (click)="onCheckBox(x, '0','_update')">
+                        <i class="bi bi-square"></i>
+                    </div>
+
+                    <div *ngIf="x._update == '1' " (click)="onCheckBox(x, '1','_update')">
+                        <i class="bi bi-check-square-fill"></i>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="x._delete == '0' " (click)="onCheckBox(x, '0','_delete')">
+                        <i class="bi bi-square"></i>
+                    </div>
+
+                    <div *ngIf="x._delete == '1' " (click)="onCheckBox(x, '1','_delete')">
+                        <i class="bi bi-check-square-fill"></i>
+                    </div>
+                </td>
+                 
+                
+             
+                
+            </tr>
+        </tbody>
+    </table>
+    
+    <code>{{items | json}}</code>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+
+    <button type="button" class="btn btn-dark" (click)="update()">Save</button>
+</div>

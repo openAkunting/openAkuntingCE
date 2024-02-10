@@ -1,0 +1,81 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+
+                {{model | json}}
+
+                <div class="mb-3">
+                    <label for="name">User Name</label>
+                    <input type="text" class="form-control  form-control-sm" id="name" [disabled]="disable" required
+                        [(ngModel)]="model.name" name="name" #name="ngModel">
+                    <div [hidden]="name.valid || name.pristine" class="text-danger">
+                        <small> Name is required</small>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="name">User Rule Id</label>
+                    <select [(ngModel)]="model.userRuleId" class="form-control form-control-sm" required
+                        [disabled]="disable" name="userRuleId" #userRuleId="ngModel">
+                        <option *ngFor="let x of userRole" [value]="x.id">{{x.name}}</option>
+                    </select>
+                    <div [hidden]="userRuleId.valid || userRuleId.pristine" class="text-danger">
+                        <small> this is required </small>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="name">[SA] Super Admin</label>
+                    <div *ngIf="model.sa == '0'" (click)="onCheckBox(model,'0','sa')">
+                        <i class="bi bi-square"></i>
+                    </div>
+
+                    <div *ngIf="model.sa == '1'" (click)="onCheckBox(model,'1','sa')">
+                        <i class="bi bi-check-square-fill"></i>
+                    </div>
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="name">Status</label>
+                    <div *ngIf="model.status == '0'" (click)="onCheckBox(model,'0','status')">
+                        <i class="bi bi-square"></i> Disable
+                    </div>
+
+                    <div *ngIf="model.status == '1'" (click)="onCheckBox(model,'1','status')">
+                        <i class="bi bi-check-square-fill"></i> Active
+                    </div>
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="name">Password</label>
+                    <div>
+                        <a href="">Reset Password</a>
+                    </div>
+                </div>
+
+
+                <div class="col-12">
+                    <div class="text-end">
+
+
+                        <button type="button" class="btn btn-sm btn-warning mx-1" (click)="disable=true"
+                            [hidden]="disable">Cancel</button>
+
+                        <button type="submit" class="btn btn-sm btn-primary mx-1" [disabled]="!heroForm.form.valid"
+                            [hidden]="disable">Submit</button>
+
+
+                        <button type="button" class="btn btn-sm btn-warning mx-1" (click)="disable=false"
+                            [hidden]="!disable">Edit</button>
+
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

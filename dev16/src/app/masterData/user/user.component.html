@@ -1,1 +1,43 @@
-<p>user works!</p>
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <strong>Users</strong>
+        </div>
+        <div class="col-12 ">
+            <table class="table table-sm table-bordered table-hover">
+                <thead>
+                    <tr> 
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>Role</th>
+                        <th>Name </th> 
+                        <th>Email</th>
+                        <th>SA</th>
+                        <th class="text-center">Status</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let x of items; let i = index" (click)="goToDetail(x);"> 
+                        <td>{{i+1}}</td>   
+                        <td>{{x.id}}</td>   
+                        <td>{{x.role}} </td> 
+                        <td>{{x.name}} </td>  
+                        <td> {{x.email}}</td> 
+                        <td>   <span *ngIf="x.sa =='1' "><i class="bi bi-lock-fill"></i></span> </td> 
+                        <td class="text-center"> 
+                            <div *ngIf="x.status == '0'">
+                               Disable
+                            </div> 
+                            <div *ngIf="x.status == '1'" >
+                               Active
+                            </div>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+ 
+    </div>
+</div>
+ 

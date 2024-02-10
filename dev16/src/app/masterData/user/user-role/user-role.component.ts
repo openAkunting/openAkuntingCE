@@ -4,28 +4,24 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { environment } from 'src/environments/environment';
-
+import { UserRoleAccessComponent } from '../user-role-access/user-role-access.component';
 export class Modal {
   constructor( 
-    public name: string,
-    public normalBalance: string,
-    public position: string,
-    public status: string,
+    public name: string,  
   ) { }
 }
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  selector: 'app-user-role',
+  templateUrl: './user-role.component.html',
+  styleUrls: ['./user-role.component.css']
 })
-export class UserComponent implements OnInit {
+export class UserRoleComponent implements OnInit {
   note: string = "";
   disable: boolean = true;
   items: any = [];
   itemsOrigin: any = [];
   item: any;
-  model: any = new Modal(  "", "", "", "");
-  currencyOptions: any = { prefix: '', thousands: '.', decimal: ',', precision: 0, }
+  model: any = new Modal(  "", ); 
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
@@ -37,8 +33,8 @@ export class UserComponent implements OnInit {
   }
 
   httpGet() {
-    this.model = new Modal( "", "", "", "");
-    this.http.get<any>(environment.api + "user/index", {
+    this.model = new Modal( "",);
+    this.http.get<any>(environment.api + "user/userRole", {
       headers: this.configService.headers(),
     }).subscribe(
       data => {
@@ -56,8 +52,9 @@ export class UserComponent implements OnInit {
   }
 
 
-  open(content: any) {
-    this.modalService.open(content);
+  open(x:any) {
+    const modalRef = this.modalService.open(UserRoleAccessComponent, {size:'lg'});
+		modalRef.componentInstance.id = x.id;
   }
  
 }

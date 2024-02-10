@@ -17,6 +17,9 @@ import { AccountComponent } from './masterData/account/account.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AccountTypeComponent } from './masterData/account-type/account-type.component';
 import { UserComponent } from './masterData/user/user.component';
+import { UserDetailComponent } from './masterData/user/user-detail/user-detail.component';
+import { UserRoleComponent } from './masterData/user/user-role/user-role.component';
+import { UserRoleAccessComponent } from './masterData/user/user-role-access/user-role-access.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,10 @@ import { UserComponent } from './masterData/user/user.component';
     AutoNumberComponent,
     AccountComponent,
     AccountTypeComponent,
-    UserComponent
+    UserComponent,
+    UserDetailComponent,
+    UserRoleComponent,
+    UserRoleAccessComponent
   ],
   imports: [
     BrowserModule,
