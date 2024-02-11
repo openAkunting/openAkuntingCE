@@ -57,10 +57,10 @@ class Auth extends BaseController
                     "code" => 200,
                     "authorization" => model("Token")->createData($query)['authorization'],
                     "jti" => model("Token")->createData($query)['jti'],
-                    "payload" => model("Token")->createData($query)['payload'],
+                    "payload" => isset($this->request->getGet()['payload']) ?  model("Token")->createData($query)['payload'] : "hidden",
                     "post" => $post,
                 );
-
+ 
 
             } else {
                 $data = array(
