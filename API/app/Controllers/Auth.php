@@ -55,8 +55,8 @@ class Auth extends BaseController
                 $data = array(
                     "error" => false,
                     "code" => 200,
-                    "authorization" =>  model("Token")->createData($query),
-              //      "jti" => $jti,
+                    "authorization" =>  model("Token")->createData($query)['authorization'],
+                    "jti" => model("Token")->createData($query)['jti'],
                     "post" => $post,  
                 );
               

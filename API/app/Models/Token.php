@@ -177,15 +177,12 @@ class Token extends Model
             'exp' => strtotime(((int) date("Y") + 1) . date("-m-d H:i:s")),
             "access" => $access,
 
-        ];
-    
-        $authorization = JWT::encode($payload, $this->key, 'HS256');
-
-       
-
+        ]; 
+        $authorization = JWT::encode($payload, $this->key, 'HS256'); 
         return [
             "payload" => $payload,
             "authorization" => $authorization,
+            "jti" => $jti,
 
         ];
     }
