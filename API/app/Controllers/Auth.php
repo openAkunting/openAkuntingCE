@@ -22,7 +22,6 @@ class Auth extends BaseController
         $this->prefix = $_ENV['PREFIX'];
     }
 
-
     function index()
     {
         $data = array(
@@ -31,30 +30,6 @@ class Auth extends BaseController
         return $this->response->setJSON($data);
     }
 
-    /**
-     * @OA\Post(
-     *     path="/openAkunting/API/public/Auth/signin",
-     *     summary =" Post Signin",
-     *     tags={"Auth"}, 
-     *      @OA\RequestBody(
-     *           @OA\MediaType(
-     *               mediaType="raw",
-     *                 @OA\Schema(
-     *                     @OA\Property(
-     *                            property="email",
-     *                            type= "string",
-     *                      ),
-     *                      @OA\Property(
-     *                            property="password",
-     *                            type= "string | MD5",
-     *                      )
-     *                 ),  
-     *           ),
-     *      ),
-     *     @OA\Response(response="400", description="Succces"),
-     *     @OA\Response(response="200", description="Error"),
-     * )
-     */
     function signin()
     {
         $json = file_get_contents('php://input');
@@ -71,52 +46,20 @@ class Auth extends BaseController
 
             $key = $this->key;
 
-            $q = "SELECT id, email, tenantId, name
+            $q = "SELECT *
                 FROM  " . $this->prefix . "user
                 WHERE email='$email' AND password = '$pass' AND presence = 1 ORDER BY priority DESC  ";
 
-            $query = $this->db->query($q)->getResultArray();
-
+            $query = $this->db->query($q)->getResultArray(); 
             if (count($query)) {
-                $jti = md5(rand(0, 99) . date("Y-m-d H:i:s") . uniqid());
-                $access = [];
-
-                foreach ($query as $rec) {
-                    $access[] = array(
-                        "tenantId" => $rec['tenantId'],
-                        "user" => array(
-                            "id" => $rec['id'],
-                            "email" => $rec['email'],
-                            "name" => $rec['name'],
-                        ),
-                        "company" => model("Core")->select("company", "tenant", "id = '" . $rec['tenantId'] . "' "),
-                    );
-                }
-
-                $payload = [
-                    'iss' => 'http://localhost',
-                    'aud' => 'http://localhost',
-                    "access" => $access,
-                    "jti" => $jti,
-                    'iat' => time(),
-                    'nbf' => strtotime(date("Y-m-d H:i:s")),
-                ];
-
-                $authorization = JWT::encode($payload, $key, 'HS256');
-
                 $data = array(
                     "error" => false,
                     "code" => 200,
-                    "authorization" => $authorization,
-                    "jti" => $jti,
-                    "post" => $post,
+                    "authorization" =>  model("Token")->createData($query),
+              //      "jti" => $jti,
+                    "post" => $post,  
                 );
-
-                $this->db->table($this->prefix . "user_jti")->insert([
-                    "email" => $email,
-                    "jti" => $jti,
-                    "inputDate" => date("Y-m-d H:i:s"),
-                ]);
+              
 
             } else {
                 $data = array(
@@ -130,7 +73,7 @@ class Auth extends BaseController
 
         return $this->response->setJSON($data);
     }
- 
+
     function getToken()
     {
 

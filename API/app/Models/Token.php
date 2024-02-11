@@ -10,12 +10,16 @@ use CodeIgniter\HTTP\IncomingRequest;
 
 class Token extends Model
 {
-    protected $id = null;
+    protected $key = null;
+    protected $prefix = null;
+ 
     protected $db = null;
     protected $request = null;
 
     function __construct()
     {
+        $this->prefix = $_ENV['PREFIX'];
+        $this->key = $_ENV['SECRETKEY']; 
         $this->request = \Config\Services::request();
         $this->db = \Config\Database::connect();
     }
@@ -55,8 +59,8 @@ class Token extends Model
 
     function checkValidToken()
     {
-    
-        $key = $_ENV['SECRETKEY']; 
+
+        $key = $_ENV['SECRETKEY'];
         if (service('request')->getHeaderLine('Authorization')) {
 
             $Authorization = explode(" ", service('request')->getHeaderLine('Authorization'));
@@ -69,7 +73,7 @@ class Token extends Model
 
         } else {
             return false;
-        } 
+        }
 
     }
 
@@ -78,13 +82,13 @@ class Token extends Model
     function getData()
     {
         $data = false;
-        $key = $_ENV['SECRETKEY']; 
+        $key = $_ENV['SECRETKEY'];
         if (service('request')->getHeaderLine('Authorization')) {
             $Authorization = explode(" ", service('request')->getHeaderLine('Authorization'));
             if (strtoupper($Authorization[0]) == 'BEARER') {
-                $data = JWT::decode($Authorization[1], new Key($key, 'HS256')); 
+                $data = JWT::decode($Authorization[1], new Key($key, 'HS256'));
             } else {
-                $data =  false;
+                $data = false;
             }
 
         }
@@ -92,22 +96,23 @@ class Token extends Model
         return $data;
     }
 
-    function userId(){
-       return self::getData()->access[0]->user->id;
+    function userId()
+    {
+        return self::getData()->access[0]->user->id;
     }
 
 
     function getCurrentUser()
     {
         $data = false;
-        $key = $_ENV['SECRETKEY']; 
+        $key = $_ENV['SECRETKEY'];
         if (service('request')->getHeaderLine('Authorization')) {
             $Authorization = explode(" ", service('request')->getHeaderLine('Authorization'));
             if (strtoupper($Authorization[0]) == 'BEARER') {
-                $data = JWT::decode($Authorization[1], new Key($key, 'HS256')); 
-                $data  = $data->access[self::getIndex()];
+                $data = JWT::decode($Authorization[1], new Key($key, 'HS256'));
+                $data = $data->access[self::getIndex()];
             } else {
-                $data =  false;
+                $data = false;
             }
 
         }
@@ -115,9 +120,73 @@ class Token extends Model
         return $data;
     }
 
-    function getIndex(){
-        return (int)service('request')->getHeaderLine('X-index');
+    function getIndex()
+    {
+        return (int) service('request')->getHeaderLine('X-index');
     }
- 
 
+
+
+    function createData($query)
+    {
+        
+        $jti = md5(rand(0, 99) . date("Y-m-d H:i:s") . uniqid());
+        $access = [];
+        $i = 0;
+        foreach ($query as $rec) {
+            $access[] = array(
+                "appCode" => '',
+                "user" => array(
+                    "id" => $rec['id'],
+                    "email" => $rec['email'],
+                    "name" => $rec['name'],
+                    "rule" => self::select("name","user_role","id = '".$rec['userRuleId']."'"),
+                ),
+                "role" => [],
+            );
+
+        
+            $this->db->table($this->prefix . "user_jti")->insert([
+                "userId" => $rec['id'],
+                "jti" => $jti,
+                "inputDate" => date("Y-m-d H:i:s"),
+            ]);
+
+            $q1 = "SELECT * FROM " . $this->prefix . "module ORDER BY id ASC";
+            $access[$i]['role']['documentation'] =  [
+                'Create','Read','Update','Delete', 
+            ];
+            foreach ($this->db->query($q1)->getResultArray() as $role) {
+                $access[$i]['role'][ preg_replace('/\s+/', '_', strtolower($role['name'])) ] =  [
+                    (int) self::select("_create","user_role_access","userRulesId = '".$rec['userRuleId']."' and moduleId = '".$role['id']."' "),
+                    (int) self::select("_read","user_role_access","userRulesId = '".$rec['userRuleId']."' and moduleId = '".$role['id']."' "),
+                    (int) self::select("_update","user_role_access","userRulesId = '".$rec['userRuleId']."' and moduleId = '".$role['id']."' "),
+                    (int) self::select("_delete","user_role_access","userRulesId = '".$rec['userRuleId']."' and moduleId = '".$role['id']."' "),
+                    
+                ];
+            }
+            $i++;
+        }
+
+        $payload = [
+            'iss' => 'http://localhost',
+            'aud' => 'http://localhost', 
+            "jti" => $jti,
+            'iat' => time(),
+            'nbf' => time(),
+            'exp' => strtotime(((int) date("Y") + 1) . date("-m-d H:i:s")),
+            "access" => $access,
+
+        ];
+    
+        $authorization = JWT::encode($payload, $this->key, 'HS256');
+
+       
+
+        return [
+            "payload" => $payload,
+            "authorization" => $authorization,
+
+        ];
+    }
 }
