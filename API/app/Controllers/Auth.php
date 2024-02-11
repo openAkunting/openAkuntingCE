@@ -50,16 +50,17 @@ class Auth extends BaseController
                 FROM  " . $this->prefix . "user
                 WHERE email='$email' AND password = '$pass' AND presence = 1 ORDER BY priority DESC  ";
 
-            $query = $this->db->query($q)->getResultArray(); 
+            $query = $this->db->query($q)->getResultArray();
             if (count($query)) {
                 $data = array(
                     "error" => false,
                     "code" => 200,
-                    "authorization" =>  model("Token")->createData($query)['authorization'],
+                    "authorization" => model("Token")->createData($query)['authorization'],
                     "jti" => model("Token")->createData($query)['jti'],
-                    "post" => $post,  
+                    "payload" => model("Token")->createData($query)['payload'],
+                    "post" => $post,
                 );
-              
+
 
             } else {
                 $data = array(
@@ -166,10 +167,11 @@ class Auth extends BaseController
 
             $decoded = JWT::decode($token, new Key($key, 'HS256'));
             $data = array(
-                "post" => $post,
                 "note" => "development only",
+                "post" => $post,
                 "error" => false,
-                "decoded" => $decoded,
+                //     "decoded" => $decoded, 
+                "header" => model("Token")->checkRule('Chart Of Account'),
             );
         }
 

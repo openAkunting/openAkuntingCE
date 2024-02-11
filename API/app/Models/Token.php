@@ -125,7 +125,19 @@ class Token extends Model
         return (int) service('request')->getHeaderLine('X-index');
     }
 
+    function failed(){
+        return [
+            "error" => true,
+            "code" => 500,
+        ];
+    }
 
+    function checkRule($module=""){
+        $module =  preg_replace('/\s+/', '_', strtolower($module));
+        $obj = self::getData()->access[0]->role;
+        $arr = json_decode(json_encode($obj), true);
+        return  $arr[$module] ;
+    }
 
     function createData($query)
     {

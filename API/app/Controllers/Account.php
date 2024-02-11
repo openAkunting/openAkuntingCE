@@ -9,7 +9,13 @@ class Account extends BaseController
     function __construct()
     {
         if (model("Token")->checkValidToken() == '') {
-            //   exit;
+              exit;
+        }
+
+        // rules check here
+        if (model("Token")->checkRule('Chart Of Account')[1] != 1) { 
+             echo "500 : Error Role";
+             exit;
         }
     }
 
@@ -170,7 +176,7 @@ class Account extends BaseController
     }
 
 
-    function accountType()
+    public function accountType()
     {
         $acccountType = "SELECT *, '' as 'checkBox'
         FROM " . $this->prefix . "account_type 
