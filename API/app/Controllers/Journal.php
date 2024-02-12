@@ -59,7 +59,9 @@ class Journal extends BaseController
         ];
         if ($post) {
             $this->db->transStart();
-            $amount = 0;
+            $debit = 0;
+            $credit = 0;
+            
             $jurnalId =  model("Core")->number("journal");
             foreach ($post['items'] as $row) {
                 $this->db->table($this->prefix . "journal")->insert([ 
@@ -74,14 +76,18 @@ class Journal extends BaseController
                     "inputDate" => date("Y-m-d H:i:s"),
                     "inputBy" => model("Token")->userId()
                 ]);
-                $amount +=  $row['debit'];
+                $debit +=  $row['debit'];
+                $credit +=  $row['credit']; 
+                
             }
 
             $this->db->table($this->prefix . "journal_header")->insert([ 
                 "id" => $jurnalId, 
                 "JournalDate" => date("Y-m-d"), 
                 "ref" => "",
-                "amount" => $amount,
+                "totalCredit" => $credit,
+                "totalDebit" => $debit,
+                
                 "presence" => 1,
                 "updateDate" => date("Y-m-d H:i:s"),
                 "updateBy" => model("Token")->userId(),
@@ -89,9 +95,14 @@ class Journal extends BaseController
                 "inputBy" => model("Token")->userId()
             ]);
 
+            if(( ($credit - $debit)  == 0) && $this->db->transStatus() != false ){
+                $this->db->transComplete();
+            }else{
+                $this->db->transRollback();
+            }
 
 
-            $this->db->transComplete();
+          
             
             $data = [
                 "error" => false,
