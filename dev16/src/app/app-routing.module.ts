@@ -11,7 +11,9 @@ import { AccountTypeComponent } from './masterData/account-type/account-type.com
 import { UserComponent } from './masterData/user/user.component';
 import { UserDetailComponent } from './masterData/user/user-detail/user-detail.component';
 import { UserRoleComponent } from './masterData/user/user-role/user-role.component';
-
+import { JournalComponent } from './generalLedger/journal/journal.component';
+import { CashBankComponent } from './generalLedger/cash-bank/cash-bank.component';
+ 
 const routes: Routes = [
   { path: "", component: HomeComponent, data: { active: "home" }, },
   { path: "home", component: HomeComponent, data: { active: "home" }, }, 
@@ -26,7 +28,9 @@ const routes: Routes = [
   { path: "md/ud", component: UserDetailComponent, data: { active: "md/ud" }, },
   { path: "md/ur", component: UserRoleComponent, data: { active: "md/ur" }, },
    
-
+  { path: "gl/j", component: JournalComponent, data: { active: "gl/j", role :'journal' }, },
+  { path: "gl/cb", component: CashBankComponent, data: { active: "gl/cb", role :'cash_bank' }, },
+    
 
   { path: "**", component: NotFoundComponent, data: { active: "404" },  canActivate:[]  }, 
  

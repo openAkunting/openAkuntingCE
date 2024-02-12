@@ -20,9 +20,15 @@ import { UserComponent } from './masterData/user/user.component';
 import { UserDetailComponent } from './masterData/user/user-detail/user-detail.component';
 import { UserRoleComponent } from './masterData/user/user-role/user-role.component';
 import { UserRoleAccessComponent } from './masterData/user/user-role-access/user-role-access.component';
+import { LanguageService } from './service/language.service';
+import { BranchComponent } from './masterData/branch/branch.component';
+import { OutletComponent } from './masterData/outlet/outlet.component';
+import { JournalComponent } from './generalLedger/journal/journal.component';
+import { CashBankComponent } from './generalLedger/cash-bank/cash-bank.component'; 
+import { JournalCreateComponent } from './generalLedger/journal/journal-create/journal-create.component'; 
 
 @NgModule({
-  declarations: [
+  declarations: [ 
     AppComponent,
     HomeComponent,
     NotFoundComponent,
@@ -35,7 +41,12 @@ import { UserRoleAccessComponent } from './masterData/user/user-role-access/user
     UserComponent,
     UserDetailComponent,
     UserRoleComponent,
-    UserRoleAccessComponent
+    UserRoleAccessComponent,
+    BranchComponent,
+    OutletComponent,
+    JournalComponent,
+    CashBankComponent, 
+    JournalCreateComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +57,7 @@ import { UserRoleAccessComponent } from './masterData/user/user-role-access/user
     NgbModule,
     NgxCurrencyDirective
   ],
-  providers: [],
+  providers: [LanguageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

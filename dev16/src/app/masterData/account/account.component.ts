@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
-import { environment } from 'src/environments/environment';
+import { LanguageService } from 'src/app/service/language.service';
+import { environment } from 'src/environments/environment'; 
 
 export class NewCoA {
   constructor(
@@ -25,13 +26,17 @@ export class AccountComponent implements OnInit {
   item : any;
   newCoA : any = new NewCoA(0,"","");
   currencyOptions : any = { prefix: '', thousands: '.', decimal: ',',  precision: 0, }
+
+  selectedLang: string = 'en';
+  translatedText: string = '';
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
-    private modalService: NgbModal
+    private modalService: NgbModal, 
+    public lang: LanguageService
   ) { }
   ngOnInit() {
-    this.httpGet();
+    this.httpGet(); 
   }
 
   httpGet() {
@@ -135,6 +140,10 @@ export class AccountComponent implements OnInit {
  
   open(content: any, item : any) {
     this.item = item;
+    if( this.item.id != '1'){
+      this.newCoA['accountTypeId'] = item['accountTypeId']
+    }
+ 
 		this.modalService.open(content);
   }
 

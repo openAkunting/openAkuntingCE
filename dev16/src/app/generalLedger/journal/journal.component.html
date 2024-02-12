@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h4>Journal</h4>
+        </div>
+        <div class="col-12 text-end mb-2">
+            <button class="btn btn-sm btn-primary" (click)="open()">Add Journal</button>
+        </div>
+        <div class="col-12">
+            <table class="table table-sm table-hover  table-bordered">
+                <thead>
+                    <tr>
+                        <th>Journal Id</th>
+                        <th>Outlet</th>
+                        <th>Account</th>
+
+                        <th>Debit</th>
+                        <th>Credit</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let x of items">
+                        <td>{{x.jurnalId}}</td>
+                        <td>{{x.outlet}}</td>
+                        <td>
+                            <div>
+                               {{x.accountId}}
+                            </div>
+                            <div style="max-width: 600px;">
+                                <small>{{x.note}} </small>
+                            </div>
+                        </td>
+                        <td class="text-end">{{x.debit | number}}</td>
+                        <td class="text-end">{{x.credit | number}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

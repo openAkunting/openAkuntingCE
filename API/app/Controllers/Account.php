@@ -13,10 +13,10 @@ class Account extends BaseController
         }
 
         // rules check here
-        if (model("Token")->checkRule('Chart Of Account')[1] != 1) { 
-             echo "500 : Error Role";
-             exit;
-        }
+       // if (model("Token")->checkRule('Chart Of Account')[1] != 1) { 
+           //  echo "500 : Error Role";
+           //  exit;
+      //  }
     }
 
     public function chartOfAccount()
@@ -154,11 +154,9 @@ class Account extends BaseController
         if ($post) {
             foreach ($post['items'] as $row) {
 
-                $this->db->table($this->prefix . "account")->update([
-                    "nature" => $row['nature'],
+                $this->db->table($this->prefix . "account")->update([ 
                     "cashBank" => $row['cashBank'],
-                    "status" => $row['status'],
-                    "balance" => $row['balance'],
+                    "status" => $row['status'], 
                     "accountTypeId" => $row['accountTypeId'],
                     "name" => $row['name'],
                     "updateDate" => date("Y-m-d H:i:s"),
