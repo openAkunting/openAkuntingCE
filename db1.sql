@@ -20,8 +20,6 @@ CREATE TABLE IF NOT EXISTS `account` (
   `parentId` varchar(50) DEFAULT '',
   `name` varchar(250) NOT NULL DEFAULT '',
   `accountTypeId` varchar(10) NOT NULL DEFAULT '',
-  `nature` varchar(1) NOT NULL DEFAULT '',
-  `balance` double NOT NULL DEFAULT 0,
   `cashBank` int(1) NOT NULL DEFAULT 1,
   `status` varchar(2) NOT NULL DEFAULT '1',
   `presence` int(1) NOT NULL DEFAULT 1,
@@ -33,20 +31,21 @@ CREATE TABLE IF NOT EXISTS `account` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_bin;
 
 -- Dumping data for table open_akunting.account: ~13 rows (approximately)
-INSERT INTO `account` (`id`, `parentId`, `name`, `accountTypeId`, `nature`, `balance`, `cashBank`, `status`, `presence`, `inputDate`, `inputBy`, `updateDate`, `updateBy`) VALUES
-	('1', '0', '', '', '', 0, 1, '1', 1, '2024-01-01 00:00:00', '', '2024-01-01 00:00:00', ''),
-	('10', '1', 'Kas', '100', 'D', 0, 0, '1', 1, '2024-01-01 00:00:00', '', '2024-02-10 06:40:21', '1a'),
-	('10.1', '10', 'Kas Bank ', '100', 'C', 0, 0, '1', 1, '2024-01-01 00:00:00', '', '2024-02-10 06:40:21', '1a'),
-	('10.2', '10', 'Piutang Usaha', '100', 'D', 0, 0, '1', 1, '2024-01-01 00:00:00', '', '2024-02-10 06:40:21', '1a'),
-	('10.3', '10', 'Kas Bank BCA', '100', '', 0, 1, '1', 1, '2024-02-09 16:55:03', '1a', '2024-02-10 06:40:21', '1a'),
-	('20', '1', 'Modal', '102', 'D', 0, 0, '1', 1, '2024-01-01 00:00:00', '', '2024-02-10 06:40:21', '1a'),
-	('20.0', '20', 'Pendapatan Jasa', '101', '', 0, 1, '1', 1, '2024-02-09 16:53:57', '1a', '2024-02-10 06:40:21', '1a'),
-	('20.0.100', '20.0', 'Pendapatan Jasa', '101', '', 0, 1, '1', 1, '2024-02-09 16:54:21', '1a', '2024-02-10 06:40:21', '1a'),
-	('20.1', '20', 'Pendapatan', '12', 'C', 0, 0, '1', 1, '2024-01-01 00:00:00', '', '2024-02-10 06:40:21', '1a'),
-	('20.2', '20', 'Pendapatan Jasa 2', '101', '', 0, 1, '1', 1, '2024-02-09 16:54:35', '1a', '2024-02-10 06:40:21', '1a'),
-	('4000', '1', 'JPB', '100', '', 0, 1, '1', 1, '2024-02-09 17:10:19', '1a', '2024-02-10 06:40:21', '1a'),
-	('4000.100', '4000', 'JPB 1', '101', '', 0, 1, '1', 1, '2024-02-09 17:10:30', '1a', '2024-02-10 06:40:21', '1a'),
-	('4000.101', '4000', 'JPB 2', '100', '', 133333220, 1, '1', 1, '2024-02-09 17:10:47', '1a', '2024-02-10 06:40:21', '1a');
+INSERT INTO `account` (`id`, `parentId`, `name`, `accountTypeId`, `cashBank`, `status`, `presence`, `inputDate`, `inputBy`, `updateDate`, `updateBy`) VALUES
+	('1', '0', '', '', 1, '1', 1, '2024-01-01 00:00:00', '', '2024-01-01 00:00:00', ''),
+	('10', '1', 'Kas', '100', 0, '1', 1, '2024-01-01 00:00:00', '', '2024-02-12 10:46:27', '1a'),
+	('10.1', '10', 'Kas Bank ', '100', 0, '1', 1, '2024-01-01 00:00:00', '', '2024-02-12 10:46:27', '1a'),
+	('10.2', '10', 'Piutang Usaha', '100', 1, '1', 1, '2024-01-01 00:00:00', '', '2024-02-12 10:46:27', '1a'),
+	('10.3', '10', 'Kas Bank BCA', '100', 1, '1', 1, '2024-02-09 16:55:03', '1a', '2024-02-12 10:46:27', '1a'),
+	('10.4', '10', 'Kas box', '100', 1, '1', 1, '2024-02-12 05:04:09', '1a', '2024-02-12 10:46:27', '1a'),
+	('20', '1', 'Modal', '102', 0, '1', 1, '2024-01-01 00:00:00', '', '2024-02-12 10:46:27', '1a'),
+	('20.0', '20', 'Pendapatan Jasa', '101', 1, '1', 1, '2024-02-09 16:53:57', '1a', '2024-02-12 10:46:27', '1a'),
+	('20.0.100', '20.0', 'Pendapatan Jasa', '101', 1, '1', 1, '2024-02-09 16:54:21', '1a', '2024-02-12 10:46:27', '1a'),
+	('20.1', '20', 'Pendapatan', '12', 0, '1', 1, '2024-01-01 00:00:00', '', '2024-02-12 10:46:27', '1a'),
+	('20.2', '20', 'Pendapatan Jasa 2', '101', 1, '1', 1, '2024-02-09 16:54:35', '1a', '2024-02-12 10:46:27', '1a'),
+	('4000', '1', 'JPB', '100', 1, '1', 1, '2024-02-09 17:10:19', '1a', '2024-02-12 10:46:27', '1a'),
+	('4000.100', '4000', 'JPB 1', '101', 1, '1', 1, '2024-02-09 17:10:30', '1a', '2024-02-12 10:46:27', '1a'),
+	('4000.101', '4000', 'JPB 2', '100', 1, '1', 1, '2024-02-09 17:10:47', '1a', '2024-02-12 10:46:27', '1a');
 
 -- Dumping structure for table open_akunting.account_type
 CREATE TABLE IF NOT EXISTS `account_type` (
@@ -65,13 +64,13 @@ CREATE TABLE IF NOT EXISTS `account_type` (
 
 -- Dumping data for table open_akunting.account_type: ~7 rows (approximately)
 INSERT INTO `account_type` (`id`, `name`, `normalBalance`, `position`, `status`, `presence`, `inputDate`, `inputBy`, `updateDate`, `updateBy`) VALUES
-	('100', 'Aset123', 'D', 'BS', '1', 1, '2024-01-01 00:00:00', '', '2024-02-10 08:18:40', '1a'),
-	('101', 'Kewajiban   ', 'C', 'BS', '1', 1, '2024-01-01 00:00:00', '', '2024-02-10 08:18:40', '1a'),
-	('102', 'Ekuitas     ', 'C', 'BS', '1', 1, '2024-01-01 00:00:00', '', '2024-02-10 08:18:40', '1a'),
-	('103', 'Beban       ', 'D', 'BS', '1', 1, '2024-01-01 00:00:00', '', '2024-02-10 08:18:40', '1a'),
+	('100', 'Aset', 'D', 'BS', '1', 1, '2024-01-01 00:00:00', '', '2024-02-12 05:01:46', '1a'),
+	('101', 'Kewajiban   ', 'C', 'BS', '1', 1, '2024-01-01 00:00:00', '', '2024-02-12 05:01:46', '1a'),
+	('102', 'Ekuitas     ', 'C', 'BS', '1', 1, '2024-01-01 00:00:00', '', '2024-02-12 05:01:46', '1a'),
+	('103', 'Beban       ', 'D', 'BS', '1', 1, '2024-01-01 00:00:00', '', '2024-02-12 05:01:46', '1a'),
 	('12', 'Pendapatan', 'C', 'PL', '1', 0, '2024-01-01 00:00:00', '', '2024-02-10 08:42:29', '1a'),
-	('300', 'Hutang', 'C', 'PL', '1', 1, '2024-02-10 08:36:48', '1a', '2024-02-10 08:36:48', '1a'),
-	('400', 'Piutang', 'C', 'PL', '1', 1, '2024-02-10 08:40:44', '1a', '2024-02-10 08:40:44', '1a');
+	('300', 'Hutang', 'C', 'PL', '1', 1, '2024-02-10 08:36:48', '1a', '2024-02-12 05:01:46', '1a'),
+	('400', 'Piutang', 'C', 'PL', '1', 1, '2024-02-10 08:40:44', '1a', '2024-02-12 05:01:46', '1a');
 
 -- Dumping structure for table open_akunting.auto_number
 CREATE TABLE IF NOT EXISTS `auto_number` (
@@ -83,11 +82,27 @@ CREATE TABLE IF NOT EXISTS `auto_number` (
   `lastRecord` varchar(50) DEFAULT NULL,
   `updateDate` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=306 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=307 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table open_akunting.auto_number: ~0 rows (approximately)
+-- Dumping data for table open_akunting.auto_number: ~1 rows (approximately)
 INSERT INTO `auto_number` (`id`, `name`, `prefix`, `digit`, `runningNumber`, `lastRecord`, `updateDate`) VALUES
-	(305, 'account', 'A', 6, 6, 'A000006', 2024);
+	(305, 'account', 'A', 6, 6, 'A000006', 2024),
+	(306, 'journal', 'J', 6, 14, 'J000014', 1707762346);
+
+-- Dumping structure for table open_akunting.branch
+CREATE TABLE IF NOT EXISTS `branch` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL DEFAULT '',
+  `status` varchar(2) NOT NULL DEFAULT '1',
+  `presence` int(1) NOT NULL DEFAULT 1,
+  `inputDate` datetime NOT NULL DEFAULT '2024-01-01 00:00:00',
+  `inputBy` varchar(50) NOT NULL DEFAULT '',
+  `updateDate` datetime NOT NULL DEFAULT '2024-01-01 00:00:00',
+  `updateBy` varchar(50) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_bin;
+
+-- Dumping data for table open_akunting.branch: ~0 rows (approximately)
 
 -- Dumping structure for table open_akunting.global_parameter
 CREATE TABLE IF NOT EXISTS `global_parameter` (
@@ -109,22 +124,52 @@ INSERT INTO `global_parameter` (`id`, `name`, `value`, `description`, `updateDat
 
 -- Dumping structure for table open_akunting.journal
 CREATE TABLE IF NOT EXISTS `journal` (
-  `id` varchar(50) NOT NULL,
-  `name` varchar(50) NOT NULL DEFAULT '',
-  `refId` varchar(50) NOT NULL DEFAULT '',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `jurnalId` varchar(50) NOT NULL DEFAULT '',
+  `JournalDate` date NOT NULL DEFAULT '2024-01-01',
+  `outletId` varchar(250) NOT NULL DEFAULT '',
+  `accountId` varchar(10) NOT NULL DEFAULT '',
+  `description` varchar(250) NOT NULL DEFAULT '',
   `debit` double NOT NULL DEFAULT 0,
   `credit` double NOT NULL DEFAULT 0,
-  `presence` int(11) NOT NULL DEFAULT 1,
-  `tenantId` varchar(50) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `presence` int(1) NOT NULL DEFAULT 1,
+  `inputDate` datetime NOT NULL DEFAULT '2024-01-01 00:00:00',
+  `inputBy` varchar(50) NOT NULL DEFAULT '',
+  `updateDate` datetime NOT NULL DEFAULT '2024-01-01 00:00:00',
+  `updateBy` varchar(50) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf16 COLLATE=utf16_bin;
 
--- Dumping data for table open_akunting.journal: ~4 rows (approximately)
-INSERT INTO `journal` (`id`, `name`, `refId`, `debit`, `credit`, `presence`, `tenantId`) VALUES
-	('1', 'abc', '12', 14, 125, 1, 't2'),
-	('11', '2312', '12', 14, 125, 1, 't2'),
-	('12', 'accc', '12', 14, 125, 1, 't2'),
-	('2', 'vcs', '124', 332, 0, 1, '2');
+-- Dumping data for table open_akunting.journal: ~6 rows (approximately)
+INSERT INTO `journal` (`id`, `jurnalId`, `JournalDate`, `outletId`, `accountId`, `description`, `debit`, `credit`, `presence`, `inputDate`, `inputBy`, `updateDate`, `updateBy`) VALUES
+	(20, 'J000011', '2024-01-01', '', '4000', '', 900000, 0, 1, '2024-02-12 18:21:54', '1a', '2024-02-12 18:21:54', '1a'),
+	(21, 'J000011', '2024-01-01', '', '20.0.100', '', 0, 900000, 1, '2024-02-12 18:21:54', '1a', '2024-02-12 18:21:54', '1a'),
+	(22, 'J000012', '2024-01-01', '', '4000', '', 900000, 0, 1, '2024-02-12 18:24:04', '1a', '2024-02-12 18:24:04', '1a'),
+	(23, 'J000012', '2024-01-01', '', '20.0.100', '', 0, 900000, 1, '2024-02-12 18:24:04', '1a', '2024-02-12 18:24:04', '1a'),
+	(32, 'J000014', '2024-01-01', '', '4000', '', 2900000, 0, 1, '2024-02-12 18:25:46', '1a', '2024-02-12 18:25:46', '1a'),
+	(33, 'J000014', '2024-01-01', '', '20.0.100', '', 0, 2900000, 1, '2024-02-12 18:25:46', '1a', '2024-02-12 18:25:46', '1a');
+
+-- Dumping structure for table open_akunting.journal_header
+CREATE TABLE IF NOT EXISTS `journal_header` (
+  `id` varchar(50) NOT NULL DEFAULT '',
+  `note` varchar(250) NOT NULL DEFAULT '',
+  `ref` varchar(50) NOT NULL DEFAULT '',
+  `JournalDate` date NOT NULL DEFAULT '2024-01-01',
+  `totalDebit` double NOT NULL DEFAULT 0,
+  `totalCredit` double NOT NULL DEFAULT 0,
+  `presence` int(1) NOT NULL DEFAULT 1,
+  `inputDate` datetime NOT NULL DEFAULT '2024-01-01 00:00:00',
+  `inputBy` varchar(50) NOT NULL DEFAULT '',
+  `updateDate` datetime NOT NULL DEFAULT '2024-01-01 00:00:00',
+  `updateBy` varchar(50) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_bin;
+
+-- Dumping data for table open_akunting.journal_header: ~3 rows (approximately)
+INSERT INTO `journal_header` (`id`, `note`, `ref`, `JournalDate`, `totalDebit`, `totalCredit`, `presence`, `inputDate`, `inputBy`, `updateDate`, `updateBy`) VALUES
+	('J000011', '', '', '2024-02-12', 900000, 900000, 1, '2024-02-12 18:21:54', '1a', '2024-02-12 18:21:54', '1a'),
+	('J000012', '', '', '2024-02-12', 900000, 900000, 1, '2024-02-12 18:24:04', '1a', '2024-02-12 18:24:04', '1a'),
+	('J000014', '', '', '2024-02-12', 2900000, 2900000, 1, '2024-02-12 18:25:46', '1a', '2024-02-12 18:25:46', '1a');
 
 -- Dumping structure for table open_akunting.language
 CREATE TABLE IF NOT EXISTS `language` (
@@ -152,6 +197,21 @@ INSERT INTO `module` (`id`, `name`, `description`) VALUES
 	(130, 'Language', NULL),
 	(1000, 'User', NULL),
 	(2000, 'Chart Of Account', NULL);
+
+-- Dumping structure for table open_akunting.outlet
+CREATE TABLE IF NOT EXISTS `outlet` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL DEFAULT '',
+  `status` varchar(2) NOT NULL DEFAULT '1',
+  `presence` int(1) NOT NULL DEFAULT 1,
+  `inputDate` datetime NOT NULL DEFAULT '2024-01-01 00:00:00',
+  `inputBy` varchar(50) NOT NULL DEFAULT '',
+  `updateDate` datetime NOT NULL DEFAULT '2024-01-01 00:00:00',
+  `updateBy` varchar(50) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_bin;
+
+-- Dumping data for table open_akunting.outlet: ~0 rows (approximately)
 
 -- Dumping structure for table open_akunting.tenant
 CREATE TABLE IF NOT EXISTS `tenant` (
@@ -203,9 +263,9 @@ CREATE TABLE IF NOT EXISTS `user_jti` (
   `jti` varchar(50) NOT NULL DEFAULT '',
   `inputDate` datetime NOT NULL DEFAULT '2024-01-01 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table open_akunting.user_jti: ~7 rows (approximately)
+-- Dumping data for table open_akunting.user_jti: ~50 rows (approximately)
 INSERT INTO `user_jti` (`id`, `userId`, `jti`, `inputDate`) VALUES
 	(59, '1a', '86513847db05f636ce8ac3275b58108e', '2024-02-11 15:39:53'),
 	(60, '1a', '00b1921921983eb5cb2b02e5589a438d', '2024-02-11 16:17:59'),
@@ -254,7 +314,9 @@ INSERT INTO `user_jti` (`id`, `userId`, `jti`, `inputDate`) VALUES
 	(103, '1a', '027853100aeab0444af89fdcf157edba', '2024-02-11 17:20:05'),
 	(104, '1a', '7b79e33f79c0dab87d1b70ea2a5ec821', '2024-02-11 17:23:34'),
 	(105, '1a', '43543d38c2d082f6ea5db627839b763c', '2024-02-11 17:23:34'),
-	(106, '1a', 'c8fbd2c5883aadf333265d79a81e7173', '2024-02-11 17:23:34');
+	(106, '1a', 'c8fbd2c5883aadf333265d79a81e7173', '2024-02-11 17:23:34'),
+	(107, '1a', 'fbbcd9669dbf5717f2ea92fb8c5bb3cd', '2024-02-12 04:55:46'),
+	(108, '1a', 'f560ea5bdf8079a62087c1c4ddb1b57e', '2024-02-12 04:55:46');
 
 -- Dumping structure for table open_akunting.user_otp
 CREATE TABLE IF NOT EXISTS `user_otp` (
