@@ -3,8 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
-import { environment } from 'src/environments/environment'; 
+import { environment } from 'src/environments/environment';
 import { JournalCreateComponent } from './journal-create/journal-create.component';
+import { RecurringJournalComponent } from './recurring-journal/recurring-journal.component';
 
 @Component({
   selector: 'app-journal',
@@ -12,52 +13,49 @@ import { JournalCreateComponent } from './journal-create/journal-create.componen
   styleUrls: ['./journal.component.css']
 })
 export class JournalComponent implements OnInit {
-  items:any = [];
-   
+  items: any = [];
+
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
-    private modalService: NgbModal, 
+    private modalService: NgbModal,
     public lang: LanguageService,
     config: NgbModalConfig,
-  ) { 
+  ) {
     config.backdrop = 'static';
-		config.keyboard = false;
+    config.keyboard = false;
   }
 
   ngOnInit(): void {
     this.httpGet();
   }
 
-  httpGet(){
-    this.http.get<any>(environment.api+"journal/index").subscribe(
-      data=>{
+  httpGet() {
+    this.http.get<any>(environment.api + "journal/index").subscribe(
+      data => {
         this.items = data['items'];
         console.log(data);
       },
-      error=>{
+      error => {
         console.log(error);
       }
     )
   }
-  open(){
-    const modalRef = this.modalService.open(JournalCreateComponent, {size:'xl'}); 
-    modalRef.result.then(
-      (result) => {
-        //clearInterval(this.callCursor);
-        console.log('   clearInterval(this.callCursor); ');
-      },
-      (reason) => {
-        console.log('CLOSE 1001'); 
+  open() {
+    const modalRef = this.modalService.open(JournalCreateComponent, { size: 'xl' });
+      modalRef.result.then(
+        (result) => {
+          //clearInterval(this.callCursor);
+          console.log('   clearInterval(this.callCursor); ');
+        },
+        (reason) => {
+          console.log('CLOSE 1001');
 
-      },
-    );
-    modalRef.componentInstance.name = 'null'; 
-
-    modalRef.componentInstance.newItemEvent.subscribe(() => {
-      this.httpGet();
-      //  this.setCursor();
-
-    });
+        },
+      );
+      modalRef.componentInstance.name = 'null';
+      modalRef.componentInstance.newItemEvent.subscribe(() => {
+        this.httpGet(); 
+      });
   }
 }

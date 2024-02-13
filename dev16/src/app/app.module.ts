@@ -25,7 +25,8 @@ import { BranchComponent } from './masterData/branch/branch.component';
 import { OutletComponent } from './masterData/outlet/outlet.component';
 import { JournalComponent } from './generalLedger/journal/journal.component';
 import { CashBankComponent } from './generalLedger/cash-bank/cash-bank.component'; 
-import { JournalCreateComponent } from './generalLedger/journal/journal-create/journal-create.component'; 
+import { JournalCreateComponent } from './generalLedger/journal/journal-create/journal-create.component';
+import { RecurringJournalComponent } from './generalLedger/journal/recurring-journal/recurring-journal.component'; 
 
 @NgModule({
   declarations: [ 
@@ -46,7 +47,7 @@ import { JournalCreateComponent } from './generalLedger/journal/journal-create/j
     OutletComponent,
     JournalComponent,
     CashBankComponent, 
-    JournalCreateComponent
+    JournalCreateComponent, RecurringJournalComponent
   ],
   imports: [
     BrowserModule,

@@ -3,8 +3,8 @@
         <div class="col-12">
             <h4>Journal</h4>
         </div>
-        <div class="col-12 text-end mb-2">
-            <button class="btn btn-sm btn-primary" (click)="open()">Add Journal</button>
+        <div class="col-12 text-end mb-2"> 
+            <button class="btn btn-sm btn-primary mx-2" (click)="open()">Add Journal</button>
         </div>
         <div class="col-12">
 
@@ -34,7 +34,8 @@
                                
                                 <div class="col-8" > 
                                     <div>{{j.account}} :  {{j.account}}</div>
-                                    <small>{{j.description}}</small>   <small> {{j.branch}} : {{j.outlet}} </small>
+                                    <div> <small>{{j.description}}</small>   </div>
+                                    <div> <small>  {{j.branch ?  j.branch+" : " : "" }}   {{j.outlet}} </small></div> 
                                 </div> 
                            
                                 <div class="col-2 text-end" >{{j.debit | number}}</div> 

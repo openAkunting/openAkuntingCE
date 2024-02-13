@@ -15,7 +15,7 @@ class Journal extends BaseController
 
     public function index()
     {
-       
+
         $rest = [];
         $q = "SELECT * FROM " . $this->prefix . "journal_header 
         WHERE presence = 1 order by journalDate ASC";
@@ -30,7 +30,7 @@ class Journal extends BaseController
             WHERE  j.presence = 1 and j.journalId = '" . $row['id'] . "'
             ORDER BY j.id ASC";
             $journal = $this->db->query($j)->getResultArray();
- 
+
             $rest[] = array(
                 "id" => $row['id'],
                 "note" => $row['note'],
@@ -94,103 +94,103 @@ class Journal extends BaseController
             "code" => 400
         ];
         if ($post) {
-            /// $this->db->transStart();
             $debit = 0;
             $credit = 0;
-
-            $journalId = model("Core")->number("journal");
             foreach ($post['items'] as $row) {
+                $debit += $row['debit'];
+                $credit += $row['credit'];
+            }
+            if (($credit - $debit) == 0) {
 
-                /**
-                 * JOURNAL
-                 */
-                $this->db->table($this->prefix . "journal")->insert([
-                    "journalId" => $journalId,
-                    "outletId" => $row['outletId'],
-                    "accountId" => $row['accountId'],
+                $this->db->transStart();
+                $debit = 0;
+                $credit = 0;
+
+                // LOOP HERE
+
+                $journalId = model("Core")->number("journal");
+                foreach ($post['items'] as $row) {
+                    $this->db->table($this->prefix . "journal")->insert([
+                        "journalId" => $journalId,
+                        "outletId" => $row['outletId'],
+                        "accountId" => $row['accountId'],
+                        "journalDate" => $post['model']['journalDate']['year'] . "-" . $post['model']['journalDate']['month'] . "-" . $post['model']['journalDate']['day'],
+
+                        "debit" => $row['debit'],
+                        "credit" => $row['credit'],
+                        "description" => $row['description'],
+                        "presence" => 1,
+                        "updateDate" => date("Y-m-d H:i:s"),
+                        "updateBy" => model("Token")->userId(),
+                        "inputDate" => date("Y-m-d H:i:s"),
+                        "inputBy" => model("Token")->userId()
+                    ]);
+                    $debit += $row['debit'];
+                    $credit += $row['credit'];
+                }
+                $this->db->table($this->prefix . "journal_header")->insert([
+                    "id" => $journalId,
                     "journalDate" => $post['model']['journalDate']['year'] . "-" . $post['model']['journalDate']['month'] . "-" . $post['model']['journalDate']['day'],
-
-                    "debit" => $row['debit'],
-                    "credit" => $row['credit'],
-                    "description" => $row['description'],
+                    "ref" => $post['model']['ref'],
+                    "note" => $post['model']['note'],
+                    "totalCredit" => $credit,
+                    "totalDebit" => $debit,
                     "presence" => 1,
                     "updateDate" => date("Y-m-d H:i:s"),
                     "updateBy" => model("Token")->userId(),
                     "inputDate" => date("Y-m-d H:i:s"),
                     "inputBy" => model("Token")->userId()
                 ]);
-                $debit += $row['debit'];
-                $credit += $row['credit'];
 
 
-
-                /**
-                 * ACCOUNT_BALANCE
-                 */
-                // $year = $post['model']['journalDate']['year'];
-                // $month = $post['model']['journalDate']['month'];
-                // $id = (int) model("Core")->select("id", "account_balance", "accountId = '" . $row['accountId'] . "' and year = '$year' and month = '$month' ");
-
-                // if (!$id) {
-                //     $monthLast = $month - 1; 
-                //     $this->db->table($this->prefix . "account_balance")->insert([
-                //         "accountId" => $row['accountId'],
-                //         "year" => $year,
-                //         "month" => $month,
-                //         "beginBalance" => model("Core")->select("endBalance", "account_balance", "accountId = '" . $row['accountId'] . "' and year = '$year' and month = '$monthLast' "),
-                //         "debit" => 0,
-                //         "credit" => 0,
-                //         "presence" => 1,
-                //         "updateDate" => date("Y-m-d H:i:s"),
-                //         "updateBy" => model("Token")->userId(),
-                //         "inputDate" => date("Y-m-d H:i:s"),
-                //         "inputBy" => model("Token")->userId()
-                //     ]);
-                // }
-                // $where = "YEAR(JournalDate) = $year AND MONTH(JournalDate) = $month and presence = 1 
-                // AND accountId = '" . $row['accountId'] . "'";
-
-                // $this->db->table($this->prefix . "account_balance")->update([
-                //     "debit" => (float) model("Core")->select("sum(debit)", "journal", $where),
-                //     "credit" => (float) model("Core")->select("sum(credit)", "journal", $where),
-                //     "updateDate" => date("Y-m-d H:i:s"),
-                //     "updateBy" => model("Token")->userId(),
-                // ], " accountId =  '" . $row['accountId'] . "' and year = $year and month = $month ");
-
-
+                if ($this->db->transStatus() != false) {
+                    $this->db->transComplete();
+                } else {
+                    $this->db->transRollback();
+                }
+                $data = [
+                    "error" => false,
+                    "transaction" => $this->db->transStatus() === false ? false : true,
+                    "code" => 200
+                ];
+            } else {
+                $data = [
+                    "error" => true,
+                    "code" => 400
+                ];
             }
 
-            $this->db->table($this->prefix . "journal_header")->insert([
-                "id" => $journalId,
-                "journalDate" => $post['model']['journalDate']['year'] . "-" . $post['model']['journalDate']['month'] . "-" . $post['model']['journalDate']['day'],
-                "ref" => $post['model']['ref'],
-                "note" => $post['model']['note'],
-                "totalCredit" => $credit,
-                "totalDebit" => $debit,
-
-                "presence" => 1,
-                "updateDate" => date("Y-m-d H:i:s"),
-                "updateBy" => model("Token")->userId(),
-                "inputDate" => date("Y-m-d H:i:s"),
-                "inputBy" => model("Token")->userId()
-            ]);
-
-
-
-            // if ((($credit - $debit) == 0) && $this->db->transStatus() != false) {
-            //     $this->db->transComplete();
-            // } else {
-            //     $this->db->transRollback();
-            // }
-
-            $data = [
-                "error" => false,
-                "transaction" => $this->db->transStatus() === false ? false : true,
-                "code" => 200
-            ];
         }
 
         return $this->response->setJSON($data);
+    }
+
+
+    function test()
+    {
+
+        $startPeriod = "2024-02-01";
+        $endPeriod = "2024-07-01";
+
+        // Ubah string tanggal menjadi objek DateTime
+        $startDate = new \DateTime($startPeriod);
+        $endDate = new \DateTime($endPeriod);
+
+        // Buat interval antara dua tanggal
+        $interval = new \DateInterval('P1D'); // Interval 1 hari
+        $dateRange = new \DatePeriod($startDate, $interval, $endDate);
+
+        // Data tanggal yang akan ditampilkan
+        $dates = [];
+
+        // Loop untuk menambahkan setiap tanggal ke dalam array
+        foreach ($dateRange as $date) {
+            $dates[] = $date->format('Y-m-d');
+        }
+
+         print_r( $dates);
+       
+      
     }
 
     /**

@@ -13,6 +13,7 @@ import { UserDetailComponent } from './masterData/user/user-detail/user-detail.c
 import { UserRoleComponent } from './masterData/user/user-role/user-role.component';
 import { JournalComponent } from './generalLedger/journal/journal.component';
 import { CashBankComponent } from './generalLedger/cash-bank/cash-bank.component';
+import { RecurringJournalComponent } from './generalLedger/journal/recurring-journal/recurring-journal.component';
  
 const routes: Routes = [
   { path: "", component: HomeComponent, data: { active: "home" }, },
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: "md/ur", component: UserRoleComponent, data: { active: "md/ur" }, },
    
   { path: "gl/j", component: JournalComponent, data: { active: "gl/j", role :'journal' }, },
+  { path: "gl/rj", component: RecurringJournalComponent, data: { active: "gl/rj", role :'journal' }, },
   { path: "gl/cb", component: CashBankComponent, data: { active: "gl/cb", role :'cash_bank' }, },
     
 

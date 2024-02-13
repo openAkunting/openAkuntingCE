@@ -10,6 +10,9 @@ export class Model {
     public note: string, 
     public ref: string, 
     
+    public startPeriod: any,
+    public endPeriod: any,
+    public dateOfJournal: number,
   ) {  }
 }
 @Component({
@@ -47,7 +50,7 @@ export class JournalCreateComponent implements OnInit {
   selectTemplate: any = [];
   selectAccount: any = [];
   selectOutlet: any = [];
-  
+  typeJournal : string = 'single';
   constructor(
     public activeModal: NgbActiveModal,
     private http: HttpClient,
@@ -62,7 +65,11 @@ export class JournalCreateComponent implements OnInit {
   }
   newItem() {
     const curDate = new Date();
-    this.model = new Model({"year": curDate.getFullYear(), "month": curDate.getMonth()+1, "day": curDate.getDate()},"","");
+    this.model = new Model(
+      {"year": curDate.getFullYear(), "month": curDate.getMonth()+1, "day": curDate.getDate()},"","",
+      {"year": curDate.getFullYear(), "month": curDate.getMonth()+1, "day": curDate.getDate()},
+      {"year": curDate.getFullYear(), "month": curDate.getMonth()+1, "day": curDate.getDate()},1
+      );
     this.items = [
       {
         outletId : '',
@@ -165,6 +172,7 @@ export class JournalCreateComponent implements OnInit {
     const body = {
       items : this.items,
       model :this.model,
+      typeJournal : this.typeJournal,
     }
     this.http.post<any>(environment.api + "journal/onSubmit",body, {
       headers: this.configService.headers(),

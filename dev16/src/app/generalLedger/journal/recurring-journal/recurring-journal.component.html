@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <strong class="modal-title">Jurnal</strong>
+    <strong class="modal-title">Recurring Journal</strong>
     <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
 </div>
 <div class="modal-body">
@@ -11,13 +11,6 @@
             </select>
         </div>
         <div class="col">
-            <small>Recurring of Journal</small>
-            <select class="form-control form-control-sm" [(ngModel)]="typeJournal">
-                <option value="single"> Single</option>
-                <option value="recurring"> Recurring Journal</option> 
-            </select>
-        </div>
-        <div class="col">
             <small>Save Tamplate</small>
             <input type="text" class="form-control form-control-sm" [(ngModel)]="nameOfTemplate">
             <button type="button" class="btn btn-primary btn-sm" [disabled]="!nameOfTemplate" (click)="onSaveAsTemplate()">Save</button>
@@ -25,9 +18,9 @@
     </div>
 
     <hr>
-    <div class="row">
+    <div class="row"> 
         <div class="col-6">
-            <div class="d-flex" *ngIf="typeJournal == 'recurring'">
+            <div class="d-flex">
                 <div class="me-2">
                     <small>Start Period</small>
                     <div class="input-group">
@@ -49,17 +42,8 @@
                     <input type="number" class="form-control" [(ngModel)]="model.dateOfJournal" required >
                 </div>
             </div>
-            
-            <div *ngIf="typeJournal == 'single'">
-                <small>Jurnal Date</small>
-                <div class="input-group">
-                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model.journalDate"
-                        ngbDatepicker #d="ngbDatepicker" />
-                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
-                </div>
-            </div>
 
-           
+
             <div>
                 <small>Ref</small>
                 <input type="text" class="form-control form-control-sm" [(ngModel)]="model.ref">
