@@ -1,10 +1,17 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
 import { environment } from 'src/environments/environment';
-
+export class Model {
+  constructor( 
+    public journalDate: any,
+    public note: string, 
+    public ref: string, 
+    
+  ) {  }
+}
 @Component({
   selector: 'app-journal-create',
   templateUrl: './journal-create.component.html',
@@ -22,6 +29,7 @@ export class JournalCreateComponent implements OnInit {
       console.log('CTRL +  V 1');
     }
   }
+  @Output() newItemEvent = new EventEmitter<string>();
   @Input() name: any;
   account: any;
   outlet: any;
@@ -32,7 +40,14 @@ export class JournalCreateComponent implements OnInit {
     totalDebit: 0,
     balance: 0
   }
+  templateId : string = "";
+  nameOfTemplate : string = "";
   submit: boolean = false;
+  model: any = [];
+  selectTemplate: any = [];
+  selectAccount: any = [];
+  selectOutlet: any = [];
+  
   constructor(
     public activeModal: NgbActiveModal,
     private http: HttpClient,
@@ -46,14 +61,18 @@ export class JournalCreateComponent implements OnInit {
     this.httpGet();
   }
   newItem() {
+    const curDate = new Date();
+    this.model = new Model({"year": curDate.getFullYear(), "month": curDate.getMonth()+1, "day": curDate.getDate()},"","");
     this.items = [
       {
+        outletId : '',
         accountId: "",
         description: "",
         debit: 0,
         credit: 0,
       },
       {
+        outletId : '',
         accountId: "",
         description: "",
         debit: 0,
@@ -67,8 +86,9 @@ export class JournalCreateComponent implements OnInit {
       headers: this.configService.headers(),
     }).subscribe(
       data => {
-        this.account = data['account'];
-        this.outlet = data['outlet'];
+        this.selectAccount = data['account'];
+        this.selectOutlet = data['outlet'];
+        this.selectTemplate = data['template'];
         console.log(data);
       },
       error => {
@@ -78,6 +98,7 @@ export class JournalCreateComponent implements OnInit {
   }
   addrow() {
     const temp = {
+      outletId : "",
       accountId: "",
       description: "",
       debit: 0,
@@ -122,16 +143,36 @@ export class JournalCreateComponent implements OnInit {
       }
     }
   }
-
+  onSaveAsTemplate(){
+    const body = {
+      items : this.items,
+      model :this.model,
+      nameOfTemplate :this.nameOfTemplate,
+    }
+    this.http.post<any>(environment.api + "journal/onSaveAsTemplate",body, {
+      headers: this.configService.headers(),
+    }).subscribe(
+      data => { 
+        console.log(data);
+        this.httpGet();
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
   onSubmit() {
     const body = {
       items : this.items,
+      model :this.model,
     }
     this.http.post<any>(environment.api + "journal/onSubmit",body, {
       headers: this.configService.headers(),
     }).subscribe(
       data => { 
         console.log(data);
+        this.newItemEvent.emit();
+        this.activeModal.close();
       },
       error => {
         console.log(error);
@@ -140,4 +181,34 @@ export class JournalCreateComponent implements OnInit {
      
   }
 
+  loadTemplate(){
+    this.http.get<any>(environment.api + "journal/loadTemplate", {
+      headers: this.configService.headers(),
+      params : {
+        templateId : this.templateId
+      }
+    }).subscribe(
+      data => {
+        console.log(data);
+        this.model['note'] = data['template']['note'];
+        this.model['ref'] =  data['template']['ref'];  
+        this.items = [];
+        data['journal_template'].forEach((el: any) => {
+          const temp = 
+            {
+              outletId : el.outletId,
+              accountId: el.accountId,
+              description: el.description,
+              debit: el.debit,
+              credit: el.credit,
+            };
+          this.items.push(temp);
+        });
+        this.calculation();
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
 }

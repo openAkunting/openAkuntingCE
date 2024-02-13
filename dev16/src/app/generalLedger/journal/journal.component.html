@@ -7,35 +7,45 @@
             <button class="btn btn-sm btn-primary" (click)="open()">Add Journal</button>
         </div>
         <div class="col-12">
-            <table class="table table-sm table-hover  table-bordered">
-                <thead>
-                    <tr>
-                        <th>Journal Id</th>
-                        <th>Outlet</th>
-                        <th>Account</th>
 
-                        <th>Debit</th>
-                        <th>Credit</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr *ngFor="let x of items">
-                        <td>{{x.jurnalId}}</td>
-                        <td>{{x.outlet}}</td>
-                        <td>
-                            <div>
-                               {{x.accountId}}
+            <div class="card">
+                <div class="card-header">
+                    <div class="row  g-1 ">
+                        <div class="col-2">Date</div>
+                        <div class="col-1">Ref</div>
+                        <div class="col-9">
+                            <div class="row g-1">
+                                <div class="col-8" > 
+                                    Description
+                                </div>  
+                                <div class="col-2 text-end" >Debit</div> 
+                                <div class="col-2 text-end" >Credit</div>  
+                              
                             </div>
-                            <div style="max-width: 600px;">
-                                <small>{{x.note}} </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row g-1 border-bottom" *ngFor="let x of items">
+                        <div class="col-2">{{x.journalDate | date}}</div>
+                        <div class="col-1">{{x.ref}}</div>
+                        <div class="col-9">
+                            <div class="row g-1 mb-2" *ngFor="let j of x.journal">
+                               
+                                <div class="col-8" > 
+                                    <div>{{j.account}} :  {{j.account}}</div>
+                                    <small>{{j.description}}</small>   <small> {{j.branch}} : {{j.outlet}} </small>
+                                </div> 
+                           
+                                <div class="col-2 text-end" >{{j.debit | number}}</div> 
+                                <div class="col-2 text-end" >{{j.credit | number}}</div>  
+                              
                             </div>
-                        </td>
-                        <td class="text-end">{{x.debit | number}}</td>
-                        <td class="text-end">{{x.credit | number}}</td>
-                    </tr>
-                </tbody>
-            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+               
         </div>
     </div>
 </div>

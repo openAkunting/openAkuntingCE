@@ -41,7 +41,23 @@ export class JournalComponent implements OnInit {
     )
   }
   open(){
-    const modalRef = this.modalService.open(JournalCreateComponent, {size:'xl'});
-		modalRef.componentInstance.name = 'World';
+    const modalRef = this.modalService.open(JournalCreateComponent, {size:'xl'}); 
+    modalRef.result.then(
+      (result) => {
+        //clearInterval(this.callCursor);
+        console.log('   clearInterval(this.callCursor); ');
+      },
+      (reason) => {
+        console.log('CLOSE 1001'); 
+
+      },
+    );
+    modalRef.componentInstance.name = 'null'; 
+
+    modalRef.componentInstance.newItemEvent.subscribe(() => {
+      this.httpGet();
+      //  this.setCursor();
+
+    });
   }
 }
