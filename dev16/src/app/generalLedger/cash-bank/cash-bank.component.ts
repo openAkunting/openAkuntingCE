@@ -1,10 +1,60 @@
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ConfigService } from 'src/app/service/config.service';
+import { LanguageService } from 'src/app/service/language.service';
+import { environment } from 'src/environments/environment'; 
+import { CashBankCreateComponent } from './cash-bank-create/cash-bank-create.component';
 
 @Component({
   selector: 'app-cash-bank',
   templateUrl: './cash-bank.component.html',
   styleUrls: ['./cash-bank.component.css']
 })
-export class CashBankComponent {
+export class CashBankComponent implements OnInit {
+  items: any = [];
 
+  constructor(
+    private http: HttpClient,
+    private configService: ConfigService,
+    private modalService: NgbModal,
+    public lang: LanguageService,
+    config: NgbModalConfig,
+  ) {
+    config.backdrop = 'static';
+    config.keyboard = false;
+  }
+
+  ngOnInit(): void {
+    this.httpGet();
+  }
+
+  httpGet() {
+    this.http.get<any>(environment.api + "CashBank/index").subscribe(
+      data => {
+        this.items = data['items'];
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+  open() {
+    const modalRef = this.modalService.open(CashBankCreateComponent, { size: 'xl' });
+      modalRef.result.then(
+        (result) => {
+          //clearInterval(this.callCursor);
+          console.log('   clearInterval(this.callCursor); ');
+        },
+        (reason) => {
+          console.log('CLOSE 1001');
+
+        },
+      );
+      modalRef.componentInstance.name = 'null';
+      modalRef.componentInstance.newItemEvent.subscribe(() => {
+        this.httpGet(); 
+      });
+  }
 }

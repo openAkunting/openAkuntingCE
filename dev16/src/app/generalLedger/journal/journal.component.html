@@ -4,7 +4,7 @@
             <h4>Journal</h4>
         </div>
         <div class="col-12 text-end mb-2"> 
-            <button class="btn btn-sm btn-primary mx-2" (click)="open()">Add Journal</button>
+            <button class="btn btn-sm btn-primary mx-2" (click)="open()">Add Item</button>
         </div>
         <div class="col-12">
 
@@ -27,17 +27,18 @@
                 </div>
                 <div class="card-body">
                     <div class="row g-1 border-bottom" *ngFor="let x of items">
-                        <div class="col-2">{{x.journalDate | date}}</div>
+                        <div class="col-2">
+                           <div> {{x.journalDate | date}}</div>
+                            <small>{{x.inputDate}}</small>
+                        </div>
                         <div class="col-1">{{x.ref}}</div>
                         <div class="col-9">
-                            <div class="row g-1 mb-2" *ngFor="let j of x.journal">
-                               
+                            <div class="row g-1 mb-2" *ngFor="let j of x.journal"> 
                                 <div class="col-8" > 
-                                    <div>{{j.account}} :  {{j.account}}</div>
-                                    <div> <small>{{j.description}}</small>   </div>
-                                    <div> <small>  {{j.branch ?  j.branch+" : " : "" }}   {{j.outlet}} </small></div> 
-                                </div> 
-                           
+                                    <div [ngClass]="{'ms-4': j.credit > 0}">{{j.account}} :  {{j.account}}</div>
+                                    <div [ngClass]="{'ms-4': j.credit > 0}"> <small>{{j.description}}</small>   </div>
+                                    <div [ngClass]="{'ms-4': j.credit > 0}"> <small>  {{j.branch ?  j.branch+" : " : "" }}   {{j.outlet}} </small></div> 
+                                </div>  
                                 <div class="col-2 text-end" >{{j.debit | number}}</div> 
                                 <div class="col-2 text-end" >{{j.credit | number}}</div>  
                               

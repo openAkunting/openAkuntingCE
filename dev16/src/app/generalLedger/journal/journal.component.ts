@@ -4,8 +4,7 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
 import { environment } from 'src/environments/environment';
-import { JournalCreateComponent } from './journal-create/journal-create.component';
-import { RecurringJournalComponent } from './recurring-journal/recurring-journal.component';
+import { JournalCreateComponent } from './journal-create/journal-create.component'; 
 
 @Component({
   selector: 'app-journal',

@@ -4,6 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
 import { environment } from 'src/environments/environment';
+
 export class Model {
   constructor( 
     public journalDate: any,
@@ -15,12 +16,14 @@ export class Model {
     public dateOfJournal: number,
   ) {  }
 }
+
+
 @Component({
-  selector: 'app-journal-create',
-  templateUrl: './journal-create.component.html',
-  styleUrls: ['./journal-create.component.css']
+  selector: 'app-cash-bank-create',
+  templateUrl: './cash-bank-create.component.html',
+  styleUrls: ['./cash-bank-create.component.css']
 })
-export class JournalCreateComponent implements OnInit {
+export class CashBankCreateComponent implements OnInit {
   @HostListener('window:keydown', ['$event'])
   onKeyPress($event: KeyboardEvent) {
     if (($event.ctrlKey || $event.metaKey) && $event.keyCode == 67) {
@@ -89,7 +92,7 @@ export class JournalCreateComponent implements OnInit {
   }
 
   httpGet() {
-    this.http.get<any>(environment.api + "journal/selectItems", {
+    this.http.get<any>(environment.api + "CashBank/selectItems", {
       headers: this.configService.headers(),
     }).subscribe(
       data => {
@@ -155,7 +158,7 @@ export class JournalCreateComponent implements OnInit {
       items : this.items,
       model :this.model,
       nameOfTemplate :this.nameOfTemplate,
-      tableName : 'journal_template' 
+      tableName : 'cash_bank'
     }
     this.http.post<any>(environment.api + "Template/onSaveAsTemplate",body, {
       headers: this.configService.headers(),
@@ -175,7 +178,7 @@ export class JournalCreateComponent implements OnInit {
       model :this.model,
       typeJournal : this.typeJournal,
     }
-    this.http.post<any>(environment.api + "journal/onSubmit",body, {
+    this.http.post<any>(environment.api + "CashBank/onSubmit",body, {
       headers: this.configService.headers(),
     }).subscribe(
       data => { 
