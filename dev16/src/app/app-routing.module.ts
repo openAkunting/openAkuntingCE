@@ -28,8 +28,10 @@ const routes: Routes = [
   { path: "md/ud", component: UserDetailComponent, data: { active: "md/ud" }, },
   { path: "md/ur", component: UserRoleComponent, data: { active: "md/ur" }, },
    
-  { path: "gl/j", component: JournalComponent, data: { active: "gl/j", role :'journal' }, }, 
-  { path: "gl/cb", component: CashBankComponent, data: { active: "gl/cb", role :'cash_bank' }, },
+  { path: "gl/j", component: JournalComponent, data: { active: "gl/j", role :'journal', controller : 'journal' }, }, 
+  { path: "gl/cb", component: JournalComponent, data: { active: "gl/cb", role :'cashBank', controller : 'cashBank' }, },
+    
+ // { path: "gl/cb", component: CashBankComponent, data: { active: "gl/cb", role :'cash_bank' }, },
     
 
   { path: "**", component: NotFoundComponent, data: { active: "404" },  canActivate:[]  }, 

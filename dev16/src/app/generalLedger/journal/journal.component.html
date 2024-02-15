@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <h4>Journal</h4>
+            <h4>{{controller}}</h4>
         </div>
         <div class="col-12 text-end mb-2"> 
             <button class="btn btn-sm btn-primary mx-2" (click)="open()">Add Item</button>
@@ -13,7 +13,7 @@
                     <div class="row  g-1 ">
                         <div class="col-2">Date</div>
                         <div class="col-1">Ref</div>
-                        <div class="col-9">
+                        <div class="col-8">
                             <div class="row g-1">
                                 <div class="col-8" > 
                                     Description
@@ -23,6 +23,7 @@
                               
                             </div>
                         </div>
+                        <div class="col-1"></div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -32,7 +33,7 @@
                             <small>{{x.inputDate}}</small>
                         </div>
                         <div class="col-1">{{x.ref}}</div>
-                        <div class="col-9">
+                        <div class="col-8">
                             <div class="row g-1 mb-2" *ngFor="let j of x.journal"> 
                                 <div class="col-8" > 
                                     <div [ngClass]="{'ms-4': j.credit > 0}">{{j.account}} :  {{j.account}}</div>
@@ -40,9 +41,11 @@
                                     <div [ngClass]="{'ms-4': j.credit > 0}"> <small>  {{j.branch ?  j.branch+" : " : "" }}   {{j.outlet}} </small></div> 
                                 </div>  
                                 <div class="col-2 text-end" >{{j.debit | number}}</div> 
-                                <div class="col-2 text-end" >{{j.credit | number}}</div>  
-                              
+                                <div class="col-2 text-end" >{{j.credit | number}}</div>   
                             </div>
+                        </div>
+                        <div class="col-1 text-end">
+                            <button type="button" (click)="detail(x)" class="btn btn-sm btn-primary">Detail</button>
                         </div>
                     </div>
                 </div>

@@ -124,11 +124,12 @@ class CashBank extends BaseController
 
                             $journalId = model("Core")->number("cash_bank");
                             foreach ($post['items'] as $row) {
+                                $journalDate =  $date->format('Y-m-d');
                                 $this->db->table($this->prefix . "cash_bank")->insert([
                                     "journalId" => $journalId,
                                     "outletId" => $row['outletId'],
                                     "accountId" => $row['accountId'],
-                                    "journalDate" => $date->format('Y-m-d'),
+                                    "journalDate" => $journalDate ,
 
                                     "debit" => $row['debit'],
                                     "credit" => $row['credit'],
@@ -141,6 +142,17 @@ class CashBank extends BaseController
                                 ]);
                                 $debit += $row['debit'];
                                 $credit += $row['credit'];
+
+                                $accountBalanceData = array(
+                                    "debit" => $row['debit'],
+                                    "credit" =>  $row['credit'], 
+                                    "journalDate" => $journalDate,
+                                    "year" => (int)$post['model']['journalDate']['year'],
+                                    "month" => (int)$post['model']['journalDate']['month'],
+                                    "outletID" => $row['outletId'],
+                                    "accountId" => $row['accountId'],
+                                );
+                                $accountBalance =  model("Account")->accountBalance($accountBalanceData);
                             }
                             $this->db->table($this->prefix . "cash_bank_header")->insert([
                                 "id" => $journalId,
@@ -161,14 +173,15 @@ class CashBank extends BaseController
 
 
                 } else {
+                    $journalDate  =  $post['model']['journalDate']['year'] . "-" . $post['model']['journalDate']['month'] . "-" . $post['model']['journalDate']['day'];
+                  
                     $journalId = model("Core")->number("cash_bank");
                     foreach ($post['items'] as $row) {
                         $this->db->table($this->prefix . "cash_bank")->insert([
                             "journalId" => $journalId,
                             "outletId" => $row['outletId'],
                             "accountId" => $row['accountId'],
-                            "journalDate" => $post['model']['journalDate']['year'] . "-" . $post['model']['journalDate']['month'] . "-" . $post['model']['journalDate']['day'],
-
+                            "journalDate" => $journalDate,
                             "debit" => $row['debit'],
                             "credit" => $row['credit'],
                             "description" => $row['description'],
@@ -180,6 +193,17 @@ class CashBank extends BaseController
                         ]);
                         $debit += $row['debit'];
                         $credit += $row['credit'];
+                        
+                        $accountBalanceData = array(
+                            "debit" => $row['debit'],
+                            "credit" =>  $row['credit'], 
+                            "journalDate" => $journalDate,
+                            "year" => (int)$post['model']['journalDate']['year'],
+                            "month" => (int)$post['model']['journalDate']['month'],
+                            "outletID" => $row['outletId'],
+                            "accountId" => $row['accountId'],
+                        );
+                        $accountBalance =  model("Account")->accountBalance($accountBalanceData);
                     }
                     $this->db->table($this->prefix . "cash_bank_header")->insert([
                         "id" => $journalId,
@@ -203,9 +227,10 @@ class CashBank extends BaseController
                 }
                 $data = [
                     "error" => false,
+                    "accountBalance" => $accountBalance,
                     "transaction" => $this->db->transStatus() === false ? false : true,
                     "code" => 200,
-                 //   "dates" => $dates,
+                   
                 ];
             } else {
                 $data = [

@@ -1,0 +1,138 @@
+<div class="modal-header">
+    <strong class="modal-title">Jurnal ID {{id}}</strong>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+
+    <div class="row">
+        <div class="col-12">
+           Template : {{journalHeader.template}}
+        </div>
+        <div class="col-6">
+
+            <small>Jurnal Date</small>
+            <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model.journalDate"
+                    ngbDatepicker #d="ngbDatepicker" [disabled]="disable" />
+                <button class="btn btn-outline-secondary bi bi-calendar3" [disabled]="disable" (click)="d.toggle()" type="button"></button>  
+            </div>
+
+
+            <div>
+                <small>Ref</small>
+                <input type="text" class="form-control form-control-sm" [(ngModel)]="model.ref" [disabled]="disable">
+            </div>
+        </div>
+
+        <div class="col-6">
+            <small>Note</small>
+            <textarea class="form-control form-control-sm" [(ngModel)]="model.note" [disabled]="disable"></textarea>
+        </div>
+ 
+        <div class="col-12">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Outlet</th>
+                        <th>Account</th>
+                        <th>Description</th>
+
+                        <th>Debit</th>
+                        <th>Credit</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let x of items; let i = index">
+                        <td>
+                            <select class="form-control form-control-sm" [(ngModel)]="x.outletId" [disabled]="disable"
+                                (change)="calculation()">
+                                <option [value]="a.id" *ngFor="let a of selectOutlet">{{a.branch+" : "+a.name}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control form-control-sm" [(ngModel)]="x.accountId" [disabled]="disable"
+                                (change)="calculation()">
+                                <option [value]="a.id" *ngFor="let a of selectAccount">{{a.id+" : "+a.name}}</option>
+                            </select>
+
+                        </td>
+
+                        <td>
+                            <input type="text" maxlength="250" class="form-control form-control-sm" [disabled]="disable"  [(ngModel)]="x.description">
+                        </td>
+
+                        <td>
+                            <input type="text" currencyMask [options]="currencyOptions" (keypress)="keyPress(x,'debit')" [disabled]="disable"
+                                class="form-control form-control-sm" [(ngModel)]="x.debit">
+                        </td>
+
+                        <td>
+                            <input type="text" currencyMask [options]="currencyOptions"
+                                (keypress)="keyPress(x,'credit')" class="form-control form-control-sm" [disabled]="disable"
+                                [(ngModel)]="x.credit">
+                        </td>
+                        <td>
+                            <a *ngIf="i>1" (click)="removeRow(i);">removeRow</a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot [hidden]="disable">
+                    <tr>
+                        <td colspan="4" class="text-end">
+                            <button type="button" (click)="addrow();" class="btn btn-sm btn-light">Add Row</button>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <table>
+                <tr> 
+                    <td> Create Date </td>    
+                    <td>:  {{journalHeader.inputDate}} </td>    
+                </tr>
+                <tr> 
+                    <td> Create By </td>    
+                    <td>:  {{journalHeader.inputBy}} </td>    
+                </tr>
+            </table>
+
+        </div>
+        <div class="col-6">
+            <table class="table table-sm">
+                <tr>
+                    <td>Total Debit</td>
+                    <td>
+                        <div class="text-end">{{summary.debit | number}}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Total Credit</td>
+                    <td>
+                        <div class="text-end">{{summary.credit | number}}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Balance <span *ngIf="summary.balance == 0"><i class="bi bi-check-lg"></i></span> </td>
+                    <td>
+                        <div class="text-end" [ngClass]="{'text-danger': summary.balance != 0}"> {{summary.balance |
+                            number}}</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div> 
+
+</div>
+<div class="modal-footer">
+
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+    <!-- <button type="button" class="btn btn-dark" [disabled]="!submit ||  summary.balance !=0 "  (click)="onSubmit();">submit</button> -->
+
+</div>

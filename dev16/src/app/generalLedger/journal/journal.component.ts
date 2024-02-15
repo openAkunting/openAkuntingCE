@@ -4,7 +4,9 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
 import { environment } from 'src/environments/environment';
-import { JournalCreateComponent } from './journal-create/journal-create.component'; 
+import { JournalCreateComponent } from './journal-create/journal-create.component';
+import { JournalDetailComponent } from './journal-detail/journal-detail.component';
+import {   ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-journal',
@@ -19,18 +21,24 @@ export class JournalComponent implements OnInit {
     private configService: ConfigService,
     private modalService: NgbModal,
     public lang: LanguageService,
+    public router: Router,
+    public activeRouter: ActivatedRoute,
+
     config: NgbModalConfig,
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
   }
-
-  ngOnInit(): void {
+  controller:string = "Journal";
+  ngOnInit(): void { 
+    console.log(this.activeRouter.snapshot.data['controller']); 
+    this.controller = this.activeRouter.snapshot.data['controller'];
+  
     this.httpGet();
   }
 
   httpGet() {
-    this.http.get<any>(environment.api + "journal/index").subscribe(
+    this.http.get<any>(environment.api + this.controller+"/index").subscribe(
       data => {
         this.items = data['items'];
         console.log(data);
@@ -42,19 +50,29 @@ export class JournalComponent implements OnInit {
   }
   open() {
     const modalRef = this.modalService.open(JournalCreateComponent, { size: 'xl' });
-      modalRef.result.then(
-        (result) => {
-          //clearInterval(this.callCursor);
-          console.log('   clearInterval(this.callCursor); ');
-        },
-        (reason) => {
-          console.log('CLOSE 1001');
+    // modalRef.result.then(
+    //   (result) => { 
+    //     console.log(' ');
+    //   },
+    //   (reason) => {
+    //     console.log('CLOSE 1001');
 
-        },
-      );
-      modalRef.componentInstance.name = 'null';
-      modalRef.componentInstance.newItemEvent.subscribe(() => {
-        this.httpGet(); 
-      });
+    //   },
+    // );
+    modalRef.componentInstance.controller = this.controller; 
+   
+    modalRef.componentInstance.newItemEvent.subscribe(() => {
+      this.httpGet();
+    });
+  }
+
+  detail(item: any) {
+    
+    const modalRef = this.modalService.open(JournalDetailComponent, { size: 'xl' });
+
+    modalRef.componentInstance.id = item.id;
+    modalRef.componentInstance.newItemEvent.subscribe(() => {
+      this.httpGet();
+    });
   }
 }

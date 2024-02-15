@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
@@ -33,7 +34,7 @@ export class JournalCreateComponent implements OnInit {
     }
   }
   @Output() newItemEvent = new EventEmitter<string>();
-  @Input() name: any;
+  @Input() controller: any;
   account: any;
   outlet: any;
   items: any = [];
@@ -50,19 +51,24 @@ export class JournalCreateComponent implements OnInit {
   selectTemplate: any = [];
   selectAccount: any = [];
   selectOutlet: any = [];
-  typeJournal : string = 'single';
+  typeJournal : string = 'single'; 
   constructor(
     public activeModal: NgbActiveModal,
     private http: HttpClient,
     private configService: ConfigService,
-    public lang: LanguageService
+    public lang: LanguageService, 
   ) { }
 
 
   ngOnInit(): void {
+    console.log(this.controller);
+    // if(this.activeRouter.snapshot.url[1].path == 'cb') {
+    //     this.controller = "CashBank";
+    // }
     this.newItem();
     this.httpGet();
   }
+
   newItem() {
     const curDate = new Date();
     this.model = new Model(
@@ -89,7 +95,7 @@ export class JournalCreateComponent implements OnInit {
   }
 
   httpGet() {
-    this.http.get<any>(environment.api + "journal/selectItems", {
+    this.http.get<any>(environment.api + this.controller+"/selectItems", {
       headers: this.configService.headers(),
     }).subscribe(
       data => {
@@ -103,6 +109,7 @@ export class JournalCreateComponent implements OnInit {
       }
     )
   }
+
   addrow() {
     const temp = {
       outletId : "",
@@ -114,10 +121,12 @@ export class JournalCreateComponent implements OnInit {
     this.items.push(temp);
     this.calculation();
   }
+
   removeRow(index: number) {
     this.items.splice(index, 1);
     this.calculation();
   }
+
   keyPress(item: any, type: string) {
     console.log(item[type], type);
     if (type == 'debit') {
@@ -150,38 +159,22 @@ export class JournalCreateComponent implements OnInit {
       }
     }
   }
-  onSaveAsTemplate(){
-    const body = {
-      items : this.items,
-      model :this.model,
-      nameOfTemplate :this.nameOfTemplate,
-      tableName : 'journal_template' 
-    }
-    this.http.post<any>(environment.api + "Template/onSaveAsTemplate",body, {
-      headers: this.configService.headers(),
-    }).subscribe(
-      data => { 
-        console.log(data);
-        this.httpGet();
-      },
-      error => {
-        console.log(error);
-      }
-    )
-  }
+
+  
+
   onSubmit() {
     const body = {
       items : this.items,
       model :this.model,
       typeJournal : this.typeJournal,
     }
-    this.http.post<any>(environment.api + "journal/onSubmit",body, {
+    this.http.post<any>(environment.api + this.controller+"/onSubmit",body, {
       headers: this.configService.headers(),
     }).subscribe(
       data => { 
         console.log(data);
         this.newItemEvent.emit();
-        this.activeModal.close();
+         this.activeModal.close();
       },
       error => {
         console.log(error);
@@ -221,4 +214,24 @@ export class JournalCreateComponent implements OnInit {
       }
     )
   }
+  onSaveAsTemplate(){
+    const body = {
+      items : this.items,
+      model :this.model,
+      nameOfTemplate :this.nameOfTemplate,
+      tableName : this.controller
+    }
+    this.http.post<any>(environment.api + "Template/onSaveAsTemplate",body, {
+      headers: this.configService.headers(),
+    }).subscribe(
+      data => { 
+        console.log(data);
+        this.httpGet();
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+  
 }
