@@ -167,6 +167,7 @@ export class JournalCreateComponent implements OnInit {
       items : this.items,
       model :this.model,
       typeJournal : this.typeJournal,
+      templateId : this.templateId,
     }
     this.http.post<any>(environment.api + this.controller+"/onSubmit",body, {
       headers: this.configService.headers(),

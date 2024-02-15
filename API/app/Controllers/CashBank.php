@@ -49,7 +49,42 @@ class CashBank extends BaseController
         ];
         return $this->response->setJSON($data);
     }
+ 
+    public function detail(){
+        $id = $this->request->getVar()['id'];
 
+        $account = "SELECT id, name
+        FROM " . $this->prefix . "account AS t1
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM account AS t2
+            WHERE t2.parentId = t1.id
+        )
+        ORDER BY id ASC";
+
+        $outlet = "SELECT o.*, b.name as 'branch'
+        FROM  " . $this->prefix . "outlet  as o
+        left join branch as b on b.id = o.branchId 
+        WHERE o.presence = 1 and o.status = 1
+        ORDER BY  b.name ASC, o.name ASC";
+
+        $items= "SELECT * FROM cash_bank where journalId = '$id' and presence = 1 order by id ASC ";
+        $header= "SELECT h.* , t.name as 'template'
+        FROM cash_bank_header as h  
+        LEFT JOIN template as t on t.id = h.templateId
+        WHERE h.id = '$id' and h.presence = 1   ";
+
+        $data = [
+            "error" => false, 
+            "header" => $this->db->query($header)->getResult()[0],
+            "account" => $this->db->query($account)->getResult(),
+            "outlet" => $this->db->query($outlet)->getResult(),
+            "items" => $this->db->query($items)->getResult(),
+        ];
+        return $this->response->setJSON($data);
+
+    }
+ 
     public function selectItems()
     {
 
@@ -94,13 +129,14 @@ class CashBank extends BaseController
         if ($post) {
             $debit = 0;
             $credit = 0;
+            $accountBalance = false;
             foreach ($post['items'] as $row) {
                 $debit += $row['debit'];
                 $credit += $row['credit'];
             }
             if (($credit - $debit) == 0) {
 
-                $this->db->transStart();
+               $this->db->transStart();
                 $debit = 0;
                 $credit = 0;
                 $dates = [];
@@ -144,6 +180,7 @@ class CashBank extends BaseController
                                 $credit += $row['credit'];
 
                                 $accountBalanceData = array(
+                                    "table" => 'cash_bank',
                                     "debit" => $row['debit'],
                                     "credit" =>  $row['credit'], 
                                     "journalDate" => $journalDate,
@@ -152,13 +189,14 @@ class CashBank extends BaseController
                                     "outletID" => $row['outletId'],
                                     "accountId" => $row['accountId'],
                                 );
-                                $accountBalance =  model("Account")->accountBalance($accountBalanceData);
+                               $accountBalance =  model("Account")->accountBalance($accountBalanceData);
                             }
                             $this->db->table($this->prefix . "cash_bank_header")->insert([
                                 "id" => $journalId,
                                 "journalDate" => $date->format('Y-m-d'),
                                 "ref" => $post['model']['ref'],
                                 "note" => $post['model']['note'],
+                                "templateId" => $post['templateId'],
                                 "totalCredit" => $credit,
                                 "totalDebit" => $debit,
                                 "presence" => 1,
@@ -195,6 +233,7 @@ class CashBank extends BaseController
                         $credit += $row['credit'];
                         
                         $accountBalanceData = array(
+                            "table" => 'cash_bank',
                             "debit" => $row['debit'],
                             "credit" =>  $row['credit'], 
                             "journalDate" => $journalDate,
@@ -203,11 +242,12 @@ class CashBank extends BaseController
                             "outletID" => $row['outletId'],
                             "accountId" => $row['accountId'],
                         );
-                        $accountBalance =  model("Account")->accountBalance($accountBalanceData);
+                       $accountBalance =  model("Account")->accountBalance($accountBalanceData);
                     }
                     $this->db->table($this->prefix . "cash_bank_header")->insert([
                         "id" => $journalId,
-                        "journalDate" => $post['model']['journalDate']['year'] . "-" . $post['model']['journalDate']['month'] . "-" . $post['model']['journalDate']['day'],
+                        "templateId" => $post['templateId'],
+                        "journalDate" => $journalDate,
                         "ref" => $post['model']['ref'],
                         "note" => $post['model']['note'],
                         "totalCredit" => $credit,

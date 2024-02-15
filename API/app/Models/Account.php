@@ -25,6 +25,7 @@ class Account extends Model
     function accountBalance($post = [])
     {
         $data = [];
+        $table = isset($post['table']) ? $post['table'] : 'journal';
         //BEGIN BALANCE is 1st month
         $whereBefore = " year = '" . $post['year'] . "' AND  
         month = '" . ($post['month'] - 1) . "' AND 
@@ -37,8 +38,8 @@ class Account extends Model
 
 
         $whereDebit = " presence = 1 AND  outletID =  '" . $post['outletID'] . "'  and accountId = '" . $post['accountId'] . "'  AND  YEAR(journalDate) = '" . $post['year'] . "' AND MONTH(journalDate) = '" . $post['month'] . "'  ";
-        $newDebit = model("Core")->select("sum(debit)", "journal", $whereDebit);
-        $newCredit = model("Core")->select("sum(credit)", "journal", $whereDebit);
+        $newDebit = (int)model("Core")->select("sum(debit)", $table, $whereDebit);
+        $newCredit = (int)model("Core")->select("sum(credit)", $table, $whereDebit);
 
         $endBalance = $beginBalance + ($newDebit + $newCredit);
 

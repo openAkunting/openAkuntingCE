@@ -19,6 +19,8 @@ export class Model {
 export class JournalDetailComponent implements OnInit {
   @Output() newItemEvent = new EventEmitter<string>();
   @Input() id: any;
+  @Input() controller: any;
+  
   account: any;
   outlet: any;
   items: any = [];
@@ -57,7 +59,7 @@ export class JournalDetailComponent implements OnInit {
   }
    
   httpGet() {
-    this.http.get<any>(environment.api + "journal/detail", {
+    this.http.get<any>(environment.api + this.controller+"/detail", {
       headers: this.configService.headers(),
       params: {
         id : this.id 

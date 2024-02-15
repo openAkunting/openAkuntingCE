@@ -195,6 +195,7 @@ class Journal extends BaseController
                             }
                             $this->db->table($this->prefix . "journal_header")->insert([
                                 "id" => $journalId,
+                                "templateId" => $post['templateId'],
                                 "journalDate" => $date->format('Y-m-d'),
                                 "ref" => $post['model']['ref'],
                                 "note" => $post['model']['note'],
@@ -247,6 +248,7 @@ class Journal extends BaseController
                     $this->db->table($this->prefix . "journal_header")->insert([
                         "id" => $journalId,
                         "journalDate" => $journalDate,
+                        "templateId" => $post['templateId'],
                         "ref" => $post['model']['ref'],
                         "note" => $post['model']['note'],
                         "totalCredit" => $credit,

@@ -69,7 +69,7 @@ export class JournalComponent implements OnInit {
   detail(item: any) {
     
     const modalRef = this.modalService.open(JournalDetailComponent, { size: 'xl' });
-
+    modalRef.componentInstance.controller = this.controller; 
     modalRef.componentInstance.id = item.id;
     modalRef.componentInstance.newItemEvent.subscribe(() => {
       this.httpGet();
