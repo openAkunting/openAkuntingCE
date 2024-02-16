@@ -1,0 +1,60 @@
+<div class="container-fluid  font-code">
+    <div class="row mb-3">
+        <div class="col-12">
+            <h1>Journal List Report</h1>
+        </div>
+        <div class="col-6">
+            <div>Brand : PT RASA MANIS MALAKA</div>
+            <div>Period : {{params['startDate']}} until {{params['endDate']}}</div>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-2 border-bottom">
+            <div class="d-flex">
+                <div> #</div>
+                <div> Jurnal Id</div>
+            </div>
+        </div>
+        <div class="col-6  border-bottom">
+            Account/Journal Description
+        </div>
+        <div class="col-2 text-end  border-bottom">Debit</div>
+        <div class="col-2 text-end  border-bottom">Credit</div>
+    </div>
+
+
+    <div class="row mb-2" *ngFor="let x of items">
+        <div class="col-12">
+          <strong>Transaction date : {{x.journalDate}}</strong>
+        </div>
+        <div class="row g-1 mb-2" *ngFor="let header of x.header; let i = index">
+            <div class="col-2">
+                <div class="d-flex ms-2">
+                    <div>{{i+1}}.</div>
+                    <div class="ms-2"> {{header.id}}</div>
+                </div>
+            </div>
+            <div class="col-10">
+                <div class="row g-1 mb-1 border-bottom" *ngFor="let j of header.journal">
+                    <div class="col-8">
+                        <div [ngClass]="{'ms-3': j.credit > 0}">
+                            <div> {{j.accountId +" "+j.account}} </div>
+                            <small>{{j.description}}</small>
+                        </div> 
+                    </div>
+                    <div class="col-2 text-end  ">{{j.debit | number}}</div>
+                    <div class="col-2 text-end  ">{{j.credit | number }}</div>
+                </div>
+ 
+                <div class="row g-1 ">
+                    <div class="col-8"><strong>Total</strong></div>
+                    <div class="col-2 text-end  "><strong>{{header.total.debit | number}}</strong></div>
+                    <div class="col-2 text-end  "><strong>{{header.total.credit | number }}</strong></div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+
+</div>

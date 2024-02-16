@@ -24,13 +24,14 @@ import { LanguageService } from './service/language.service';
 import { BranchComponent } from './masterData/branch/branch.component';
 import { OutletComponent } from './masterData/outlet/outlet.component';
 import { JournalComponent } from './generalLedger/journal/journal.component';
-import { CashBankComponent } from './generalLedger/cash-bank/cash-bank.component'; 
+import { CashBankComponent } from './generalLedger/cash-bank/cash-bank.component';
 import { JournalCreateComponent } from './generalLedger/journal/journal-create/journal-create.component';
 import { CashBankCreateComponent } from './generalLedger/cash-bank/cash-bank-create/cash-bank-create.component';
-import { JournalDetailComponent } from './generalLedger/journal/journal-detail/journal-detail.component'; 
+import { JournalDetailComponent } from './generalLedger/journal/journal-detail/journal-detail.component';
+import { JournalListReportComponent } from './report/journal-list-report/journal-list-report.component';
 
 @NgModule({
-  declarations: [ 
+  declarations: [
     AppComponent,
     HomeComponent,
     NotFoundComponent,
@@ -47,8 +48,8 @@ import { JournalDetailComponent } from './generalLedger/journal/journal-detail/j
     BranchComponent,
     OutletComponent,
     JournalComponent,
-    CashBankComponent, 
-    JournalCreateComponent, CashBankCreateComponent, JournalDetailComponent,  
+    CashBankComponent,
+    JournalCreateComponent, CashBankCreateComponent, JournalDetailComponent, JournalListReportComponent,
   ],
   imports: [
     BrowserModule,

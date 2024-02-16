@@ -12,6 +12,7 @@ import { UserComponent } from './masterData/user/user.component';
 import { UserDetailComponent } from './masterData/user/user-detail/user-detail.component';
 import { UserRoleComponent } from './masterData/user/user-role/user-role.component';
 import { JournalComponent } from './generalLedger/journal/journal.component'; 
+import { JournalListReportComponent } from './report/journal-list-report/journal-list-report.component';
  
 const routes: Routes = [
   { path: "", component: HomeComponent, data: { active: "home" }, },
@@ -29,8 +30,8 @@ const routes: Routes = [
    
   { path: "gl/j", component: JournalComponent, data: { active: "gl/j", role :'journal', controller : 'Journal' }, }, 
   { path: "gl/cb", component: JournalComponent, data: { active: "gl/cb", role :'cashBank', controller : 'CashBank' }, },
-    
- // { path: "gl/cb", component: CashBankComponent, data: { active: "gl/cb", role :'cash_bank' }, },
+  
+  { path: "report/journalList", component: JournalListReportComponent, data: { active: "", role :'cashBank', controller : 'Journal' }, },
     
 
   { path: "**", component: NotFoundComponent, data: { active: "404" },  canActivate:[]  }, 
