@@ -1,21 +1,29 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <p>Menu</p>
+            <p>Master Data</p>
             <ul>
                 <li> <a [routerLink]="[ '/md/u' ]">User</a> </li>
                 <li> <a [routerLink]="[ '/md/at' ]">Type of Account</a> </li> 
-                <li> <a [routerLink]="[ '/md/a' ]">Chart of Accounts</a> </li>
-
+                <li> <a [routerLink]="[ '/md/a' ]">Chart of Accounts</a> </li> 
                 <li> <a [routerLink]="[ '/md/an' ]">Auto Number</a> </li>
-                <li> <a [routerLink]="[ '/md/glp' ]">General Ledger Parameter</a> </li> 
-
-                <li> <a [routerLink]="[ '/gl/j' ]">Journal</a> </li> 
-                <li> <a [routerLink]="[ '/gl/cb' ]">Cash Bank</a> </li>
-               
-                <li> <a [routerLink]="[ '/report/journalList' ]">Report Journal List</a> </li> 
+                <li> <a [routerLink]="[ '/md/glp' ]">General Ledger Parameter</a> </li>  
             </ul>
-            <button type="button" (click)="logout()">Logout</button>
+            <hr>
+            <p>General Ledger</p>
+            <ul> 
+                <li> <a [routerLink]="[ '/gl/j' ]">Journal</a> </li> 
+                <li> <a [routerLink]="[ '/gl/cb' ]">Cash Bank</a> </li>  
+            </ul>
+            <hr>
+            <p>Report</p>
+            <ul>  
+                <li> <a [routerLink]="[ '/report/journalList' ]"> Journal List</a> </li> 
+                <li> <a [routerLink]="[ '/report/journalList' ]"> Profit And Loss</a> </li> 
+                <li> <a [routerLink]="[ '/report/journalList' ]"> Balance Sheet</a> </li> 
+            </ul>
+            <hr>
+            <button type="button" class="btn btn-dark btn-sm" (click)="logout()">Logout</button>
         </div>
     </div>
 </div>
