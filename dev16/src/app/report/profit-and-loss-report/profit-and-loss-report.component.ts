@@ -3,14 +3,14 @@ import { Component, OnInit } from '@angular/core';
 import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
 import { environment } from 'src/environments/environment'; 
-import {   ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-journal-list-report',
-  templateUrl: './journal-list-report.component.html',
-  styleUrls: ['./journal-list-report.component.css']
+  selector: 'app-profit-and-loss-report',
+  templateUrl: './profit-and-loss-report.component.html',
+  styleUrls: ['./profit-and-loss-report.component.css']
 })
-export class JournalListReportComponent implements OnInit {
+export class ProfitAndLossReportComponent implements OnInit {
   items : any = [];
   params : any = [];
   constructor(
@@ -26,17 +26,14 @@ export class JournalListReportComponent implements OnInit {
     this.params = this.activeRouter.snapshot.queryParams;
     console.log(this.params);
     this.httpGet();
-  }
-
+  } 
 
   httpGet(){
     const body = {
       startDate : this.params['startDate'],
-      endDate : this.params['endDate'],
-      //typeTransaction : 'journal',
-    //  branchId : '',
+      endDate : this.params['endDate'], 
     }
-    this.http.get<any>(environment.api+"journalReport",{
+    this.http.get<any>(environment.api+"ProfitAndLossReport",{
       headers:this.configService.headers(),
       params : body
     }).subscribe(

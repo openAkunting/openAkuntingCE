@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controllers;
- 
-class JournalReport extends BaseController
+namespace App\Controllers; 
+
+class ProfitAndLossReport extends BaseController
 {
     protected $maxDay = null;
     function __construct()

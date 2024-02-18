@@ -9,14 +9,14 @@ class Account extends BaseController
     function __construct()
     {
         if (model("Token")->checkValidToken() == '') {
-              exit;
+            exit;
         }
 
         // rules check here
-       // if (model("Token")->checkRule('Chart Of Account')[1] != 1) { 
-           //  echo "500 : Error Role";
-           //  exit;
-      //  }
+        // if (model("Token")->checkRule('Chart Of Account')[1] != 1) { 
+        //  echo "500 : Error Role";
+        //  exit;
+        //  }
     }
 
     public function chartOfAccount()
@@ -39,17 +39,28 @@ class Account extends BaseController
         foreach ($acccountType as $row) {
             $acccountType[$i]['normalBalance'] = $row['normalBalance'] == 'D' ? '[D] Debit' : '[C] Credit';
             $acccountType[$i]['position'] = $row['position'] == 'BS' ? '[BS] Balance Sheet' : '[PL] Profit & Loss';
-
             $i++;
         }
 
-
         $view = isset($this->request->getVar()['view']) ? $this->request->getVar()['view'] : false;
+
+
+        $col = $this->db->query('SHOW COLUMNS  FROM `account` ')->getResultArray();
+        $header = [];
+        $i = 0;
+        foreach($col as $row){ 
+            $header[] = array(
+                "column" => $row['Field'],
+                "checkBox" => true,
+            );
+            if($i > 4)  break;
+            $i++; 
+        }
         $data = [
             "error" => false,
             "items" => $view == 'tree' ? self::generatePyramid() : $this->db->query($q)->getResult(),
             "acccountType" => $acccountType,
-
+            "columnHeader" => $header, 
         ];
         return $this->response->setJSON($data);
     }
@@ -154,9 +165,9 @@ class Account extends BaseController
         if ($post) {
             foreach ($post['items'] as $row) {
 
-                $this->db->table($this->prefix . "account")->update([ 
+                $this->db->table($this->prefix . "account")->update([
                     "cashBank" => $row['cashBank'],
-                    "status" => $row['status'], 
+                    "status" => $row['status'],
                     "accountTypeId" => $row['accountTypeId'],
                     "name" => $row['name'],
                     "updateDate" => date("Y-m-d H:i:s"),
@@ -172,7 +183,6 @@ class Account extends BaseController
         return $this->response->setJSON($data);
 
     }
-
 
     public function accountType()
     {
@@ -226,7 +236,7 @@ class Account extends BaseController
             "code" => 400
         ];
         if ($post) {
-            $row = $post['model']; 
+            $row = $post['model'];
             $this->db->table($this->prefix . "account_type")->insert([
                 "position" => $row['position'],
                 "normalBalance" => $row['normalBalance'],
@@ -236,9 +246,9 @@ class Account extends BaseController
                 "updateDate" => date("Y-m-d H:i:s"),
                 "updateBy" => model("Token")->userId(),
                 "inputDate" => date("Y-m-d H:i:s"),
-                "inputBy" => model("Token")->userId() 
+                "inputBy" => model("Token")->userId()
             ]);
-           
+
             $data = [
                 "error" => false,
                 "code" => 200
@@ -248,7 +258,6 @@ class Account extends BaseController
         return $this->response->setJSON($data);
 
     }
-
     public function accountTypeDelete()
     {
         $json = file_get_contents('php://input');
@@ -273,5 +282,10 @@ class Account extends BaseController
             ];
         }
         return $this->response->setJSON($data);
+    }
+
+    public function exportAccount()
+    {
+
     }
 }

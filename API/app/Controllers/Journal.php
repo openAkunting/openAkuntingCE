@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Controllers;
-
-use OpenApi\Annotations as OA;
+ 
 
 class Journal extends BaseController
 {
@@ -73,7 +72,7 @@ class Journal extends BaseController
 
         $template = "SELECT *
         FROM  " . $this->prefix . "template   
-        WHERE  presence = 1 and tableName = 'journal_template'
+        WHERE  presence = 1 and tableName = 'Journal'
         ORDER BY name ASC";
 
         $data = [

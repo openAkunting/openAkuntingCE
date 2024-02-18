@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Controllers;
-
-use OpenApi\Annotations as OA;
-
+ 
 class Template extends BaseController
 {
     function __construct()

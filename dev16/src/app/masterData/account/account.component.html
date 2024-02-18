@@ -1,11 +1,17 @@
-<div class="container my-5">
-    <div class="row">
-        <div class="col-12">
+<div class="container my-2">
+    <div class="row mb-2">
+        <div class="col-6">
             <strong>Chart Of Account</strong> 
         </div>
+        <div class="col-6 text-end">
+             <button type="button" class="btn btn-sm btn-dark"  (click)="modal(modalExport)">Export to *.CSV</button>
+        </div>
+    </div>
+    <div class="row">
+        
         <div class="col-12 ">
             <table class="table table-sm table-bordered table-hover">
-                <thead>
+                <thead class="sticky-top">
                     <tr>
                         <th *ngIf="!disable"></th> 
                         <th *ngIf="!disable">Add Child</th>
@@ -16,8 +22,7 @@
                         <th>Normal Balance</th>
                         <th>Position</th> 
                         <th>Cash Bank</th> 
-                        <th>Status</th> 
-
+                        <th>Status</th>  
                     </tr>
                 </thead>
                 <tbody>
@@ -70,10 +75,7 @@
                             <div *ngIf="x.status == '1'" (click)="onCheckBox(x,'1','status')">
                                 <i class="bi bi-check-square-fill"></i>
                             </div>
-                        </td>
-
-
-
+                        </td> 
                     </tr>
                 </tbody>
             </table>
@@ -172,3 +174,24 @@
         </div>
     </form>
 </ng-template>
+
+<ng-template #modalExport let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Export to CSV</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row" *ngFor="let x of columnHeader">
+            <div class="col-6"> {{x.column}}  </div>
+            <div class="col-6"> <input type="checkbox" [(ngModel)]="x.checkBox">  </div>
+        </div>
+        {{columnHeader | json}}
+    </div>
+    
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark mx-1" (click)="modal.close('Save click')">Save</button>
+        <button type="submit" class="btn btn-success mx-1" (click)="exportData('csv');" >Export</button>
+
+    </div>
+</ng-template>
+

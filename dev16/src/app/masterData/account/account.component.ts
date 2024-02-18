@@ -3,13 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
-import { environment } from 'src/environments/environment'; 
+import { environment } from 'src/environments/environment';
 
 export class NewCoA {
   constructor(
     public id: number,
     public name: string,
-    public accountTypeId: string, 
+    public accountTypeId: string,
   ) {  }
 }
 @Component({
@@ -26,17 +26,17 @@ export class AccountComponent implements OnInit {
   item : any;
   newCoA : any = new NewCoA(0,"","");
   currencyOptions : any = { prefix: '', thousands: '.', decimal: ',',  precision: 0, }
-
+  columnHeader : any = [];
   selectedLang: string = 'en';
   translatedText: string = '';
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
-    private modalService: NgbModal, 
+    private modalService: NgbModal,
     public lang: LanguageService
   ) { }
   ngOnInit() {
-    this.httpGet(); 
+    this.httpGet();
   }
 
   httpGet() {
@@ -49,7 +49,7 @@ export class AccountComponent implements OnInit {
         this.items = JSON.parse(JSON.stringify(data['items']));
         this.itemsOrigin = JSON.parse(JSON.stringify(data['items']));
         this.accountType =  data['acccountType'];
-        
+        this.columnHeader = data['columnHeader'];
       },
       error => {
         console.log(error);
@@ -65,7 +65,7 @@ export class AccountComponent implements OnInit {
       else if (status == '1') {
         x[name] = '0';
       }
-    } 
+    }
   }
 
   fnRollback() {
@@ -97,7 +97,7 @@ export class AccountComponent implements OnInit {
 
   fnDelete() {
     if (confirm("Delete this check ?")) {
- 
+
       const body = {
         items: this.items,
       }
@@ -137,16 +137,19 @@ export class AccountComponent implements OnInit {
     const item = this.accountType.find((item: { id: string; }) => item.id === id);
     return item ? item[name] : '';
   }
- 
+
   open(content: any, item : any) {
     this.item = item;
     if( this.item.id != '1'){
       this.newCoA['accountTypeId'] = item['accountTypeId']
     }
- 
+
 		this.modalService.open(content);
   }
 
+  modal(content:any){
+    this.modalService.open(content);
+  }
   onSubmit(){
     const body = {
       item: this.item,
@@ -166,19 +169,22 @@ export class AccountComponent implements OnInit {
     )
   }
 
+  exportData(ext:string){
+    window.open(environment.api+"export/account", '_blank'); 
+  }
 
 
   countPossibleIPs(str : string ) {
     // Memisahkan string menjadi oktet-oktet yang terpisah
     const octets = str.split('.');
-    
+
     // Jumlah oktet yang sudah diketahui
     const t = octets.length - 1;
     var a = "";
     for(let i = 0 ; i < t ; i++){
       a += "&nbsp; &nbsp;";
     }
-     
+
     return a ;
 }
 }

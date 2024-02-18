@@ -13,6 +13,7 @@ import { UserDetailComponent } from './masterData/user/user-detail/user-detail.c
 import { UserRoleComponent } from './masterData/user/user-role/user-role.component';
 import { JournalComponent } from './generalLedger/journal/journal.component'; 
 import { JournalListReportComponent } from './report/journal-list-report/journal-list-report.component';
+import { ProfitAndLossReportComponent } from './report/profit-and-loss-report/profit-and-loss-report.component';
  
 const routes: Routes = [
   { path: "", component: HomeComponent, data: { active: "home" }, },
@@ -31,8 +32,10 @@ const routes: Routes = [
   { path: "gl/j", component: JournalComponent, data: { active: "gl/j", role :'journal', controller : 'Journal' }, }, 
   { path: "gl/cb", component: JournalComponent, data: { active: "gl/cb", role :'cashBank', controller : 'CashBank' }, },
   
-  { path: "report/journalList", component: JournalListReportComponent, data: { active: "", role :'cashBank', controller : 'Journal' }, },
+  { path: "report/journalList", component: JournalListReportComponent, data: { active: "", role :'report', controller : '' }, },
+  { path: "report/profitAndLoss", component: ProfitAndLossReportComponent, data: { active: "", role :'report', controller : '' }, },
     
+  
 
   { path: "**", component: NotFoundComponent, data: { active: "404" },  canActivate:[]  }, 
  
