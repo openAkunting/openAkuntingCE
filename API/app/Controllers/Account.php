@@ -48,19 +48,20 @@ class Account extends BaseController
         $col = $this->db->query('SHOW COLUMNS  FROM `account` ')->getResultArray();
         $header = [];
         $i = 0;
-        foreach($col as $row){ 
+        foreach ($col as $row) {
             $header[] = array(
                 "column" => $row['Field'],
                 "checkBox" => true,
             );
-            if($i > 4)  break;
-            $i++; 
+            if ($i > 4)
+                break;
+            $i++;
         }
         $data = [
             "error" => false,
             "items" => $view == 'tree' ? self::generatePyramid() : $this->db->query($q)->getResult(),
             "acccountType" => $acccountType,
-            "columnHeader" => $header, 
+            "columnHeader" => $header,
         ];
         return $this->response->setJSON($data);
     }
@@ -284,12 +285,43 @@ class Account extends BaseController
         return $this->response->setJSON($data);
     }
 
-    public function importAccount(){
-
+    public function onImportCoA()
+    {
+        $json = file_get_contents('php://input');
+        $post = json_decode($json, true);
+        $data = [
+            "error" => true,
+            "code" => 400
+        ];
+        if ($post) {
+            
+            for ($i = 0; $i < count($post['sheetData']); $i++) {
+                if ($i > 0 ) { 
+                    $this->db->table($this->prefix . "account")->insert([
+                        "id" => $post['sheetData'][$i][0] == "" ? "0" : $post['sheetData'][$i][0],
+                        "name" => isset($post['sheetData'][$i][2]) ? $post['sheetData'][$i][2] : "",
+                        "parentId" => $post['sheetData'][$i][1] == "" ? "0" : $post['sheetData'][$i][1],
+                        
+                        "presence" => 1,
+                        "updateDate" => date("Y-m-d H:i:s"),
+                        "updateBy" => model("Token")->userId(),
+                        "inputDate" => date("Y-m-d H:i:s"),
+                        "inputBy" => model("Token")->userId(),
+                    ]);
+                }
+            }
+            $data = [
+                "sheetHeader" => $post['sheetHeader'],
+                "sheetData" => $post['sheetData'][23],
+                "error" => false,
+                "code" => 200
+            ];
+            return $this->response->setJSON($data);
+        }
     }
 
     public function exportAccount()
     {
-        
+
     }
 }

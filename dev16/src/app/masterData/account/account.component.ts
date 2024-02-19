@@ -10,7 +10,7 @@ export class NewCoA {
     public id: number,
     public name: string,
     public accountTypeId: string,
-  ) {  }
+  ) { }
 }
 @Component({
   selector: 'app-account',
@@ -22,11 +22,11 @@ export class AccountComponent implements OnInit {
   disable: boolean = true;
   items: any = [];
   itemsOrigin: any = [];
-  accountType : any = [];
-  item : any;
-  newCoA : any = new NewCoA(0,"","");
-  currencyOptions : any = { prefix: '', thousands: '.', decimal: ',',  precision: 0, }
-  columnHeader : any = [];
+  accountType: any = [];
+  item: any;
+  newCoA: any = new NewCoA(0, "", "");
+  currencyOptions: any = { prefix: '', thousands: '.', decimal: ',', precision: 0, }
+  columnHeader: any = [];
   selectedLang: string = 'en';
   translatedText: string = '';
   constructor(
@@ -40,7 +40,7 @@ export class AccountComponent implements OnInit {
   }
 
   httpGet() {
-    this.newCoA = new NewCoA(0,"","");
+    this.newCoA = new NewCoA(0, "", "");
     this.http.get<any>(environment.api + "account/chartOfAccount", {
       headers: this.configService.headers(),
     }).subscribe(
@@ -48,7 +48,7 @@ export class AccountComponent implements OnInit {
         console.log(data);
         this.items = JSON.parse(JSON.stringify(data['items']));
         this.itemsOrigin = JSON.parse(JSON.stringify(data['items']));
-        this.accountType =  data['acccountType'];
+        this.accountType = data['acccountType'];
         this.columnHeader = data['columnHeader'];
       },
       error => {
@@ -115,10 +115,10 @@ export class AccountComponent implements OnInit {
     }
   }
 
-  addItemChild(x: any){
+  addItemChild(x: any) {
     const body = {
       addItemChild: true,
-      item : x
+      item: x
     }
     this.http.post<any>(environment.api + "account/addItemChild", body, {
       headers: this.configService.headers(),
@@ -133,34 +133,34 @@ export class AccountComponent implements OnInit {
     )
   }
 
-  fnDetailAccountType( id : string, name : string ){
+  fnDetailAccountType(id: string, name: string) {
     const item = this.accountType.find((item: { id: string; }) => item.id === id);
     return item ? item[name] : '';
   }
 
-  open(content: any, item : any) {
+  open(content: any, item: any) {
     this.item = item;
-    if( this.item.id != '1'){
+    if (this.item.id != '1') {
       this.newCoA['accountTypeId'] = item['accountTypeId']
     }
 
-		this.modalService.open(content);
-  }
-
-  modal(content:any){
     this.modalService.open(content);
   }
-  onSubmit(){
+
+  modal(content: any) {
+    this.modalService.open(content);
+  }
+  onSubmit() {
     const body = {
       item: this.item,
-      newCoA : this.newCoA
+      newCoA: this.newCoA
     }
     this.http.post<any>(environment.api + "account/chartOfAccountInsert", body, {
       headers: this.configService.headers(),
     }).subscribe(
       data => {
-       this.httpGet();
-       this.modalService.dismissAll();
+        this.httpGet();
+        this.modalService.dismissAll();
         console.log(data);
       },
       error => {
@@ -169,22 +169,22 @@ export class AccountComponent implements OnInit {
     )
   }
 
-  exportData(ext:string){
-    window.open(environment.api+"export/account", '_blank'); 
+  exportData(ext: string) {
+    window.open(environment.api + "export/account", '_blank');
   }
 
 
-  countPossibleIPs(str : string ) {
+  countPossibleIPs(str: string) {
     // Memisahkan string menjadi oktet-oktet yang terpisah
     const octets = str.split('.');
 
     // Jumlah oktet yang sudah diketahui
     const t = octets.length - 1;
     var a = "";
-    for(let i = 0 ; i < t ; i++){
-      a += "&nbsp; &nbsp;";
+    for (let i = 0; i < t; i++) {
+      a += "&nbsp; ";
     }
 
-    return a ;
-}
+    return a;
+  }
 }
