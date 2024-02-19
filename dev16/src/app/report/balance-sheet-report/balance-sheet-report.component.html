@@ -1,1 +1,37 @@
-<p>balance-sheet-report works!</p>
+<div class="container  font-code ">
+
+    <div class="row mb-2 ">
+        <div class="col-12">
+            <strong>Journal List Report</strong>
+        </div>
+        <div class="col-6">
+            <div>Brand : PT RASA MANIS MALAKA</div>
+            <div>Period : {{params['startDate']}} until {{params['endDate']}}</div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container font-code ">
+    
+    <div class="row sticky-top">
+        <div class="col-6 border-bottom border-top border-3 py-1"> <strong>Description</strong> </div>
+        <div class="col-2 border-bottom border-top border-3 py-1"> <strong>Debit</strong>  </div>
+        <div class="col-2 border-bottom border-top border-3 py-1"> <strong>Credit</strong> </div>
+        <div class="col-2 border-bottom border-top border-3 py-1"> <strong>Balance</strong> </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6"> Description </div>
+        <div class="col-2"> Debit  </div>
+        <div class="col-2"> Credit </div>
+        <div class="col-2"> Balance </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6 border-top"> <strong>Total</strong> </div>
+        <div class="col-2 border-top"> <strong>0</strong>  </div>
+        <div class="col-2 border-top"> <strong>0</strong> </div>
+        <div class="col-2 border-top"> <strong>0</strong> </div>
+    </div>
+</div>

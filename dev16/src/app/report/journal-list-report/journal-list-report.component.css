@@ -4,16 +4,3 @@
 .sticky-top{
     background-color: #fff;
 }
-@media print {
-    body {
-        margin: 0;
-        padding: 0;  
-      } 
-    .container {
-      max-width: 100vw !important; 
-    }
-    .font-code{
-        font-size: 0.8rem;
-    }
-   
-  }

@@ -46,11 +46,11 @@
                     <div class="col-8">
                         <div [ngClass]="{'ms-3': j.credit > 0}">
                             <div> {{j.accountId +" "+j.account}} </div>
-                            <small>{{j.description}}</small>
+                            <em><small>{{j.description}}</small></em>
                         </div>
                     </div>
-                    <div class="col-2 text-end  ">{{j.debit | number}}</div>
-                    <div class="col-2 text-end  ">{{j.credit | number }}</div>
+                    <div class="col-2 text-end">{{j.debit | number}}</div>
+                    <div class="col-2 text-end">{{j.credit | number }}</div>
                 </div>
 
                 <div class="row g-1 ">

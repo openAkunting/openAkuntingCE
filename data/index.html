@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read Excel File</title>
+</head>
+
+<body>
+    <input type="file" id="fileInput">
+    <pre id="output"></pre>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.4/xlsx.full.min.js"></script>
+    <script>
+        // Fungsi untuk membaca file Excel yang diunggah
+        function readExcelFile(file) {
+            const reader = new FileReader();
+
+            reader.onload = function (event) {
+                const data = new Uint8Array(event.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+
+                // Ambil nama setiap sheet
+                const sheetNames = workbook.SheetNames;
+
+                // Ambil isi setiap sheet dan tampilkan di konsol
+                sheetNames.forEach(function (sheetName) {
+                    const worksheet = workbook.Sheets[sheetName];
+                    const sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                    console.log('Sheet Name:', sheetName);
+                    console.log('Sheet Data:', sheetData);
+                });
+            };
+
+            reader.onerror = function (event) {
+                console.error('File could not be read! Code ' + event.target.error.code);
+            };
+
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Event listener untuk ketika file diunggah
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            readExcelFile(file);
+        });
+
+    </script>
+</body>
+
+</html>

@@ -9,6 +9,10 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+
+  startDate : string = "2024-01-01";
+  endDate : string = "2024-01-31";
+
   constructor(
     private activeRouter : ActivatedRoute,
     private router : Router,

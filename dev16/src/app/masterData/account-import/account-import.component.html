@@ -1,0 +1,16 @@
+<p>account-import works! </p>
+<!-- excel-reader.component.html -->
+
+<input type="file" (change)="onFileChange($event)">
+<button (click)="readExcelFile()">Read Excel</button>
+
+<select [(ngModel)]="selectedSheetName">
+  <option *ngFor="let name of sheetNames" [value]="name">{{ name }}</option>
+</select>
+
+<table *ngIf="sheetData.length > 0">
+  <tr *ngFor="let row of sheetData">
+    <td *ngFor="let cell of row">{{ cell }}</td>
+  </tr>
+</table>
+ 

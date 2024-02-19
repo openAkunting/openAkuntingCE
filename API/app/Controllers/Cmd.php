@@ -29,10 +29,7 @@ class Cmd extends BaseController
             $i = 0;
             // Loop melalui setiap baris CSV
             while (($row = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                if ($i > 0) {
-
-
-                    // Menyimpan data ke dalam tabel 'journal' menggunakan model
+                if ($i > 0) { 
                     print_r($row);
                     $journalId = model("Core")->number("journal");
                     $journalDate = $row[0];
@@ -61,8 +58,9 @@ class Cmd extends BaseController
                         "month" => (int) substr($journalDate, 5, 2),
                         "outletID" => 1,
                         "accountId" => $accountId,
+                        "userId" => $userId,
                     );
-                    //$accountBalance =  model("Account")->accountBalance($accountBalanceData);
+                    $accountBalance =  model("Account")->accountBalance($accountBalanceData);
 
                     $this->db->table($this->prefix . "journal_header")->insert([
                         "id" => $journalId,
@@ -86,6 +84,29 @@ class Cmd extends BaseController
             echo "Data berhasil disimpan ke dalam tabel.";
         } else {
             echo "Gagal membuka file CSV.";
+        }
+    }
+
+    function journalHeader(){
+        
+        $template = "SELECT *
+        FROM  " . $this->prefix . "journal 
+        WHERE  presence = 1  AND debit > 0
+        ORDER BY journalDate ASC";
+
+        foreach($this->db->query($template)->getResultArray() as $post){
+           
+            $this->db->table($this->prefix . "journal_header")->insert([
+                "id" => $post['journalId'], 
+                "journalDate" => $post['journalDate'], 
+                "totalCredit" => $post['debit'],
+                "totalDebit" =>  $post['debit'],
+                "presence" => 1,
+                "updateDate" => $post['updateDate'],
+                "updateBy" =>$post['updateBy'],
+                "inputDate" =>$post['inputDate'],
+                "inputBy" =>$post['inputBy'],
+            ]);
         }
     }
 

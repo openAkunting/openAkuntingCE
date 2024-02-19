@@ -31,6 +31,7 @@ import { JournalDetailComponent } from './generalLedger/journal/journal-detail/j
 import { JournalListReportComponent } from './report/journal-list-report/journal-list-report.component';
 import { ProfitAndLossReportComponent } from './report/profit-and-loss-report/profit-and-loss-report.component';
 import { BalanceSheetReportComponent } from './report/balance-sheet-report/balance-sheet-report.component';
+import { AccountImportComponent } from './masterData/account-import/account-import.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,7 @@ import { BalanceSheetReportComponent } from './report/balance-sheet-report/balan
     OutletComponent,
     JournalComponent,
     CashBankComponent,
-    JournalCreateComponent, CashBankCreateComponent, JournalDetailComponent, JournalListReportComponent, ProfitAndLossReportComponent, BalanceSheetReportComponent,
+    JournalCreateComponent, CashBankCreateComponent, JournalDetailComponent, JournalListReportComponent, ProfitAndLossReportComponent, BalanceSheetReportComponent, AccountImportComponent,
   ],
   imports: [
     BrowserModule,

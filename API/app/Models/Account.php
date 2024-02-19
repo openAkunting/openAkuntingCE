@@ -49,7 +49,7 @@ class Account extends Model
         outletID = '" . $post['outletID'] . "' and presence = 1 ";
 
         $id = model("Core")->select("id", "account_balance", $where);
-
+        $userId = $post['userId'];
         if (!$id) {
             $data = array(
                 "year" => $post['year'],
@@ -62,9 +62,9 @@ class Account extends Model
                 "endBalance" => $endBalance,
                 "presence" => 1,
                 "inputDate" => date("Y-m-d H:i:s"),
-                "inputBy" => model("Token")->userId(),
+                "inputBy" =>  $userId,
                 "updateDate" => date("Y-m-d H:i:s"),
-                "updateBy" => model("Token")->userId(),
+                "updateBy" =>  $userId,
             );
             $this->db->table("account_balance")->insert($data);
         }
@@ -74,7 +74,7 @@ class Account extends Model
                 "credit" => $newCredit,
                 "endBalance" => $endBalance, 
                 "updateDate" => date("Y-m-d H:i:s"),
-                "updateBy" => model("Token")->userId(),
+                "updateBy" =>  $userId,
             );
             $this->db->table("account_balance")->update($data, "id =  $id ");
         }

@@ -14,6 +14,8 @@ import { UserRoleComponent } from './masterData/user/user-role/user-role.compone
 import { JournalComponent } from './generalLedger/journal/journal.component'; 
 import { JournalListReportComponent } from './report/journal-list-report/journal-list-report.component';
 import { ProfitAndLossReportComponent } from './report/profit-and-loss-report/profit-and-loss-report.component';
+import { BalanceSheetReportComponent } from './report/balance-sheet-report/balance-sheet-report.component';
+import { AccountImportComponent } from './masterData/account-import/account-import.component';
  
 const routes: Routes = [
   { path: "", component: HomeComponent, data: { active: "home" }, },
@@ -24,6 +26,8 @@ const routes: Routes = [
   { path: "md/glp", component: GeneralLedgerParameterComponent, data: { active: "md/glp" }, },
   { path: "md/an", component: AutoNumberComponent, data: { active: "md/an" }, },
   { path: "md/a", component: AccountComponent, data: { active: "md/a" }, },
+  { path: "md/a/i", component: AccountImportComponent, data: { active: "md/a/i" }, },
+  
   { path: "md/at", component: AccountTypeComponent, data: { active: "md/at" }, },
   { path: "md/u", component: UserComponent, data: { active: "md/u" }, },
   { path: "md/ud", component: UserDetailComponent, data: { active: "md/ud" }, },
@@ -34,7 +38,8 @@ const routes: Routes = [
   
   { path: "report/journalList", component: JournalListReportComponent, data: { active: "", role :'report', controller : '' }, },
   { path: "report/profitAndLoss", component: ProfitAndLossReportComponent, data: { active: "", role :'report', controller : '' }, },
-    
+  { path: "report/balanceSheet", component: BalanceSheetReportComponent, data: { active: "", role :'report', controller : '' }, },
+   
   
 
   { path: "**", component: NotFoundComponent, data: { active: "404" },  canActivate:[]  }, 
