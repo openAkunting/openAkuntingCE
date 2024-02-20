@@ -9,7 +9,7 @@ class Account extends BaseController
     function __construct()
     {
         if (model("Token")->checkValidToken() == '') {
-            exit;
+            //      exit;
         }
 
         // rules check here
@@ -21,7 +21,7 @@ class Account extends BaseController
 
     public function chartOfAccount()
     {
-
+        $accountTree = [];
         $q = "SELECT a.*, '' as 'checkBox' , p.name as 'parent', t.name as 'accountType'
         FROM " . $this->prefix . "account as a  
         left join " . $this->prefix . "account AS p ON p.id = a.parentId
@@ -57,13 +57,42 @@ class Account extends BaseController
                 break;
             $i++;
         }
+
+        $accountTreeQuery = "SELECT id, parentId
+        FROM " . $this->prefix . "account";
+        $accountTree = $this->db->query($accountTreeQuery)->getResultArray();
+
+
+        $item = $this->db->query($q)->getResultArray();
         $data = [
             "error" => false,
-            "items" => $view == 'tree' ? self::generatePyramid() : $this->db->query($q)->getResult(),
+            "items" => $view == 'tree' ? self::generatePyramid() : $item,
             "acccountType" => $acccountType,
             "columnHeader" => $header,
+            //   "level" => model("Account")->getLevel("1110.001.000",$accountTree),
+            "accountTree" => $accountTree,
         ];
         return $this->response->setJSON($data);
+    }
+
+    function test()
+    {
+        $q = "SELECT id, parentId, name
+        FROM " . $this->prefix . "account";
+        $item = $this->db->query($q)->getResultArray();
+
+
+        // ID yang ingin diperiksa
+        $idToCheck = "1110.001.000";
+
+        // Memanggil fungsi untuk mendapatkan level/turunan ID
+        $level = model("Account")->getLevel($idToCheck, $item);
+
+        if ($level >= 0) {
+            echo "ID $idToCheck berada di level $level.";
+        } else {
+            echo "ID $idToCheck tidak ditemukan dalam database.";
+        }
     }
 
     public function generatePyramid()
@@ -294,14 +323,13 @@ class Account extends BaseController
             "code" => 400
         ];
         if ($post) {
-            
+
             for ($i = 0; $i < count($post['sheetData']); $i++) {
-                if ($i > 0 ) { 
+                if ($i > 0) {
                     $this->db->table($this->prefix . "account")->insert([
                         "id" => $post['sheetData'][$i][0] == "" ? "0" : $post['sheetData'][$i][0],
                         "name" => isset($post['sheetData'][$i][2]) ? $post['sheetData'][$i][2] : "",
                         "parentId" => $post['sheetData'][$i][1] == "" ? "0" : $post['sheetData'][$i][1],
-                        
                         "presence" => 1,
                         "updateDate" => date("Y-m-d H:i:s"),
                         "updateBy" => model("Token")->userId(),

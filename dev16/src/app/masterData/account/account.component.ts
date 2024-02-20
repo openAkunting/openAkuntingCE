@@ -24,6 +24,7 @@ export class AccountComponent implements OnInit {
   itemsOrigin: any = [];
   accountType: any = [];
   item: any;
+  accountTree: any = [];
   newCoA: any = new NewCoA(0, "", "");
   currencyOptions: any = { prefix: '', thousands: '.', decimal: ',', precision: 0, }
   columnHeader: any = [];
@@ -50,6 +51,7 @@ export class AccountComponent implements OnInit {
         this.itemsOrigin = JSON.parse(JSON.stringify(data['items']));
         this.accountType = data['acccountType'];
         this.columnHeader = data['columnHeader'];
+        this.accountTree = data['accountTree'];
       },
       error => {
         console.log(error);
@@ -174,17 +176,61 @@ export class AccountComponent implements OnInit {
   }
 
 
-  countPossibleIPs(str: string) {
-    // Memisahkan string menjadi oktet-oktet yang terpisah
-    const octets = str.split('.');
-
-    // Jumlah oktet yang sudah diketahui
-    const t = octets.length - 1;
+  countPossibleIPs(str: string, level: number) {
     var a = "";
-    for (let i = 0; i < t; i++) {
-      a += "&nbsp; ";
-    }
+    if (level == -1) { 
+      // Memisahkan string menjadi oktet-oktet yang terpisah
+      const octets = str.split('.');
 
+      // Jumlah oktet yang sudah diketahui
+      const t = octets.length - 1;
+   
+      for (let i = 0; i < t; i++) {
+        a += "&nbsp; ";
+      }
+    }else{
+      for (let i = 0; i < level; i++) {
+        a += "&nbsp; ";
+      }
+    }
     return a;
+  }
+
+
+
+
+
+  getLevel(id: string, data: any, level: number = 0): number {
+    for (const item of data) {
+      if (item.id === id) {
+        if (item.parentId == null || item.parentId == '0') {
+          return level; // Jika ID merupakan root
+        } else {
+          return this.getLevel(item.parentId, data, level + 1); // Rekursif untuk mencari parent
+        }
+      }
+    }
+    return -1; // Jika ID tidak ditemukan
+  }
+
+  updateStatus(parentId: string, accountTypeId: string): void {
+    this.items.forEach((item: any) => {
+      if (item.parentId == parentId) {
+        item.accountTypeId = accountTypeId;
+        this.updateStatus(item.id, accountTypeId); // Rekursif untuk memperbarui anak-anak
+      }
+    });
+  }
+
+  // Contoh penggunaan
+  updateParentStatus(parentId : string , accountTypeId : string): void {
+    const parentIdToUpdate = parentId; // ID parent yang ingin diperbarui
+    const newStatus = accountTypeId; // Status baru yang ingin diberikan
+
+    // Memanggil fungsi untuk memperbarui status
+    this.updateStatus(parentIdToUpdate, newStatus);
+
+    // Menampilkan data setelah pembaruan
+    //console.log(this.data);
   }
 }

@@ -5,7 +5,7 @@
         </div>
         <div class="col-6 text-end">
 
-            <a [routerLink]="[ '/md/a/i' ]" class="btn btn-sm btn-dark mx-2" >Import</a>
+            <a [routerLink]="[ '/md/a/i' ]" class="btn btn-sm btn-dark mx-2">Import</a>
             <button type="button" class="btn btn-sm btn-dark" (click)="modal(modalExport)">Export to *.CSV</button>
         </div>
     </div>
@@ -42,14 +42,12 @@
                         </td>
                         <td *ngIf="!disable"> <a href="javascript:;" (click)="open(content, x)">Add Child</a> </td>
 
-                        <td> <span [innerHTML]="countPossibleIPs(x.id)"></span> {{x.id}}</td>
+                        <td> <span [innerHTML]="countPossibleIPs(x.id, getLevel(x.id,accountTree) )"></span> {{x.id}}</td>
 
-                        <td> <input type="text" class="form-control form-control-sm" [(ngModel)]="x.name"
-                                [disabled]="disable"> </td>
-                        <td>{{x.parent}}</td>
+                        <td> <input type="text" class="form-control form-control-sm" [(ngModel)]="x.name"  [disabled]="disable">   </td>
+                        <td><small><code>[{{getLevel(x.id,accountTree)}}]</code></small> {{x.parent}}</td>
                         <td>
-                            <select class="form-control form-control-sm" [disabled]="disable"
-                                [(ngModel)]="x.accountTypeId">
+                            <select class="form-control form-control-sm" [disabled]="disable" (change)="updateParentStatus(x.id, x.accountTypeId)" [(ngModel)]="x.accountTypeId">
                                 <option [value]="a.id" *ngFor="let a of accountType">{{a.name}}</option>
                             </select>
                         </td>
@@ -84,8 +82,8 @@
         </div>
 
 
-        <div class="col-12">
-            <div class="text-end">
+        <div class="col-12 sticky-bottom bg-white ">
+            <div class="text-end py-2">
                 <button type="button" class="btn btn-sm btn-primary mx-5" (click)="open(content, { 'id':'1' })"
                     [hidden]="disable">Add Item</button>
 

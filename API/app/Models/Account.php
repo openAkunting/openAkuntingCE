@@ -81,4 +81,18 @@ class Account extends Model
 
         return $data;
     }
+
+    function getLevel($id, $data, $level = 0) {
+        foreach ($data as $item) {
+            if ($item['id'] == $id) {
+                if ($item['parentId'] == null || $item['parentId'] == '0' ) {
+                    return $level; // Jika ID merupakan root
+                } else {
+                    return self::getLevel($item['parentId'], $data, $level + 1); // Jika ID bukan root, lanjutkan pencarian ke parent
+                }
+            }
+        }
+    
+        return -1; // Jika ID tidak ditemukan 
+    }
 }
