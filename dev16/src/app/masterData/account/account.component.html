@@ -23,8 +23,29 @@
                         <th>Type of Account</th>
                         <th>Normal Balance</th>
                         <th>Position</th>
-                        <th>Cash Bank</th>
-                        <th>Status</th>
+                        <th>Cash Bank
+                            <div *ngIf="!disable"> 
+                                <div *ngIf="checkAllCashBank == false" (click)="onCheckBoxAllCashBank(false)">
+                                    <i class="bi bi-square"></i>
+                                </div>
+
+                                <div *ngIf="checkAllCashBank == true" (click)="onCheckBoxAllCashBank(true)">
+                                    <i class="bi bi-check-square-fill"></i>
+                                </div>
+                            </div>
+                        </th>
+                        <th>Status
+
+                            <div *ngIf="!disable"> 
+                                <div *ngIf="checkAllStatus == false" (click)="onCheckBoxAllStatus(false)">
+                                    <i class="bi bi-square"></i>
+                                </div>
+
+                                <div *ngIf="checkAllStatus == true" (click)="onCheckBoxAllStatus(true)">
+                                    <i class="bi bi-check-square-fill"></i>
+                                </div>
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,12 +63,15 @@
                         </td>
                         <td *ngIf="!disable"> <a href="javascript:;" (click)="open(content, x)">Add Child</a> </td>
 
-                        <td> <span [innerHTML]="countPossibleIPs(x.id, getLevel(x.id,accountTree) )"></span> {{x.id}}</td>
+                        <td> <span [innerHTML]="countPossibleIPs(x.id, getLevel(x.id,accountTree) )"></span> {{x.id}}
+                        </td>
 
-                        <td> <input type="text" class="form-control form-control-sm" [(ngModel)]="x.name"  [disabled]="disable">   </td>
+                        <td> <input type="text" class="form-control form-control-sm" [(ngModel)]="x.name"
+                                [disabled]="disable"> </td>
                         <td><small><code>[{{getLevel(x.id,accountTree)}}]</code></small> {{x.parent}}</td>
                         <td>
-                            <select class="form-control form-control-sm" [disabled]="disable" (change)="updateParentStatus(x.id, x.accountTypeId)" [(ngModel)]="x.accountTypeId">
+                            <select class="form-control form-control-sm" [disabled]="disable"
+                                (change)="updateParentStatus(x.id, x.accountTypeId)" [(ngModel)]="x.accountTypeId">
                                 <option [value]="a.id" *ngFor="let a of accountType">{{a.name}}</option>
                             </select>
                         </td>

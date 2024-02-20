@@ -1,0 +1,42 @@
+ 
+<div class="container my-2">
+    <div class="row">
+        <div class="col-12">
+            <strong>Trial Balance</strong>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-sm table-bordered table-hover">
+                <thead>
+                    <tr> 
+                        <th class="bg-light  text-center">Account</th>
+                        <th class="bg-light text-center">Debit</th>
+                        <th class="bg-light text-center">Credit</th>
+                        <th class="bg-light text-center">Balance</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let item of items" [hidden]="item.length <= 0">
+                    <tr>
+                        <th colspan="4">{{item.id + " "+ item.name}}</th>
+                    </tr> 
+                    <tr *ngFor="let x of item.account"> 
+                        <td><a href="javascript:;" (click)="detail(x);"><span class="ms-2">{{x.id+" : "+x.name}}</span></a></td>
+                        <td class="text-end">{{x.debit | number}}</td>
+                        <td class="text-end">{{x.credit | number}}</td>
+                        <td class="text-end">{{x.balance | number}}</td>
+                    </tr> 
+                </tbody>
+                <tfoot>
+                    <tr *ngFor="let x of balance">
+                        <th></th>
+                        <th class="text-end">{{x.debit | number}}</th>
+                        <th class="text-end">{{x.credit | number}}</th>
+                        <th class="text-end">{{x.balance | number}}</th>
+                    </tr>
+                </tfoot>
+
+            </table>
+        </div>
+    </div>
+</div>

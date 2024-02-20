@@ -30,6 +30,8 @@ export class AccountComponent implements OnInit {
   columnHeader: any = [];
   selectedLang: string = 'en';
   translatedText: string = '';
+  checkAllCashBank : boolean = false;
+  checkAllStatus : boolean = false;
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
@@ -66,6 +68,36 @@ export class AccountComponent implements OnInit {
       }
       else if (status == '1') {
         x[name] = '0';
+      }
+    }
+  }
+
+  onCheckBoxAllCashBank(status : boolean){
+    if (this.disable == false) {
+      if (status == false) {
+       this.checkAllCashBank = true; 
+      }
+      else if (status == true) {
+        this.checkAllCashBank = false;
+      }
+
+      for(let i = 0; i < this.items.length ; i++){
+        this.items[i]['cashBank'] = (this.checkAllCashBank  == true) ? "1":"0";
+      }
+    }
+  }
+
+  onCheckBoxAllStatus(status : boolean){
+    if (this.disable == false) {
+      if (status == false) {
+       this.checkAllStatus = true; 
+      }
+      else if (status == true) {
+        this.checkAllStatus = false;
+      }
+
+      for(let i = 0; i < this.items.length ; i++){
+        this.items[i]['status'] = (this.checkAllStatus  == true) ? "1":"0";
       }
     }
   }
@@ -195,9 +227,7 @@ export class AccountComponent implements OnInit {
     }
     return a;
   }
-
-
-
+ 
 
 
   getLevel(id: string, data: any, level: number = 0): number {
@@ -233,4 +263,5 @@ export class AccountComponent implements OnInit {
     // Menampilkan data setelah pembaruan
     //console.log(this.data);
   }
+
 }
