@@ -38,7 +38,9 @@ export class JournalComponent implements OnInit {
   }
 
   httpGet() {
-    this.http.get<any>(environment.api + this.controller+"/index").subscribe(
+    this.http.get<any>(environment.api + this.controller+"/index",{
+      headers : this.configService.headers(),
+    }).subscribe(
       data => {
         this.items = data['items'];
         console.log(data);

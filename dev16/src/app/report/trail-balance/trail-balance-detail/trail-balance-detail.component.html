@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title">Hi there!</h4>
+    <h4 class="modal-title">Trial Balance >> Journal</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
 </div>
 <div class="modal-body">
@@ -11,12 +11,9 @@
                 <div class="col-1">Ref</div>
                 <div class="col-9">
                     <div class="row g-1">
-                        <div class="col-8">
-                            Description
-                        </div>
+                        <div class="col-8"> Description </div>
                         <div class="col-2 text-end">Debit</div>
-                        <div class="col-2 text-end">Credit</div>
-
+                        <div class="col-2 text-end">Credit</div> 
                     </div>
                 </div>
                 
@@ -30,9 +27,9 @@
                 </div>
                 <div class="col-1">{{x.ref}}</div>
                 <div class="col-9">
-                    <div class="row g-1 mb-2" *ngFor="let j of x.journal">
+                    <div class="row g-1 mb-2" *ngFor="let j of x.journal" [ngClass]="{'bg-warning': j.accountId == id}">
                         <div class="col-8">
-                            <div [ngClass]="{'ms-4': j.credit > 0}">{{j.account}} : {{j.account}}</div>
+                            <div [ngClass]="{'ms-4': j.credit > 0}">{{j.accountId}} : {{j.account}}</div>
                             <div [ngClass]="{'ms-4': j.credit > 0}"> <small>{{j.description}}</small> </div>
                             <div [ngClass]="{'ms-4': j.credit > 0}"> <small> {{j.branch ? j.branch+" : " : "" }}
                                     {{j.outlet}} </small></div>

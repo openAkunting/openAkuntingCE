@@ -52,6 +52,47 @@ class Journal extends BaseController
         return $this->response->setJSON($data);
     }
 
+    public function searchById()
+    {
+        $id = $this->request->getVar()['id'];
+        $rest = [];
+        $q  = "SELECT h.*  
+        FROM " . $this->prefix . "journal_header AS h
+        JOIN journal AS j ON j.journalId = h.id
+        WHERE j.presence = 1 AND j.accountId = '$id'";
+        $items = $this->db->query($q )->getResultArray();
+        foreach ($items as $row) {
+
+            $j = "SELECT j.id, j.accountId, j.description, j.debit, j.credit,  a.name as 'account', 
+            o.name as 'outlet', b.name as 'branch'
+            FROM  " . $this->prefix . "journal as j
+            left join account as a on a.id = j.accountId
+            left join outlet as o on o.id = j.outletId
+            left join branch as b on b.id = o.branchId
+            WHERE  j.presence = 1 and j.journalId = '" . $row['id'] . "'
+            ORDER BY j.id ASC"; 
+            $journal = $this->db->query($j)->getResultArray();
+            
+            $rest[] = array(
+                "id" => $row['id'],
+                "note" => $row['note'],
+                "ref" => $row['ref'],
+                "journalDate" => $row['journalDate'],
+                "journal" => $journal,
+                "inputDate" => $row['inputDate'],
+                "inputBy" => $row['inputBy'], 
+            );
+        }
+
+        $data = [
+            "error" => false,
+            "code" => 200,
+            "items" => $rest,
+        ];
+        return $this->response->setJSON($data);
+       
+    }
+
     public function selectItems()
     {
 
@@ -76,7 +117,7 @@ class Journal extends BaseController
 
             $q = "SELECT id, name 
             FROM  " . $this->prefix . "account 
-            WHERE accountTypeId = '".$rec['id']."'
+            WHERE accountTypeId = '" . $rec['id'] . "'
             ORDER BY id ASC";
 
             $account[$i]['coa'] = $this->db->query($q)->getResultArray();
@@ -104,7 +145,6 @@ class Journal extends BaseController
         ];
         return $this->response->setJSON($data);
     }
-
 
     public function detail()
     {
@@ -311,7 +351,6 @@ class Journal extends BaseController
 
         return $this->response->setJSON($data);
     }
-
 
     function test()
     {

@@ -19,9 +19,15 @@ export class TrailBalanceDetailComponent implements OnInit {
   ) { }
   ngOnInit()  {
     this.httpGet();
+    console.log(this.id);
   }
   httpGet() {
-    this.http.get<any>(environment.api + "journal/index").subscribe(
+    this.http.get<any>(environment.api + "journal/searchById",{
+      headers: this.configService.headers(),
+      params : {
+        id : this.id,
+      }
+    }).subscribe(
       data => {
         this.items = data['items'];
         console.log(data);

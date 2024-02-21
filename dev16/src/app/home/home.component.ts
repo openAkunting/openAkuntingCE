@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { environment } from 'src/environments/environment';
 
@@ -8,7 +9,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
   startDate : string = "2024-01-01";
   endDate : string = "2024-01-31";
@@ -16,8 +17,12 @@ export class HomeComponent {
   constructor(
     private activeRouter : ActivatedRoute,
     private router : Router,
-    private configService : ConfigService
+    private configService : ConfigService,
+    private modalService: NgbModal
   ){}
+  ngOnInit(): void {
+   this.modalService.dismissAll();
+  }
   
   logout(){
     console.log("logout");

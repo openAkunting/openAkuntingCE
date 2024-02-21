@@ -23,7 +23,8 @@ class TrialBalance extends BaseController
             $accountQuery = "SELECT a.id, a.name, SUM(j.debit)  AS 'debit', SUM(j.credit) AS 'credit'
             FROM " . $this->prefix . "account a  
             JOIN " . $this->prefix . "journal AS j ON j.accountId = a.id 
-            WHERE a.accountTypeId = '".$row['id']."' AND a.presence = 1 
+            JOIN " . $this->prefix . "journal_header AS h ON h.id = j.journalId
+            WHERE a.accountTypeId = '".$row['id']."' AND a.presence = 1 AND h.presence = 1
             GROUP BY a.id   
             "; 
             $items[$i]['account'] = $this->db->query($accountQuery)->getResultArray(); 
@@ -34,9 +35,10 @@ class TrialBalance extends BaseController
             } 
             $i++;
         } 
-        $total = "SELECT SUM(debit) AS 'debit', SUM(credit) AS 'credit', SUM(debit) - SUM(credit) AS 'balance'
-        FROM " . $this->prefix . "journal
-        WHERE presence = 1";
+        $total = "SELECT SUM(j.debit) AS 'debit', SUM(j.credit) AS 'credit', SUM(j.debit) - SUM(j.credit) AS 'balance'
+        FROM  " . $this->prefix . "journal AS j
+        JOIN " . $this->prefix . "journal_header AS h ON h.id = j.journalId
+        WHERE j.presence = 1 AND h.presence = 1";
         $total = $this->db->query($total)->getResultArray();
 
         $data = [

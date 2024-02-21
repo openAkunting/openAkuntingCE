@@ -36,7 +36,7 @@
                         <div class="col-8">
                             <div class="row g-1 mb-2" *ngFor="let j of x.journal"> 
                                 <div class="col-8" > 
-                                    <div [ngClass]="{'ms-4': j.credit > 0}">{{j.account}} :  {{j.account}}</div>
+                                    <div [ngClass]="{'ms-4': j.credit > 0}">{{j.accountId}} :  {{j.account}}</div>
                                     <div [ngClass]="{'ms-4': j.credit > 0}"> <small>{{j.description}}</small>   </div>
                                     <div [ngClass]="{'ms-4': j.credit > 0}"> <small>  {{j.branch ?  j.branch+" : " : "" }}   {{j.outlet}} </small></div> 
                                 </div>  
