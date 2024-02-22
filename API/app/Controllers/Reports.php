@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-class ProfitAndLossReport extends BaseController
+class Reports extends BaseController
 {
     protected $maxDay = null;
     function __construct()
@@ -12,8 +12,29 @@ class ProfitAndLossReport extends BaseController
             //   exit;
         }
     }
+    public function BalanceSheet()
+    {
+        $startDate = $this->request->getVar()['startDate'];
+        $endDate = $this->request->getVar()['endDate'];
 
-    public function index()
+
+        $dateObj1 = date_create($startDate);
+        $dateObj2 = date_create($endDate);
+        $interval = date_diff($dateObj1, $dateObj2);
+        $totalDays = $interval->days;
+       
+        if ($totalDays < $this->maxDay) {
+            $data = self::report($this->request->getVar(), " balanceSheet = 1");
+        } else {
+            $data = array(
+                "error" => true,
+                "note" => "Max " . $this->maxDay . " day"
+            );
+        }
+
+        return $this->response->setJSON($data);
+    }
+    public function ProfitAndLoss()
     {
         $startDate = $this->request->getVar()['startDate'];
         $endDate = $this->request->getVar()['endDate'];
@@ -25,7 +46,7 @@ class ProfitAndLossReport extends BaseController
         $totalDays = $interval->days;
 
         if ($totalDays < $this->maxDay) {
-            $data = self::report($this->request->getVar());
+            $data = self::report($this->request->getVar(), " profitAndLoss = 1 ");
         } else {
             $data = array(
                 "error" => true,
@@ -36,7 +57,7 @@ class ProfitAndLossReport extends BaseController
         return $this->response->setJSON($data);
     }
 
-    private function report($get)
+    private function report($get, $typeReport )
     {
         $rest = [];
         $startDate = $get['startDate'];
@@ -50,7 +71,7 @@ class ProfitAndLossReport extends BaseController
         ORDER BY  id ASC,  parentId ASC";
         $dataAccount = $this->db->query($dataAccountQ)->getResultArray();
 
-        $accountTypeQ = "SELECT * FROM account_type WHERE profitAndLoss = 1";
+        $accountTypeQ = "SELECT * FROM account_type WHERE $typeReport ";
         $account = [];
         $total = array(
             "debit" => 0,
@@ -70,7 +91,7 @@ class ProfitAndLossReport extends BaseController
             $q = "SELECT a.id , a.name
             FROM account AS a
             LEFT JOIN account_type AS t ON t.id = a.accountTypeId
-            WHERE a.presence = 1 AND t.profitAndLoss = 1 and a.accountTypeId = '" . $row['id'] . "'
+            WHERE a.presence = 1 AND t.$typeReport and a.accountTypeId = '" . $row['id'] . "'
             ORDER BY a.id ASC, a.parentId ASC
             ";
             $account = $this->db->query($q)->getResultArray();

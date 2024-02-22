@@ -30,8 +30,9 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr *ngFor="let a of x.account">
-                <td><span [innerHTML]="addLevel(a)"></span></td>
+            <tr *ngFor="let a of x.account" >
+                <td class="td-zoom" (click)="detail(a)"><span [innerHTML]="addLevel(a)"></span> 
+                    <span class="ms-1 icon-popup"><i class="bi bi-zoom-in"></i></span>  </td>
                 <td class="text-end"> {{a.debit | number}} </td> 
                 <td class="text-end"> {{a.credit | number}}  </td>
                 <td class="text-end"> {{a.balance | number}}</td>

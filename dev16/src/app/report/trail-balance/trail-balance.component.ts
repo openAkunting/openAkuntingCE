@@ -4,8 +4,8 @@ import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
 import { environment } from 'src/environments/environment'; 
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { TrailBalanceDetailComponent } from './trail-balance-detail/trail-balance-detail.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'; 
+import { JournalByAccountComponent } from 'src/app/generalLedger/journal-by-account/journal-by-account.component';
 
 @Component({
   selector: 'app-trail-balance',
@@ -57,8 +57,10 @@ export class TrailBalanceComponent implements OnInit {
 
   detail(x:any){
     console.log(x);
-    const modalRef = this.modalService.open(TrailBalanceDetailComponent, {size:'xl'});
+    const modalRef = this.modalService.open(JournalByAccountComponent, {size:'xl'});
 		modalRef.componentInstance.id = x.id;
+    modalRef.componentInstance.title = 'Trial Balance';
+    
   }
 
 }

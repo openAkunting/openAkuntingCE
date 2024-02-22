@@ -37,7 +37,7 @@ export class BalanceSheetReportComponent implements OnInit {
       //typeTransaction : 'journal',
     //  branchId : '',
     }
-    this.http.get<any>(environment.api+"balanceSheetReport",{
+    this.http.get<any>(environment.api+"Reports/BalanceSheet",{
       headers:this.configService.headers(),
       params : body
     }).subscribe(

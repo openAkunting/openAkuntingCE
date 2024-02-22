@@ -1,0 +1,9 @@
+.td-zoom{
+    cursor: pointer;
+}
+.td-zoom .icon-popup{
+    visibility: hidden;
+}
+.td-zoom:hover .icon-popup{
+    visibility: visible;
+}
