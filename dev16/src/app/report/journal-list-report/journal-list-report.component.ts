@@ -4,6 +4,8 @@ import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
 import { environment } from 'src/environments/environment'; 
 import {   ActivatedRoute, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { JournalDetailComponent } from 'src/app/generalLedger/journal/journal-detail/journal-detail.component';
 
 @Component({
   selector: 'app-journal-list-report',
@@ -13,12 +15,14 @@ import {   ActivatedRoute, Router } from '@angular/router';
 export class JournalListReportComponent implements OnInit {
   items : any = [];
   params : any = [];
+  controller : string = "Journal";
   constructor(
     private http: HttpClient,
     private configService: ConfigService, 
     public lang: LanguageService,
     public router: Router,
     public activeRouter: ActivatedRoute,  
+    private modalService: NgbModal,
   ) { 
   }
 
@@ -48,6 +52,17 @@ export class JournalListReportComponent implements OnInit {
         console.log(error);
       }
     )
+  }
+
+
+  detail(item: any) {
+    
+    const modalRef = this.modalService.open(JournalDetailComponent, { size: 'xl' });
+    modalRef.componentInstance.controller = this.controller; 
+    modalRef.componentInstance.id = item.id;
+    modalRef.componentInstance.newItemEvent.subscribe(() => {
+      this.httpGet();
+    });
   }
 
 }

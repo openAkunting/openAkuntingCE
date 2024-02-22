@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-        <div class="col-12">
+        <div class="col-4">
             <p>Master Data</p>
             <ul>
                 <li> <a [routerLink]="[ '/md/u' ]">User</a> </li>
@@ -30,6 +30,14 @@
             </ul>
             <hr>
             <button type="button" class="btn btn-dark btn-sm" (click)="logout()">Logout</button>
+        </div>
+        <div class="col-8">
+          
+              <div id="sortable">
+                <div><span class="handle" id="11" data-id="11">handle</span> temo 1 </div>
+                <div><span class="handle" id="22" data-id="22">handle</span> Item 2 </div>
+                <div><span class="handle" id="33" data-id="33">handle</span> Item 3 </div>
+              </div>
         </div>
     </div>
 </div>

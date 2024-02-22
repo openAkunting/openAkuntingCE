@@ -28,17 +28,20 @@
     </div>
 
     <div class="row mb-1" *ngFor="let x of items">
-        <div class="row g-1"> 
+        <div class="row g-1">
             <div class="col-12 ">
                 <strong> <small>Transaction date : {{x.journalDate}}</small></strong>
             </div>
         </div>
 
-        <div class="row g-1  pb-1 border-bottom" *ngFor="let header of x.header; let i = index">
+        <div class="row g-1  pb-1 border-bottom td-zoom" *ngFor="let header of x.header; let i = index">
             <div class="col-2">
                 <div class="d-flex ms-2">
                     <div>{{i+1}}.</div>
-                    <div class="ms-2"> {{header.id}}</div>
+                    <div class="ms-2">
+                        <a href="javascript:;" (click)="detail(header)">{{header.id}}<span class="ms-1 icon-popup"><i class="bi bi-zoom-in"></i></span></a> 
+                       
+                    </div>
                 </div>
             </div>
             <div class="col-10">

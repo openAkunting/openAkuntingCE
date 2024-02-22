@@ -131,8 +131,16 @@
 
 </div>
 <div class="modal-footer">
+    <button type="button" [hidden]="disable" class="btn btn-warning mx-1" (click)="editable(true);" >Cancel</button>
+    
+    <button type="button" [hidden]="disable" class="btn btn-dark mx-1" [disabled]="!submit ||  summary.balance !=0 "  (click)="onSubmit();">Update</button>
+
+   
+    <button type="button" [hidden]="!disable" class="btn btn-warning mx-1" (click)="editable(false);" >Edit</button>
 
     <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
-    <!-- <button type="button" class="btn btn-dark" [disabled]="!submit ||  summary.balance !=0 "  (click)="onSubmit();">submit</button> -->
 
+   
+    
+   
 </div>

@@ -151,6 +151,7 @@ export class JournalDetailComponent implements OnInit {
       }
     }
   } 
+
   onSubmit() {
     const body = {
       items : this.items,
@@ -172,5 +173,8 @@ export class JournalDetailComponent implements OnInit {
      
   } 
   
+  editable(status : boolean){
+    this.disable = status;
+  }
 
 }
