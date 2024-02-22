@@ -21,14 +21,12 @@
                 <a [routerLink]="[ '/tb']">Trial Balance</a>
             </p>
             <hr>
-            <p>Report</p>
+            <p>Report</p> 
+           select date :  <input type="date" [(ngModel)]="startDate" > s.d <input type="date" [(ngModel)]="endDate" >
             <ul>  
-                <li> <a [routerLink]="[ '/report/journalList' ]" [queryParams]="{startDate: startDate, endDate:endDate}" target="_blank" > Journal List</a> 
-                
-                 :: <input type="date" [(ngModel)]="startDate" > s.d <input type="date" [(ngModel)]="endDate" >
-                </li> 
-                <li> <a [routerLink]="[ '/report/profitAndLoss' ]" target="_blank"> Profit And Loss</a> </li> 
-                <li> <a [routerLink]="[ '/report/balanceSheet' ]" target="_blank"> Balance Sheet</a> </li> 
+                <li> <a [routerLink]="[ '/report/journalList' ]" [queryParams]="{startDate: startDate, endDate:endDate}" target="_blank" > Journal List</a>    </li> 
+                <li> <a [routerLink]="[ '/report/profitAndLoss' ]"  [queryParams]="{startDate: startDate, endDate:endDate}" target="_blank"> Profit And Loss</a> </li> 
+                <li> <a [routerLink]="[ '/report/balanceSheet' ]"  [queryParams]="{startDate: startDate, endDate:endDate}" target="_blank"> Balance Sheet</a> </li> 
             </ul>
             <hr>
             <button type="button" class="btn btn-dark btn-sm" (click)="logout()">Logout</button>

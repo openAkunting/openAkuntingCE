@@ -10,9 +10,9 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
-  startDate : string = "2024-01-01";
-  endDate : string = "2024-01-31";
+  date : any = new Date();
+  startDate : string = "2024-"+("0" + (this.date.getMonth() + 1)).slice(-2)+"-01";
+  endDate : string = "2024-"+("0" + (this.date.getMonth() + 1)).slice(-2)+"-29";
 
   constructor(
     private activeRouter : ActivatedRoute,
@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   ){}
   ngOnInit(): void {
    this.modalService.dismissAll();
+   console.log(this.date.getMonth());
   }
   
   logout(){

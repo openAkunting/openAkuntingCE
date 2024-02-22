@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
 import { environment } from 'src/environments/environment'; 
-import {   ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-balance-sheet-report',
@@ -13,6 +13,7 @@ import {   ActivatedRoute, Router } from '@angular/router';
 export class BalanceSheetReportComponent implements OnInit {
   items : any = [];
   params : any = [];
+  total : any = [];
   constructor(
     private http: HttpClient,
     private configService: ConfigService, 
@@ -36,12 +37,13 @@ export class BalanceSheetReportComponent implements OnInit {
       //typeTransaction : 'journal',
     //  branchId : '',
     }
-    this.http.get<any>(environment.api+"journalReport",{
+    this.http.get<any>(environment.api+"balanceSheetReport",{
       headers:this.configService.headers(),
       params : body
     }).subscribe(
       data=>{
         this.items = data['data'];
+        this.total = data['total'];
         console.log(data);
       },
       error=>{
@@ -50,4 +52,14 @@ export class BalanceSheetReportComponent implements OnInit {
     )
   }
 
+
+  addLevel(account:any){
+    let tab = "";
+    for(let i = 0; i < account['level'] ; i++){
+      tab += "&nbsp;";
+    } 
+    tab += "<code>"+account['id']+"</code>"+' : ';
+
+    return tab+account['name'] ;
+  }
 }

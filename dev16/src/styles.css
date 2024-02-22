@@ -5,6 +5,9 @@
     font-style: normal;
     font-size: 0.9rem;
 }
+.td-header td, .td-header th{
+  background-color:#f8f9fa;
+}
 @media print {
     body {
         margin: 0;
