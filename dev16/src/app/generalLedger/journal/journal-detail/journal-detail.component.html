@@ -39,10 +39,11 @@
 
                         <th>Debit</th>
                         <th>Credit</th>
-                        <th></th>
+                        <th *ngIf="!disable"></th>
+                        <th *ngIf="!disable"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="sortable">
                     <tr *ngFor="let x of items; let i = index">
                         <td>
                             <select class="form-control form-control-sm" [(ngModel)]="x.outletId" [disabled]="disable"
@@ -51,11 +52,12 @@
                             </select>
                         </td>
                         <td>
-                            <select class="form-control form-control-sm" [(ngModel)]="x.accountId" [disabled]="disable"
+                           <select class="form-control form-control-sm" [(ngModel)]="x.accountId"
                                 (change)="calculation()">
-                                <option [value]="a.id" *ngFor="let a of selectAccount">{{a.id+" : "+a.name}}</option>
+                                <optgroup [label]="a.name" *ngFor="let a of selectAccount">
+                                    <option [value]="c.id" *ngFor="let c of a.coa">{{c.id+" : "+c.name}}</option>
+                                </optgroup>
                             </select>
-
                         </td>
 
                         <td>
@@ -65,30 +67,30 @@
                         <td>
                             <input type="text" currencyMask [options]="currencyOptions" (keypress)="keyPress(x,'debit')" [disabled]="disable"
                                 class="form-control form-control-sm" [(ngModel)]="x.debit">
-                        </td>
+                                 
+                        </td> 
 
                         <td>
                             <input type="text" currencyMask [options]="currencyOptions"
                                 (keypress)="keyPress(x,'credit')" class="form-control form-control-sm" [disabled]="disable"
                                 [(ngModel)]="x.credit">
                         </td>
-                        <td>
-                            <a *ngIf="i>1" (click)="removeRow(i);">removeRow</a>
+                        <td *ngIf="!disable">
+                            <a *ngIf="items.length > 2" (click)="removeRow(i);">removeRow</a>
                         </td>
+                        <td *ngIf="!disable"><span class="handle"   [attr.data-id]="x.id">handle</span></td>
                     </tr>
                 </tbody>
-                <tfoot [hidden]="disable">
-                    <tr>
-                        <td colspan="4" class="text-end">
-                            <button type="button" (click)="addrow();" class="btn btn-sm btn-light">Add Row</button>
-                        </td>
-                        <td></td>
-                    </tr>
-                </tfoot>
+                
             </table>
+           
+        </div>
+        <div class="col-12 text-end mb-3 " [hidden]="disable">
+            <button type="button" (click)="addrow();" class="btn btn-sm btn-light">Add Row</button>
+            
         </div>
     </div>
-
+    {{items | json}}
     <div class="row">
         <div class="col-6">
             <table>
@@ -120,8 +122,7 @@
                 <tr>
                     <td>Balance <span *ngIf="summary.balance == 0"><i class="bi bi-check-lg"></i></span> </td>
                     <td>
-                        <div class="text-end" [ngClass]="{'text-danger': summary.balance != 0}"> {{summary.balance |
-                            number}}</div>
+                        <div class="text-end" [ngClass]="{'text-danger': summary.balance != 0}"> {{summary.balance |  number}}</div>
                     </td>
                 </tr>
             </table>
@@ -133,7 +134,7 @@
 <div class="modal-footer">
     <button type="button" [hidden]="disable" class="btn btn-warning mx-1" (click)="editable(true);" >Cancel</button>
     
-    <button type="button" [hidden]="disable" class="btn btn-dark mx-1" [disabled]="!submit ||  summary.balance !=0 "  (click)="onSubmit();">Update</button>
+    <button type="button" [hidden]="disable" class="btn btn-dark mx-1" [disabled]="!submit ||  summary.balance !=0 "  (click)="onUpdate();">Update</button>
 
    
     <button type="button" [hidden]="!disable" class="btn btn-warning mx-1" (click)="editable(false);" >Edit</button>

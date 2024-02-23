@@ -1,9 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
 import { environment } from 'src/environments/environment';
+declare var $:any;
+
 export class Model {
   constructor( 
     public journalDate: any,
@@ -16,7 +18,7 @@ export class Model {
   templateUrl: './journal-detail.component.html',
   styleUrls: ['./journal-detail.component.css']
 })
-export class JournalDetailComponent implements OnInit {
+export class JournalDetailComponent implements OnInit, AfterViewInit {
   @Output() newItemEvent = new EventEmitter<string>();
   @Input() id: any;
   @Input() controller: any;
@@ -46,12 +48,17 @@ export class JournalDetailComponent implements OnInit {
     private configService: ConfigService,
     public lang: LanguageService
   ) { }
+ 
 
   
   ngOnInit(): void {
     this.newItem();
     this.httpGet();
   }
+  ngAfterViewInit(): void {
+    this.jqSortable();
+  }
+
   newItem() {
     const curDate = new Date();
     this.model = new Model(
@@ -81,6 +88,7 @@ export class JournalDetailComponent implements OnInit {
         data['items'].forEach((el: any) => {
           
           this.items.push({
+            id : el['id'],
             outletId : el['outletId'],
             accountId:  el['accountId'],
             description:  el['description'],
@@ -103,14 +111,30 @@ export class JournalDetailComponent implements OnInit {
   }
 
   addrow() {
-    const temp = {
-      outletId : "",
-      accountId: "",
-      description: "",
-      debit: 0,
-      credit: 0,
+    const body = {
+      id : this.id,
+      controller : this.controller,
     }
-    this.items.push(temp);
+    this.http.post<any>(environment.api+"journal/addRow",body,{
+      headers : this.configService.headers(),
+    }).subscribe(
+      data=>{
+        console.log(data);
+        const temp = {
+          id : data['item']['id'],
+          outletId : "",
+          accountId: "",
+          description: "",
+          debit: 0,
+          credit: 0,
+        }
+        this.items.push(temp);
+      },
+      error=>{
+        console.log(error);
+      }
+    )
+    
     this.calculation();
   }
 
@@ -131,12 +155,12 @@ export class JournalDetailComponent implements OnInit {
   }
 
   calculation() {
-    console.log("calculation();")
+    
     this.summary.credit = 0;
     this.summary.debit = 0;
 
     for (let i = 0; i < this.items.length; i++) {
-      console.log(this.items[i].debit);
+ 
       this.summary.credit += parseFloat(this.items[i].credit);
       this.summary.debit += parseFloat(this.items[i].debit);
     }
@@ -152,13 +176,13 @@ export class JournalDetailComponent implements OnInit {
     }
   } 
 
-  onSubmit() {
+  onUpdate() {
     const body = {
       items : this.items,
-      model :this.model,
-      typeJournal : this.typeJournal,
+      model :this.model, 
+      journalId : this.id
     }
-    this.http.post<any>(environment.api + "journal/onSubmit",body, {
+    this.http.post<any>(environment.api + "journal/onUpdate",body, {
       headers: this.configService.headers(),
     }).subscribe(
       data => { 
@@ -173,8 +197,51 @@ export class JournalDetailComponent implements OnInit {
      
   } 
   
+  
   editable(status : boolean){
     this.disable = status;
   }
 
+  onSorting(order:any){
+    const body = {
+      order : order,   
+      journalId : this.id
+    }
+    this.http.post<any>(environment.api + "journal/onSorting",body, {
+      headers: this.configService.headers(),
+    }).subscribe(
+      data => { 
+        console.log(data);
+        this.newItemEvent.emit(); 
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  jqSortable(){
+    var self = this;
+    $( function() {
+      $( "#sortable" ).sortable({
+        placeholder: "ui-state-highlight",
+        handle: ".handle",
+        update: function( event: any, ui: any ) {
+         
+            const order: any[] = [];
+            $(".handle").each((index: number, element: any) => {
+              const itemId = $(element).data("id");
+              order.push(itemId);
+            });
+         
+            const body = {
+              order: order, 
+            }
+            console.log(body);
+           self.onSorting(order)
+        }
+      });
+      
+    } );
+  }
 }

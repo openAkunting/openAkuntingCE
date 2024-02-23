@@ -98,6 +98,12 @@ class CashBank extends BaseController
         AND cashBank = 1
         ORDER BY id ASC";
 
+    //     $account = "SELECT id, name, cashBank
+    //     FROM " . $this->prefix . "account AS t1
+       
+    //    WHERE cashBank = 1
+    //     ORDER BY id ASC";
+
         $outlet = "SELECT o.*, b.name as 'branch'
         FROM  " . $this->prefix . "outlet  as o
         left join branch as b on b.id = o.branchId 
@@ -106,7 +112,7 @@ class CashBank extends BaseController
 
         $template = "SELECT *
         FROM  " . $this->prefix . "template   
-        WHERE  presence = 1 and tableName = 'cash_bank'   
+        WHERE  presence = 1 and tableName = 'CashBank'   
         ORDER BY name ASC";
 
         $data = [
@@ -241,6 +247,7 @@ class CashBank extends BaseController
                             "month" => (int)$post['model']['journalDate']['month'],
                             "outletID" => $row['outletId'],
                             "accountId" => $row['accountId'],
+                            "userId" => model("Token")->userId()
                         );
                        $accountBalance =  model("Account")->accountBalance($accountBalanceData);
                     }

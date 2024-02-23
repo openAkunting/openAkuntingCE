@@ -27,7 +27,7 @@ class Journal extends BaseController
             left join outlet as o on o.id = j.outletId
             left join branch as b on b.id = o.branchId
             WHERE  j.presence = 1 and j.journalId = '" . $row['id'] . "'
-            ORDER BY j.id ASC";
+            ORDER BY j.sorting ASC, j.id ASC";
             $journal = $this->db->query($j)->getResultArray();
 
             $rest[] = array(
@@ -56,11 +56,11 @@ class Journal extends BaseController
     {
         $id = $this->request->getVar()['id'];
         $rest = [];
-        $q  = "SELECT h.*  
+        $q = "SELECT h.*  
         FROM " . $this->prefix . "journal_header AS h
         JOIN journal AS j ON j.journalId = h.id
         WHERE j.presence = 1 AND j.accountId = '$id'";
-        $items = $this->db->query($q )->getResultArray();
+        $items = $this->db->query($q)->getResultArray();
         foreach ($items as $row) {
 
             $j = "SELECT j.id, j.accountId, j.description, j.debit, j.credit,  a.name as 'account', 
@@ -70,9 +70,9 @@ class Journal extends BaseController
             left join outlet as o on o.id = j.outletId
             left join branch as b on b.id = o.branchId
             WHERE  j.presence = 1 and j.journalId = '" . $row['id'] . "'
-            ORDER BY j.id ASC"; 
+            ORDER BY j.id ASC";
             $journal = $this->db->query($j)->getResultArray();
-            
+
             $rest[] = array(
                 "id" => $row['id'],
                 "note" => $row['note'],
@@ -80,7 +80,7 @@ class Journal extends BaseController
                 "journalDate" => $row['journalDate'],
                 "journal" => $journal,
                 "inputDate" => $row['inputDate'],
-                "inputBy" => $row['inputBy'], 
+                "inputBy" => $row['inputBy'],
             );
         }
 
@@ -90,7 +90,7 @@ class Journal extends BaseController
             "items" => $rest,
         ];
         return $this->response->setJSON($data);
-       
+
     }
 
     public function selectItems()
@@ -165,7 +165,10 @@ class Journal extends BaseController
         WHERE o.presence = 1 and o.status = 1
         ORDER BY  b.name ASC, o.name ASC";
 
-        $items = "SELECT * FROM journal where journalId = '$id' and presence = 1 order by id ASC ";
+        $items = "SELECT * FROM journal 
+        where journalId = '$id' and presence = 1 
+        ORDER BY sorting ASC, id ASC ";
+
         $header = "SELECT h.* , t.name as 'template'
         FROM journal_header as h  
         LEFT JOIN template as t on t.id = h.templateId
@@ -347,6 +350,167 @@ class Journal extends BaseController
                 ];
             }
 
+        }
+
+        return $this->response->setJSON($data);
+    }
+
+    public function addRow()
+    {
+        $json = file_get_contents('php://input');
+        $post = json_decode($json, true);
+        $data = [
+            "error" => true,
+            "code" => 400
+        ];
+        if ($post) {
+            $journalId = $post['id'];
+            $this->db->table($this->prefix . 'journal')->insert([
+                "journalId" => $journalId,
+                "presence" => 4,
+                "updateDate" => date("Y-m-d H:i:s"),
+                "updateBy" => model("Token")->userId(),
+                "inputDate" => date("Y-m-d H:i:s"),
+                "inputBy" => model("Token")->userId()
+            ]);
+            $id = model("Core")->select("id", $this->prefix . "journal", "journalId = '$journalId' and presence = 4 order by inputDate DESC");
+            $data = [
+                "error" => false,
+                "code" => 200,
+                "item" => [
+                    "id" => $id,
+                ],
+            ];
+
+
+        }
+
+        return $this->response->setJSON($data);
+    }
+    public function onUpdate()
+    {
+        $json = file_get_contents('php://input');
+        $post = json_decode($json, true);
+        $data = [
+            "error" => true,
+            "code" => 400
+        ];
+        if ($post) {
+            $debit = 0;
+            $credit = 0;
+            foreach ($post['items'] as $row) {
+                $debit += $row['debit'];
+                $credit += $row['credit'];
+            }
+            if (($credit - $debit) == 0) {
+
+                //  $this->db->transStart();
+                $debit = 0;
+                $credit = 0;
+                $journalId = $post['journalId'];
+                $this->db->table($this->prefix . "journal")->update([
+                    "presence" => 4,
+                    "updateDate" => date("Y-m-d H:i:s"),
+                    "updateBy" => model("Token")->userId(),
+                ], " journalId =  '" . $journalId . "' ");
+                $journalDate = $post['model']['journalDate']['year'] . "-" . $post['model']['journalDate']['month'] . "-" . $post['model']['journalDate']['day'];
+
+
+                foreach ($post['items'] as $row) {
+                    $this->db->table($this->prefix . "journal")->update([
+                        "outletId" => $row['outletId'],
+                        "accountId" => $row['accountId'],
+                        "debit" => $row['debit'],
+                        "credit" => $row['credit'],
+                        "presence" => 1,
+                        "description" => $row['description'],
+                        "updateDate" => date("Y-m-d H:i:s"),
+                        "updateBy" => model("Token")->userId(),
+                    ], " id =  '" . $row['id'] . "' ");
+                    $debit += $row['debit'];
+                    $credit += $row['credit'];
+
+                    // $accountBalanceData = array(
+                    //     "debit" => $row['debit'],
+                    //     "credit" => $row['credit'],
+                    //     "journalDate" => $journalDate,
+                    //     "year" => (int) $post['model']['journalDate']['year'],
+                    //     "month" => (int) $post['model']['journalDate']['month'],
+                    //     "outletID" => $row['outletId'],
+                    //     "accountId" => $row['accountId'],
+                    //     "userId" => model("Token")->userId() 
+                    // );
+                    // $accountBalance = model("Account")->accountBalance($accountBalanceData);
+
+                }
+                $this->db->table($this->prefix . "journal_header")->update([
+                    "journalDate" => $journalDate,
+                    "ref" => $post['model']['ref'],
+                    "note" => $post['model']['note'],
+                    "totalCredit" => $credit,
+                    "totalDebit" => $debit,
+                    "updateDate" => date("Y-m-d H:i:s"),
+                    "updateBy" => model("Token")->userId(),
+                ], " id =  '$journalId' ");
+
+                $this->db->table($this->prefix . "journal")->update([
+                    "presence" => 0,
+                    "updateDate" => date("Y-m-d H:i:s"),
+                    "updateBy" => model("Token")->userId(),
+                ], " presence =  4 ");
+                // if ($this->db->transStatus() != false) {
+                //     $this->db->transComplete();
+                // } else {
+                //     $this->db->transRollback();
+                // }
+                $data = [
+                    "error" => false,
+                    // "accountBalance" => $accountBalance,
+                    // "transaction" => $this->db->transStatus() === false ? false : true,
+                    "code" => 200,
+                    "post" => $post,
+                ];
+            } else {
+                $data = [
+                    "error" => true,
+                    "code" => 400
+                ];
+            }
+
+        }
+
+        return $this->response->setJSON($data);
+    }
+
+
+    public function onSorting()
+    {
+        $json = file_get_contents('php://input');
+        $post = json_decode($json, true);
+        $data = [
+            "error" => true,
+            "code" => 400
+        ];
+        if ($post) {
+            $journalId = $post['journalId'];
+            $i = 1;
+            foreach ($post['order'] as $row) {
+                $this->db->table($this->prefix . 'journal')->update([
+                    "sorting" => $i,
+                    "updateDate" => date("Y-m-d H:i:s"),
+                    "updateBy" => model("Token")->userId(),
+                ], " id = '" . $row . "'");
+                $i++;
+            }
+
+            $id = model("Core")->select("id", $this->prefix . "journal", "journalId = '$journalId' and presence = 4 order by inputDate DESC");
+            $data = [
+                "error" => false,
+                "code" => 200,
+                "item" => [
+                    "id" => $id,
+                ],
+            ];
         }
 
         return $this->response->setJSON($data);

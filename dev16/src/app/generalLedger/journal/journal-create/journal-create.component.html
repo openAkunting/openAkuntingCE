@@ -96,12 +96,23 @@
                             </select>
                         </td>
                         <td>
-                            <select class="form-control form-control-sm" [(ngModel)]="x.accountId"
-                                (change)="calculation()">
-                                <optgroup [label]="a.name" *ngFor="let a of selectAccount">
-                                    <option [value]="c.id" *ngFor="let c of a.coa">{{c.id+" : "+c.name}}</option>
-                                </optgroup>
-                            </select>
+                         
+                            <div *ngIf="controller == 'Journal'">
+                                <select class="form-control form-control-sm" [(ngModel)]="x.accountId"
+                                    (change)="calculation()">
+                                    <optgroup [label]="a.name" *ngFor="let a of selectAccount">
+                                        <option [value]="c.id" *ngFor="let c of a.coa">{{c.id+" : "+c.name}}</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div *ngIf="controller == 'CashBank'">
+                                <select class="form-control form-control-sm" [(ngModel)]="x.accountId"
+                                    (change)="calculation()">
+                                    <option [value]="a.id" *ngFor="let a of selectAccount">{{a.id+" : "+a.name}}
+                                    </option>
+                                </select>
+                            </div>
+
 
                         </td>
 
