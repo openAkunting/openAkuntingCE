@@ -21,7 +21,7 @@
   visibility: visible;
 }
  
-.ui-state-highlight { height: 1.5rem; line-height: 1.2em; background-color: #f00 !important; }  
+.ui-state-highlight { height: 1.5rem; line-height: 1.2em; background-color: rgb(250, 255, 205,0.4) !important; }  
 
 
 @media print {

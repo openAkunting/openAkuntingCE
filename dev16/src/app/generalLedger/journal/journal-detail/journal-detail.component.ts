@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
@@ -19,6 +19,22 @@ export class Model {
   styleUrls: ['./journal-detail.component.css']
 })
 export class JournalDetailComponent implements OnInit, AfterViewInit {
+  @HostListener('window:keydown', ['$event'])
+  onKeyPress($event: KeyboardEvent) {
+    // if (($event.ctrlKey || $event.metaKey) && $event.keyCode == 67) {
+    //   this.calculation(); console.log('CTRL + C 2');
+    // }
+    // case 67: break;  //Keyboard.C
+    // case 86: break;  //Keyboard.V
+    // case 88: break;  //Keyboard.X
+    if (($event.ctrlKey || $event.metaKey) && ($event.keyCode == 86 || $event.keyCode == 88)) {
+      var self  = this;
+      setTimeout(function(){
+        self.calculation();
+      },100); 
+      console.log('CTRL +  V 1');
+    }
+  }
   @Output() newItemEvent = new EventEmitter<string>();
   @Input() id: any;
   @Input() controller: any;

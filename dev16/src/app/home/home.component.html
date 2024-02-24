@@ -1,20 +1,20 @@
 <div class="container">
     <div class="row">
-        <div class="col-4">
+        <div class="col-3">
             <p>Master Data</p>
             <ul>
-                <li> <a [routerLink]="[ '/md/u' ]">User</a> </li>
-                <li> <a [routerLink]="[ '/md/at' ]">Type of Account</a> </li> 
-                <li> <a [routerLink]="[ '/md/a' ]">Chart of Accounts</a> </li> 
-                <li> <a [routerLink]="[ '/md/an' ]">Auto Number</a> </li>
-                <li> <a [routerLink]="[ '/md/glp' ]">General Ledger Parameter</a> </li>  
+                <li> <a (click)="addTab('/md/u')" [routerLink]="[ '/md/u' ]">User</a> </li>
+                <li> <a (click)="addTab('/md/at')" [routerLink]="[ '/md/at' ]">Type of Account</a> </li> 
+                <li> <a (click)="addTab('/md/a')" [routerLink]="[ '/md/a' ]">Chart of Accounts</a> </li> 
+                <li> <a (click)="addTab('/md/an')" [routerLink]="[ '/md/an' ]">Auto Number</a> </li>
+                <li> <a (click)="addTab('/md/glp')" [routerLink]="[ '/md/glp' ]">Global Parameter</a> </li>  
             </ul>
             <hr>
             <p>General Ledger</p>
             <ul> 
-                <li> <a [routerLink]="[ '/gl/j' ]">Journal</a> </li> 
-                <li> <a [routerLink]="[ '/gl/cb' ]">Cash Bank</a> </li>  
-                <li> <a [routerLink]="[ '/gl/l' ]">Ledger</a> </li> 
+                <li> <a (click)="addTab( '/gl/j')" [routerLink]="[ '/gl/j' ]">Journal</a> </li> 
+                <li> <a (click)="addTab('/gl/cb')" [routerLink]="[ '/gl/cb' ]">Cash Bank</a> </li>  
+                <li> <a (click)="addTab('/gl/l')" [routerLink]="[ '/gl/l' ]">Ledger</a> </li> 
             </ul>
             <hr>
             <p>
@@ -31,13 +31,26 @@
             <hr>
             <button type="button" class="btn btn-dark btn-sm" (click)="logout()">Logout</button>
         </div>
-        <div class="col-8">
-          
-              <div id="sortable">
-                <div><span class="handle" id="11" data-id="11">handle</span> temo 1 </div>
-                <div><span class="handle" id="22" data-id="22">handle</span> Item 2 </div>
-                <div><span class="handle" id="33" data-id="33">handle</span> Item 3 </div>
-              </div>
+        <div class="col-9"> 
+            <div>
+                sample tabs history
+                <ul>
+                    <li > </li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item" *ngFor="let item of history"> <a [routerLink]="[  item.path ]"  [queryParams]="{id:123}">{{item.name}}</a> &nbsp;<i class="bi bi-x-square-fill"></i> </li>
+
+                </ul>
+            </div>
+                <div>
+                    sortable
+                    <div id="sortable">
+                        <div><span class="handle" id="11" data-id="11"><i class="bi bi-arrows-vertical"></i></span> temo 1 </div>
+                        <div><span class="handle" id="22" data-id="22"><i class="bi bi-arrows-vertical"></i></span> Item 2 </div>
+                        <div><span class="handle" id="33" data-id="33"><i class="bi bi-arrows-vertical"></i></span> Item 3 </div>
+                      </div>
+                </div>
+              
         </div>
     </div>
 </div>

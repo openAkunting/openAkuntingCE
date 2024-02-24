@@ -24,12 +24,18 @@ export class Model {
 export class JournalCreateComponent implements OnInit {
   @HostListener('window:keydown', ['$event'])
   onKeyPress($event: KeyboardEvent) {
-    if (($event.ctrlKey || $event.metaKey) && $event.keyCode == 67) {
-      this.calculation(); console.log('CTRL + C 2');
-    }
+    // if (($event.ctrlKey || $event.metaKey) && $event.keyCode == 67) {
+    //   this.calculation(); console.log('CTRL + C 2');
+    // }
 
-    if (($event.ctrlKey || $event.metaKey) && $event.keyCode == 86) {
-      this.calculation();
+    // case 67: break;  //Keyboard.C
+    // case 86: break;  //Keyboard.V
+    // case 88: break;  //Keyboard.X
+    if (($event.ctrlKey || $event.metaKey) && ($event.keyCode == 86 || $event.keyCode == 88)) {
+      var self  = this;
+      setTimeout(function(){
+        self.calculation();
+      },100); 
       console.log('CTRL +  V 1');
     }
   }
