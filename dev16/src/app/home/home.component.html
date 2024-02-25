@@ -33,13 +33,11 @@
         </div>
         <div class="col-9"> 
             <div>
-                sample tabs history
-                <ul>
-                    <li > </li>
-                </ul>
+                sample tabs history 
                 <ul class="list-group list-group-horizontal">
-                    <li class="list-group-item" *ngFor="let item of history"> <a [routerLink]="[  item.path ]"  [queryParams]="{id:123}">{{item.name}}</a> &nbsp;<i class="bi bi-x-square-fill"></i> </li>
-
+                    <li class="list-group-item" *ngFor="let item of tabHistory"> <a [routerLink]="[  item.active ]"  [queryParams]="{history:true}">{{item.name}}</a> &nbsp;
+                        <span (click)="removeTab(item);"><i class="bi bi-x-square-fill"></i></span> 
+                    </li>
                 </ul>
             </div>
                 <div>

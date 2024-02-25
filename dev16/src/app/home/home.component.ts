@@ -14,16 +14,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   date: any = new Date();
   startDate: string = "2024-" + ("0" + (this.date.getMonth() + 1)).slice(-2) + "-01";
   endDate: string = "2024-" + ("0" + (this.date.getMonth() + 1)).slice(-2) + "-29";
-  history: any = [
-    {
-      name: 'Journal',
-      id: 14232
-    },
-    {
-      name: 'Chart Of Account',
-      id: 53234
-    }
-  ];
+  tabHistory: any = [];
 
   navigator: any = [];
 
@@ -39,13 +30,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
   ngOnInit(): void {
     this.modalService.dismissAll();
-
-    console.log(this.tabs.getTabs());
-
+    this.tabHistory = this.tabs.getTabs();
+    console.log(this.tabs.getTabs()); 
   }
 
   addTab(path: string) {
     this.tabs.addTabs(path);
+  }
+
+  removeTab(data:any){
+    this.tabHistory =  this.tabs.removeTabs(data); 
   }
 
   jqSortable() {
