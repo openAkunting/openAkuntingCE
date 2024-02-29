@@ -1,1 +1,69 @@
-<p>branch works!</p>
+<div class="container-fluid">
+    <div class="row g-1">
+        <div class="col-5">
+
+            <div class="d-flex" *ngFor="let x of items; let i = index" [ngClass]="{'bg-light': activeIndexItem == i}">
+                <div class="w-100">
+                    <input type="text" class="form-control form-control-sm mb-1" [disabled]="disable"
+                        [(ngModel)]="x.name">
+                </div>
+
+                <div class="flex-shrink-1 px-1 ">
+                    <a href="javascript:;" (click)="showOutlet(i, x);">Outlet</a>
+                </div>
+
+                <div class="flex-shrink-1 px-1 ">
+                    <i class="bi bi-check-square-fill text-primary" *ngIf="x.status == 1"
+                        (click)="onCheckBranch(i,'0')"></i>
+                    <i class="bi bi-square " *ngIf="x.status != 1" (click)="onCheckBranch(i, '1')"></i>
+                </div>
+                <div class="flex-shrink-1 px-1 " *ngIf="!disable" (click)="onDeleteBranch(x);">
+                    <i class="bi bi-trash3"></i>
+                </div>
+
+            </div>
+           
+            <button class="btn btn-sm btn-primary mx-1" (click)="addBranch()">Add Branch</button>
+          
+            <button class="btn btn-sm btn-warning mx-1" [hidden]="disable" (click)="onUpdateBranch()">Save</button>
+
+        </div>
+        <div class="col-1 align-self-center text-center">
+            <i class="bi bi-arrow-right-circle"></i>
+        </div>
+        <div class="col-6">
+             
+
+            <div class="d-flex" *ngFor="let x of itemsChild; let i = index">
+                <div class="flex-grow-1">
+                    <input type="text" class="form-control form-control-sm mb-1" [disabled]="disable"
+                        [(ngModel)]="x.name">
+                </div>
+                <div class=" px-1 ">
+                    <a href="javascript:;">0 AoC</a>
+                </div>
+                <div class=" px-1 ">
+                    <i class="bi bi-check-square-fill text-primary" *ngIf="x.status == 1"
+                        (click)="onCheckOutlet(i,'0')"></i>
+                    <i class="bi bi-square " *ngIf="x.status != 1" (click)="onCheckOutlet(i, '1')"></i>
+                </div>
+                <div class=" px-1 " *ngIf="!disable" (click)="onDeleteOutlet(x);">
+                    <i class="bi bi-trash3"></i>
+                </div>
+
+            </div>
+           
+            <div *ngIf="activeIndexItem !== null">
+                <a href="javascript:;" class="mx-1" (click)="open()">Setup Account</a>
+                <button class="btn btn-sm btn-primary mx-1" (click)="addOutlet()">Add Outlet</button>
+                <button class="btn btn-sm btn-warning mx-1" [hidden]="disable" (click)="onUpdateOutlet()">Save</button> 
+            </div>
+            
+        </div>
+
+        <div class="col-12">
+
+            <button class="btn btn-sm btn-warning mx-1" [hidden]="!disable" (click)="editable()">Editable</button>
+        </div>
+    </div>
+</div>

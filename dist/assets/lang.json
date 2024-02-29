@@ -1,0 +1,39 @@
+{
+    "en": {
+      "hello": "Hello",
+      "world": "World",
+      "welcome": "Welcome",
+      "home": "Home",
+      "about": "About",
+      "contact": "Contact",
+      "language": "Language",
+      "english": "English",
+      "indonesian": "Indonesian",
+      "mandarin": "Mandarin"
+    },
+    "id": {
+      "hello": "Halo",
+      "world": "Dunia",
+      "welcome": "Selamat datang",
+      "home": "Beranda",
+      "about": "Tentang",
+      "contact": "Kontak",
+      "language": "Bahasa",
+      "english": "Inggris",
+      "indonesian": "Indonesia",
+      "mandarin": "Mandarin"
+    },
+    "zh": {
+      "hello": "你好",
+      "world": "世界",
+      "welcome": "欢迎",
+      "home": "首页",
+      "about": "关于",
+      "contact": "联系",
+      "language": "语言",
+      "english": "英语",
+      "indonesian": "印度尼西亚语",
+      "mandarin": "普通话"
+    }
+  }
+  

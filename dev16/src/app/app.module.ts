@@ -36,6 +36,7 @@ import { LedgerComponent } from './generalLedger/ledger/ledger.component';
 import { TrailBalanceComponent } from './report/trail-balance/trail-balance.component';
 import { TrailBalanceDetailComponent } from './report/trail-balance/trail-balance-detail/trail-balance-detail.component';
 import { JournalByAccountComponent } from './generalLedger/journal-by-account/journal-by-account.component';
+import { OutletAccountComponent } from './masterData/outlet-account/outlet-account.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,7 @@ import { JournalByAccountComponent } from './generalLedger/journal-by-account/jo
     OutletComponent,
     JournalComponent,
     CashBankComponent,
-    JournalCreateComponent, CashBankCreateComponent, JournalDetailComponent, JournalListReportComponent, ProfitAndLossReportComponent, BalanceSheetReportComponent, AccountImportComponent, LedgerComponent, TrailBalanceComponent, TrailBalanceDetailComponent, JournalByAccountComponent,
+    JournalCreateComponent, CashBankCreateComponent, JournalDetailComponent, JournalListReportComponent, ProfitAndLossReportComponent, BalanceSheetReportComponent, AccountImportComponent, LedgerComponent, TrailBalanceComponent, TrailBalanceDetailComponent, JournalByAccountComponent, OutletAccountComponent,
   ],
   imports: [
     BrowserModule,

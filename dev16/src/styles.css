@@ -11,18 +11,31 @@
   background-color: #f8f9fa;
 }
 
-.td-zoom{
+.td-zoom {
   cursor: pointer;
 }
-.td-zoom .icon-popup{
+
+.td-zoom .icon-popup {
   visibility: hidden;
 }
-.td-zoom:hover .icon-popup{
+
+.td-zoom:hover .icon-popup {
   visibility: visible;
 }
- 
-.ui-state-highlight { height: 1.5rem; line-height: 1.2em; background-color: rgb(250, 255, 205,0.4) !important; }  
 
+.ui-state-highlight {
+  height: 1.5rem;
+  line-height: 1.2em;
+  background-color: rgb(250, 255, 205, 0.4) !important;
+}
+
+@media (max-width: 1200px) {
+  .modal-xl {
+    max-width: 98% !important;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
 
 @media print {
   body {

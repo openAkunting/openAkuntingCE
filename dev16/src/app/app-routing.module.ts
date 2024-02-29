@@ -18,32 +18,37 @@ import { BalanceSheetReportComponent } from './report/balance-sheet-report/balan
 import { AccountImportComponent } from './masterData/account-import/account-import.component';
 import { LedgerComponent } from './generalLedger/ledger/ledger.component';
 import { TrailBalanceComponent } from './report/trail-balance/trail-balance.component';
+import { authGuard } from './service/auth.guard';
+import { BranchComponent } from './masterData/branch/branch.component';
 
 const routes: Routes = [
-  { path: "", component: HomeComponent, data: { active: "home" }, },
-  { path: "home", component: HomeComponent, data: { active: "home" }, },
+  { path: "", component: HomeComponent, data: { active: "home" }, canActivate:[authGuard]  },
+  { path: "home", component: HomeComponent, data: { active: "home" }, canActivate:[authGuard] },
   { path: "login", component: LoginComponent, data: { active: "Login" }, },
   { path: "relogin", component: ReloginComponent, data: { active: "relogin" }, },
 
-  { path: "md/glp", component: GeneralLedgerParameterComponent, data: { active: "md/glp", tabs: true }, },
-  { path: "md/an", component: AutoNumberComponent, data: { active: "md/an", tabs: true }, },
-  { path: "md/a", component: AccountComponent, data: { active: "md/a", tabs: true }, },
-  { path: "md/a/i", component: AccountImportComponent, data: { active: "md/a/i", tabs: true }, },
+  { path: "md/glp", component: GeneralLedgerParameterComponent, data: { active: "md/glp", tabs: true },canActivate:[authGuard] },
+  { path: "md/an", component: AutoNumberComponent, data: { active: "md/an", tabs: true }, canActivate:[authGuard]},
+  { path: "md/a", component: AccountComponent, data: { active: "md/a", tabs: true }, canActivate:[authGuard]},
+  { path: "md/a/i", component: AccountImportComponent, data: { active: "md/a/i", tabs: true },canActivate:[authGuard] },
+  { path: "md/branch", component: BranchComponent, data: { active: "md/branch", name: 'Branch & Outlet', role: 'journal', tabs: true },canActivate:[authGuard] },
 
-  { path: "md/at", component: AccountTypeComponent, data: { active: "md/at" }, },
-  { path: "md/u", component: UserComponent, data: { active: "md/u" }, },
-  { path: "md/ud", component: UserDetailComponent, data: { active: "md/ud" }, },
-  { path: "md/ur", component: UserRoleComponent, data: { active: "md/ur" }, },
 
-  { path: "gl/j", component: JournalComponent, data: { active: "gl/j", tabs: true, name: 'Journal', role: 'journal', controller: 'Journal' }, },
-  { path: "gl/cb", component: JournalComponent, data: { active: "gl/cb", tabs: true, name: 'Cash Bank', role: 'cashBank', controller: 'CashBank' }, },
-  { path: "gl/l", component: LedgerComponent, data: { active: "gl/l", tabs: true, name: 'Ledger', role: 'journal', controller: 'Journal' }, },
 
-  { path: "tb", component: TrailBalanceComponent, data: { active: "tb", role: 'report', controller: 'Journal' }, },
+  { path: "md/at", component: AccountTypeComponent, data: { active: "md/at" },canActivate:[authGuard] },
+  { path: "md/u", component: UserComponent, data: { active: "md/u" },canActivate:[authGuard] },
+  { path: "md/ud", component: UserDetailComponent, data: { active: "md/ud" },canActivate:[authGuard] },
+  { path: "md/ur", component: UserRoleComponent, data: { active: "md/ur" },canActivate:[authGuard] },
 
-  { path: "report/journalList", component: JournalListReportComponent, data: { active: "", role: 'report', controller: '' }, },
-  { path: "report/profitAndLoss", component: ProfitAndLossReportComponent, data: { active: "", role: 'report', controller: '' }, },
-  { path: "report/balanceSheet", component: BalanceSheetReportComponent, data: { active: "", role: 'report', controller: '' }, },
+  { path: "gl/j", component: JournalComponent, data: { active: "gl/j", tabs: true, name: 'Journal', role: 'journal', controller: 'Journal' }, canActivate:[authGuard]},
+  { path: "gl/cb", component: JournalComponent, data: { active: "gl/cb", tabs: true, name: 'Cash Bank', role: 'cashBank', controller: 'CashBank' }, canActivate:[authGuard]},
+  { path: "gl/l", component: LedgerComponent, data: { active: "gl/l", tabs: true, name: 'Ledger', role: 'journal', controller: 'Journal' }, canActivate:[authGuard]},
+
+  { path: "tb", component: TrailBalanceComponent, data: { active: "tb", role: 'report', controller: 'Journal' }, canActivate:[authGuard]},
+
+  { path: "report/journalList", component: JournalListReportComponent, data: { active: "", role: 'report', controller: '' }, canActivate:[authGuard]},
+  { path: "report/profitAndLoss", component: ProfitAndLossReportComponent, data: { active: "", role: 'report', controller: '' }, canActivate:[authGuard]},
+  { path: "report/balanceSheet", component: BalanceSheetReportComponent, data: { active: "", role: 'report', controller: '' },canActivate:[authGuard] },
 
 
 
