@@ -193,9 +193,10 @@ export class BranchComponent implements OnInit {
     }
   }
 
-  open() {
-		const modalRef = this.modalService.open(OutletAccountComponent, {size:'xl'});
+  open(outletId :number) {
+		const modalRef = this.modalService.open(OutletAccountComponent,{ size:'md', scrollable: true });
 		modalRef.componentInstance.branchId = this.item['id'];
+    modalRef.componentInstance.outletId = outletId;
 
     modalRef.componentInstance.newItemEvent.subscribe(() => {
       console.log('ok');
