@@ -17,7 +17,8 @@ class Journal extends BaseController
 
         $rest = [];
         $q = "SELECT * FROM " . $this->prefix . "journal_header 
-        WHERE presence = 1 order by journalDate ASC";
+        WHERE presence = 1 and journalDate >= CURDATE()
+        ORDER BY journalDate ASC";
         $items = $this->db->query($q)->getResultArray();
         foreach ($items as $row) {
 
@@ -115,10 +116,21 @@ class Journal extends BaseController
         $i = 0;
         foreach ($account as $rec) {
 
-            $q = "SELECT id, name 
-            FROM  " . $this->prefix . "account 
-            WHERE accountTypeId = '" . $rec['id'] . "'
+            // $q = "SELECT id, name 
+            // FROM  " . $this->prefix . "account 
+            // WHERE accountTypeId = '" . $rec['id'] . "'
+            // ORDER BY id ASC";
+
+            $q = "SELECT id, name,  status
+            FROM " . $this->prefix . "account AS t1
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM account AS t2
+                WHERE t2.parentId = t1.id
+            ) and accountTypeId = '" . $rec['id'] . "'
             ORDER BY id ASC";
+
+
 
             $account[$i]['coa'] = $this->db->query($q)->getResultArray();
             $i++;
@@ -139,9 +151,50 @@ class Journal extends BaseController
 
         $data = [
             "error" => false,
+            "code" => 200,
             "account" => $account,
             "outlet" => $this->db->query($outlet)->getResult(),
             "template" => $this->db->query($template)->getResult(),
+        ];
+        return $this->response->setJSON($data);
+    }
+
+    public function onSelectOutlet()
+    {
+        $outletId = $this->request->getVar()['outletId'];
+        // $q = "SELECT id, accountId , status as 'outletStatus' 
+        // FROM outlet_account WHERE outletId = $outletId AND STATUS = 1";
+        $account = [];
+        $accountTypeQuery = "SELECT t.id, t.name, COUNT(a.accountTypeId) AS 'total' 
+        FROM  " . $this->prefix . "account_type AS t
+        LEFT JOIN  " . $this->prefix . "account AS a ON a.accountTypeId = t.id
+        WHERE a.presence = 1 AND a.`status` = 1 
+        GROUP BY a.accountTypeId";
+        $account = $this->db->query($accountTypeQuery)->getResultArray();
+        $i = 0;
+        foreach ($account as $rec) {
+
+            $q = "SELECT t1.id, t1.name , o.status
+            FROM account AS t1
+            LEFT JOIN outlet_account AS o ON t1.id = o.accountId
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM account AS t2
+                WHERE t2.parentId = t1.id
+            )  AND o.outletId = $outletId and accountTypeId = '" . $rec['id'] . "'
+            ORDER BY t1.id ASC
+            ";
+
+            $account[$i]['coa'] = $this->db->query($q)->getResultArray();
+            $account[$i]['total'] = count($this->db->query($q)->getResultArray());
+            $i++;
+        }
+
+
+        $data = [
+            "error" => false,
+            "code" => 200,
+            "items" => $account,
         ];
         return $this->response->setJSON($data);
     }
@@ -211,29 +264,44 @@ class Journal extends BaseController
                     $startPeriod = $post['model']['startPeriod']['year'] . "-" . $post['model']['startPeriod']['month'] . "-" . $post['model']['startPeriod']['day'];
                     $endPeriod = $post['model']['endPeriod']['year'] . "-" . $post['model']['endPeriod']['month'] . "-" . $post['model']['endPeriod']['day'];
 
-                    // Ubah string tanggal menjadi objek DateTime
+                    // Convert the date string to a DateTime object
                     $startDate = new \DateTime($startPeriod);
                     $endDate = new \DateTime($endPeriod);
 
-                    // Buat interval antara dua tanggal
-                    $interval = new \DateInterval('P1D'); // Interval 1 hari
+                    // Create an interval between two dates
+                    $interval = new \DateInterval('P1D'); // Interval 1 day
                     $dateRange = new \DatePeriod($startDate, $interval, $endDate);
 
-                    // Loop untuk menambahkan setiap tanggal ke dalam array
+                    // Loop to add each date to the array
+                    $n = 0;
+                    $nextMonth = 0;
+                    $recurringPerMonth = $post['model']['recurringPerMonth'];
                     foreach ($dateRange as $date) {
-                        $dates[] = $date->format('Y-m-d');
+                        // $dates[] = $date->format('Y-m-d');
 
-                        if ((int) $date->format('d') == (int) $post['model']['dateOfJournal']) {
+                        $month = (int) $date->format('m');
+                      
+                        if ($nextMonth != $month) {
+                            $dates[] = $month.' '.$n;
+                            $nextMonth = $month;
+                            $n++;
 
+                            if ($n > $recurringPerMonth) {
+                                $n = 1;
+                            }
+                        }
+
+                        if ((int) $date->format('d') == (int) $post['model']['dateOfJournal'] && ($n == 1)) {
+                            $debit = 0;
+                            $credit = 0;
                             $journalId = model("Core")->number("journal");
                             foreach ($post['items'] as $row) {
                                 $journalDate = $date->format('Y-m-d');
+
                                 $this->db->table($this->prefix . "journal")->insert([
                                     "journalId" => $journalId,
                                     "outletId" => $row['outletId'],
                                     "accountId" => $row['accountId'],
-                                    "journalDate" => $journalDate,
-
                                     "debit" => $row['debit'],
                                     "credit" => $row['credit'],
                                     "description" => $row['description'],
@@ -246,16 +314,6 @@ class Journal extends BaseController
                                 $debit += $row['debit'];
                                 $credit += $row['credit'];
 
-                                $accountBalanceData = array(
-                                    "debit" => $row['debit'],
-                                    "credit" => $row['credit'],
-                                    "journalDate" => $journalDate,
-                                    "year" => (int) $post['model']['journalDate']['year'],
-                                    "month" => (int) $post['model']['journalDate']['month'],
-                                    "outletID" => $row['outletId'],
-                                    "accountId" => $row['accountId'],
-                                );
-                                $accountBalance = model("Account")->accountBalance($accountBalanceData);
                             }
                             $this->db->table($this->prefix . "journal_header")->insert([
                                 "id" => $journalId,
@@ -273,8 +331,9 @@ class Journal extends BaseController
                             ]);
 
                         }
-                    }
 
+                    }
+                    // END of Loop
                 } else {
                     $journalDate = $post['model']['journalDate']['year'] . "-" . $post['model']['journalDate']['month'] . "-" . $post['model']['journalDate']['day'];
 
@@ -284,7 +343,6 @@ class Journal extends BaseController
                             "journalId" => $journalId,
                             "outletId" => $row['outletId'],
                             "accountId" => $row['accountId'],
-                            "journalDate" => $journalDate,
                             "debit" => $row['debit'],
                             "credit" => $row['credit'],
                             "description" => $row['description'],
@@ -296,19 +354,6 @@ class Journal extends BaseController
                         ]);
                         $debit += $row['debit'];
                         $credit += $row['credit'];
-
-                        $accountBalanceData = array(
-                            "debit" => $row['debit'],
-                            "credit" => $row['credit'],
-                            "journalDate" => $journalDate,
-                            "year" => (int) $post['model']['journalDate']['year'],
-                            "month" => (int) $post['model']['journalDate']['month'],
-                            "outletID" => $row['outletId'],
-                            "accountId" => $row['accountId'],
-                            "userId" => model("Token")->userId()
-
-                        );
-                        $accountBalance = model("Account")->accountBalance($accountBalanceData);
 
                     }
                     $this->db->table($this->prefix . "journal_header")->insert([
@@ -338,10 +383,10 @@ class Journal extends BaseController
                 // }
                 $data = [
                     "error" => false,
-                    "accountBalance" => $accountBalance,
+                    "post" => $post,
                     "transaction" => $this->db->transStatus() === false ? false : true,
                     "code" => 200,
-                    //   "dates" => $dates,
+                    "dates" => $dates,
                 ];
             } else {
                 $data = [

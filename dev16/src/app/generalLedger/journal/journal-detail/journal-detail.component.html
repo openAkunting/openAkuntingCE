@@ -47,7 +47,7 @@
                     <tr *ngFor="let x of items; let i = index">
                         <td>
                             <select class="form-control form-control-sm" [(ngModel)]="x.outletId" [disabled]="disable"
-                                (change)="calculation()">
+                                (change)="onSelectOutlet(x.outletId);">
                                 <option [value]="a.id" *ngFor="let a of selectOutlet">{{a.branch+" : "+a.name}}</option>
                             </select>
                         </td>

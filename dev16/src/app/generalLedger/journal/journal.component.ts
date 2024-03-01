@@ -14,8 +14,7 @@ import {   ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./journal.component.css']
 })
 export class JournalComponent implements OnInit {
-  items: any = [];
-
+  items: any = []; 
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
@@ -30,6 +29,7 @@ export class JournalComponent implements OnInit {
     config.keyboard = false;
   }
   controller:string = "Journal";
+
   ngOnInit(): void { 
     console.log(this.activeRouter.snapshot.data['controller']); 
     this.controller = this.activeRouter.snapshot.data['controller'];
@@ -38,7 +38,7 @@ export class JournalComponent implements OnInit {
   }
 
   httpGet() {
-    this.http.get<any>(environment.api + this.controller+"/index",{
+    this.http.get<any>(environment.api + "Journal/index",{
       headers : this.configService.headers(),
     }).subscribe(
       data => {
@@ -51,25 +51,14 @@ export class JournalComponent implements OnInit {
     )
   }
   open() {
-    const modalRef = this.modalService.open(JournalCreateComponent, { size: 'xl' });
-    // modalRef.result.then(
-    //   (result) => { 
-    //     console.log(' ');
-    //   },
-    //   (reason) => {
-    //     console.log('CLOSE 1001');
-
-    //   },
-    // );
-    modalRef.componentInstance.controller = this.controller; 
-   
+    const modalRef = this.modalService.open(JournalCreateComponent, { size: 'xl' }); 
+    modalRef.componentInstance.controller = this.controller;  
     modalRef.componentInstance.newItemEvent.subscribe(() => {
       this.httpGet();
     });
   }
 
-  detail(item: any) {
-    
+  detail(item: any) { 
     const modalRef = this.modalService.open(JournalDetailComponent, { size: 'xl' });
     modalRef.componentInstance.controller = this.controller; 
     modalRef.componentInstance.id = item.id;

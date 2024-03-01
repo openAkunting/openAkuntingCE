@@ -6,15 +6,17 @@ import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
 import { environment } from 'src/environments/environment';
 export class Model {
-  constructor( 
+  constructor(
     public journalDate: any,
-    public note: string, 
-    public ref: string, 
-    
+    public note: string,
+    public ref: string,
+
     public startPeriod: any,
     public endPeriod: any,
     public dateOfJournal: number,
-  ) {  }
+    public recurringPerMonth: number,
+    
+  ) { }
 }
 @Component({
   selector: 'app-journal-create',
@@ -32,10 +34,10 @@ export class JournalCreateComponent implements OnInit {
     // case 86: break;  //Keyboard.V
     // case 88: break;  //Keyboard.X
     if (($event.ctrlKey || $event.metaKey) && ($event.keyCode == 86 || $event.keyCode == 88)) {
-      var self  = this;
-      setTimeout(function(){
+      var self = this;
+      setTimeout(function () {
         self.calculation();
-      },100); 
+      }, 100);
       console.log('CTRL +  V 1');
     }
   }
@@ -50,24 +52,24 @@ export class JournalCreateComponent implements OnInit {
     totalDebit: 0,
     balance: 0
   }
-  templateId : string = "";
-  nameOfTemplate : string = "";
+  templateId: string = "";
+  nameOfTemplate: string = "";
   submit: boolean = false;
   model: any = [];
   selectTemplate: any = [];
   selectAccount: any = [];
   selectOutlet: any = [];
-  typeJournal : string = 'single'; 
+  typeJournal: string = 'single';
   constructor(
     public activeModal: NgbActiveModal,
     private http: HttpClient,
     private configService: ConfigService,
-    public lang: LanguageService, 
+    public lang: LanguageService,
   ) { }
 
 
   ngOnInit(): void {
-    console.log(this.controller);
+    
     // if(this.activeRouter.snapshot.url[1].path == 'cb') {
     //     this.controller = "CashBank";
     // }
@@ -78,21 +80,23 @@ export class JournalCreateComponent implements OnInit {
   newItem() {
     const curDate = new Date();
     this.model = new Model(
-      {"year": curDate.getFullYear(), "month": curDate.getMonth()+1, "day": curDate.getDate()},"","",
-      {"year": curDate.getFullYear(), "month": curDate.getMonth()+1, "day": curDate.getDate()},
-      {"year": curDate.getFullYear(), "month": curDate.getMonth()+1, "day": curDate.getDate()},1
-      );
+      { "year": curDate.getFullYear(), "month": curDate.getMonth() + 1, "day": curDate.getDate() }, "", "",
+      { "year": curDate.getFullYear(), "month": curDate.getMonth() + 1, "day": curDate.getDate() },
+      { "year": curDate.getFullYear(), "month": curDate.getMonth() + 1, "day": curDate.getDate() }, 1 , 1
+    );
     this.items = [
       {
-        outletId : '',
+        outletId: '',
         accountId: "",
+        selectAccount: [],
         description: "",
         debit: 0,
         credit: 0,
       },
       {
-        outletId : '',
+        outletId: '',
         accountId: "",
+        selectAccount: [],
         description: "",
         debit: 0,
         credit: 0,
@@ -101,7 +105,7 @@ export class JournalCreateComponent implements OnInit {
   }
 
   httpGet() {
-    this.http.get<any>(environment.api + this.controller+"/selectItems", {
+    this.http.get<any>(environment.api +  "Journal/selectItems", {
       headers: this.configService.headers(),
     }).subscribe(
       data => {
@@ -118,7 +122,7 @@ export class JournalCreateComponent implements OnInit {
 
   addrow() {
     const temp = {
-      outletId : "",
+      outletId: "",
       accountId: "",
       description: "",
       debit: 0,
@@ -131,6 +135,24 @@ export class JournalCreateComponent implements OnInit {
   removeRow(index: number) {
     this.items.splice(index, 1);
     this.calculation();
+  }
+
+  onSelectOutlet(outletId: string, index: number) {
+    this.calculation();
+    this.http.get<any>(environment.api + "journal/onSelectOutlet", {
+      headers: this.configService.headers(),
+      params: {
+        outletId: outletId
+      }
+    }).subscribe(
+      data => {
+        console.log(data);
+        this.items[index]['selectAccount'] = data['items'];
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
 
   keyPress(item: any, type: string) {
@@ -166,52 +188,59 @@ export class JournalCreateComponent implements OnInit {
     }
   }
 
-  
+
 
   onSubmit() {
+
+    let items = []; 
+    items = this.items.map((item: any) => { 
+      const newItem = { ...item }; 
+      delete newItem.selectAccount; 
+      return newItem;
+    });
     const body = {
-      items : this.items,
-      model :this.model,
-      typeJournal : this.typeJournal,
-      templateId : this.templateId,
-    }
-    this.http.post<any>(environment.api + this.controller+"/onSubmit",body, {
+      items: items,
+      model: this.model,
+      typeJournal: this.typeJournal,
+      templateId: this.templateId,
+    } 
+    this.http.post<any>(environment.api +   "Journal/onSubmit", body, {
       headers: this.configService.headers(),
     }).subscribe(
-      data => { 
+      data => {
         console.log(data);
         this.newItemEvent.emit();
-         this.activeModal.close();
+      //  this.activeModal.close();
       },
       error => {
         console.log(error);
       }
     )
-     
+
   }
 
-  loadTemplate(){
+  loadTemplate() {
     this.http.get<any>(environment.api + "Template/loadTemplate", {
       headers: this.configService.headers(),
-      params : {
-        templateId : this.templateId
+      params: {
+        templateId: this.templateId
       }
     }).subscribe(
       data => {
         console.log(data);
         this.nameOfTemplate = data['template']['name'];
         this.model['note'] = data['template']['note'];
-        this.model['ref'] =  data['template']['ref'];  
+        this.model['ref'] = data['template']['ref'];
         this.items = [];
         data['journal_template'].forEach((el: any) => {
-          const temp = 
-            {
-              outletId : el.outletId,
-              accountId: el.accountId,
-              description: el.description,
-              debit: el.debit,
-              credit: el.credit,
-            };
+          const temp =
+          {
+            outletId: el.outletId,
+            accountId: el.accountId,
+            description: el.description,
+            debit: el.debit,
+            credit: el.credit,
+          };
           this.items.push(temp);
         });
         this.calculation();
@@ -221,17 +250,17 @@ export class JournalCreateComponent implements OnInit {
       }
     )
   }
-  onSaveAsTemplate(){
+  onSaveAsTemplate() {
     const body = {
-      items : this.items,
-      model :this.model,
-      nameOfTemplate :this.nameOfTemplate,
-      tableName : this.controller
+      items: this.items,
+      model: this.model,
+      nameOfTemplate: this.nameOfTemplate,
+      tableName: 'Journal'
     }
-    this.http.post<any>(environment.api + "Template/onSaveAsTemplate",body, {
+    this.http.post<any>(environment.api + "Template/onSaveAsTemplate", body, {
       headers: this.configService.headers(),
     }).subscribe(
-      data => { 
+      data => {
         console.log(data);
         this.httpGet();
       },
@@ -240,5 +269,5 @@ export class JournalCreateComponent implements OnInit {
       }
     )
   }
-  
+
 }
