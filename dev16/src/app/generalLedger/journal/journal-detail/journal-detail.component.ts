@@ -99,14 +99,23 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
 
         this.selectAccount = data['account'];
         this.selectOutlet = data['outlet'];
-
-
-        data['items'].forEach((el: any) => {
-
+ 
+        data['items'].forEach((el: any) => { 
           this.items.push({
             id: el['id'],
             outletId: el['outletId'],
             accountId: el['accountId'],
+            selectAccount: [{
+              id : '0',
+              name : 'Loading...',
+              coa : [
+                {
+                  id :  el['accountId'],
+                  name : "loading...",
+                  status : "1"
+                }
+              ]
+            }],
             description: el['description'],
             debit: el['debit'],
             credit: el['credit'],
@@ -119,6 +128,11 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
         this.journalHeader = data['header'];
         console.log(data);
         this.calculation();
+
+        for(let i = 0; i < this.items.length; i++){
+          console.log(i);
+          this.onSelectOutlet(this.items[i]['outletId'], i);
+        }
       },
       error => {
         console.log(error);
@@ -191,22 +205,24 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
       }
     }
   }
-  onSelectOutlet(outletId : string) {
+  onSelectOutlet(outletId: string, index: number) {
     this.calculation();
     this.http.get<any>(environment.api + "journal/onSelectOutlet", {
       headers: this.configService.headers(),
-      params : {
-        outletId : outletId
+      params: {
+        outletId: outletId
       }
     }).subscribe(
       data => {
-        console.log(data); 
+        console.log(data);
+        this.items[index]['selectAccount'] = data['items'];
       },
       error => {
         console.log(error);
       }
     )
   }
+
   onUpdate() {
     const body = {
       items: this.items,
@@ -228,6 +244,7 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
 
   }
 
+  
 
   editable(status: boolean) {
     this.disable = status;

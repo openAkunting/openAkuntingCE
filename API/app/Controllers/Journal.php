@@ -172,8 +172,7 @@ class Journal extends BaseController
         GROUP BY a.accountTypeId";
         $account = $this->db->query($accountTypeQuery)->getResultArray();
         $i = 0;
-        foreach ($account as $rec) {
-
+        foreach ($account as $rec) { 
             $q = "SELECT t1.id, t1.name , o.status
             FROM account AS t1
             LEFT JOIN outlet_account AS o ON t1.id = o.accountId
@@ -230,7 +229,7 @@ class Journal extends BaseController
         $data = [
             "error" => false,
             "header" => $this->db->query($header)->getResult()[0],
-            "account" => $this->db->query($account)->getResult(),
+          //  "account" => $this->db->query($account)->getResult(),
             "outlet" => $this->db->query($outlet)->getResult(),
             "items" => $this->db->query($items)->getResult(),
         ];
@@ -300,6 +299,7 @@ class Journal extends BaseController
 
                                 $this->db->table($this->prefix . "journal")->insert([
                                     "journalId" => $journalId,
+                                    "journalDate" => $date->format('Y-m-d'),
                                     "outletId" => $row['outletId'],
                                     "accountId" => $row['accountId'],
                                     "debit" => $row['debit'],
@@ -341,6 +341,7 @@ class Journal extends BaseController
                     foreach ($post['items'] as $row) {
                         $this->db->table($this->prefix . "journal")->insert([
                             "journalId" => $journalId,
+                            "journalDate" => $journalDate,
                             "outletId" => $row['outletId'],
                             "accountId" => $row['accountId'],
                             "debit" => $row['debit'],

@@ -210,7 +210,7 @@ export class JournalCreateComponent implements OnInit {
       data => {
         console.log(data);
         this.newItemEvent.emit();
-      //  this.activeModal.close();
+         this.activeModal.close();
       },
       error => {
         console.log(error);
@@ -237,12 +237,27 @@ export class JournalCreateComponent implements OnInit {
           {
             outletId: el.outletId,
             accountId: el.accountId,
+            selectAccount: [{
+              id : '0',
+              name : 'Loading...',
+              coa : [
+                {
+                  id :  el['accountId'],
+                  name : "loading...",
+                  status : "1"
+                }
+              ]
+            }],
             description: el.description,
             debit: el.debit,
             credit: el.credit,
           };
           this.items.push(temp);
         });
+        for(let i = 0; i < this.items.length; i++){
+          console.log(i);
+          this.onSelectOutlet(this.items[i]['outletId'], i);
+        }
         this.calculation();
       },
       error => {

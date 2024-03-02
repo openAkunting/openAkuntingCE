@@ -47,15 +47,17 @@
                     <tr *ngFor="let x of items; let i = index">
                         <td>
                             <select class="form-control form-control-sm" [(ngModel)]="x.outletId" [disabled]="disable"
-                                (change)="onSelectOutlet(x.outletId);">
+                                (change)="onSelectOutlet(x.outletId, i);">
                                 <option [value]="a.id" *ngFor="let a of selectOutlet">{{a.branch+" : "+a.name}}</option>
                             </select>
                         </td>
                         <td>
-                           <select class="form-control form-control-sm" [(ngModel)]="x.accountId"
+                            <select class="form-control form-control-sm" [(ngModel)]="x.accountId" [disabled]="disable"
                                 (change)="calculation()">
-                                <optgroup [label]="a.name" *ngFor="let a of selectAccount">
-                                    <option [value]="c.id" *ngFor="let c of a.coa">{{c.id+" : "+c.name}}</option>
+                                <optgroup [label]="a.name" *ngFor="let a of x.selectAccount">
+                                    <option [hidden]="c.status != '1' "  [value]="c.id" *ngFor="let c of a.coa">
+                                        {{c.id+" : "+c.name}}
+                                    </option>
                                 </optgroup>
                             </select>
                         </td>
@@ -76,9 +78,9 @@
                                 [(ngModel)]="x.credit">
                         </td>
                         <td *ngIf="!disable">
-                            <a *ngIf="items.length > 2" (click)="removeRow(i);">removeRow</a>
+                            <a *ngIf="items.length > 2" (click)="removeRow(i);"><i class="bi bi-trash-fill"></i></a>
                         </td>
-                        <td *ngIf="!disable"><span class="handle"   [attr.data-id]="x.id">handle</span></td>
+                        <td *ngIf="!disable"><span class="handle"   [attr.data-id]="x.id"><i class="bi bi-arrows-vertical"></i></span></td>
                     </tr>
                 </tbody>
                 
@@ -90,7 +92,7 @@
             
         </div>
     </div>
-    {{items | json}}
+    
     <div class="row">
         <div class="col-6">
             <table>

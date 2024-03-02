@@ -68,16 +68,29 @@
                 </div>
             </div>
 
+            <div>
+                Filter by branch
+                <select class="form-control form-control-sm">
+                    <option>- All Branchs -</option>
+                </select>
+            </div>
 
+
+        </div>
+
+        <div class="col-6">
+            
             <div>
                 <small>Ref</small>
                 <input type="text" class="form-control form-control-sm" [(ngModel)]="model.ref">
             </div>
-        </div>
+            <div>
+                <small>Note</small>
+                <textarea class="form-control form-control-sm" [(ngModel)]="model.note"></textarea>
+    
+            </div>
+         
 
-        <div class="col-6">
-            <small>Note</small>
-            <textarea class="form-control form-control-sm" [(ngModel)]="model.note"></textarea>
         </div>
 
         <div class="col-12">
@@ -109,21 +122,7 @@
                                     </option>
                                 </optgroup>
                             </select>
-                            <!-- <div *ngIf="controller == 'Journal'">
-                                <select class="form-control form-control-sm" [(ngModel)]="x.accountId"
-                                    (change)="calculation()">
-                                    <optgroup [label]="a.name" *ngFor="let a of selectAccount">
-                                        <option [value]="c.id" *ngFor="let c of a.coa">{{c.id+" : "+c.name}}</option>
-                                    </optgroup>
-                                </select>
-                            </div> -->
-                            <!-- <div *ngIf="controller == 'CashBank'">
-                                <select class="form-control form-control-sm" [(ngModel)]="x.accountId"
-                                    (change)="calculation()">
-                                    <option [value]="a.id" *ngFor="let a of selectAccount">{{a.id+" : "+a.name}}
-                                    </option>
-                                </select>
-                            </div> -->
+                           
 
 
                         </td>

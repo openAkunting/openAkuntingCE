@@ -1,25 +1,32 @@
 <div class="container">
     <div class="row">
-        <div class="col-12">
+        <div class="col-12"> 
             <table class="table table-sm table-bordered">  
                         
-                <tbody *ngFor="let item of items" [hidden]="item.ledger.length <= 0">
+                <tbody *ngFor="let item of items"  >
                     <tr> 
-                        <th colspan="5"  class="bg-light">{{item.name}}</th> 
+                        <th colspan="7"  class="bg-light">{{item.accountId+" : "+item.name}}</th> 
                     </tr>
                     <tr > 
                         <th class="bg-light  text-center">Date</th>
-                        <th class="bg-light  text-center">Account</th>
+                        <th class="bg-light  text-center">Journal ID</th> 
+                        <th>Reference</th>
+                        <th class="bg-light ">Description</th>  
+                        <th class="bg-light ">Outlet</th>  
+                        
                         <th class="bg-light text-center">Debit</th>
-                        <th class="bg-light text-center">Credit</th>
-                        <th class="bg-light text-center">Balance</th> 
+                        <th class="bg-light text-center">Credit</th> 
                     </tr>
-                    <tr *ngFor="let x of item.ledger">
+                    <tr *ngFor="let x of item.journal">
                         <td>{{x.journalDate}}</td>
-                        <td>{{x.id+" : "+x.name}}</td>
+                        <td>{{x.journalId}}</td> 
+                        <td>{{x.ref}}</td> 
+                        
+                        <td>{{x.description}}</td> 
+                        <td>{{x.branch+" "+x.outlet}}</td> 
+                        
                         <td  class="text-end">{{x.debit | number}}</td>
-                        <td class="text-end">{{x.credit | number}}</td>
-                        <td  class="text-end">{{x.balance | number}}</td>
+                        <td class="text-end">{{x.credit | number}}</td> 
                     </tr>
                     <tr>
                         <td colspan="5">&nbsp;</td>

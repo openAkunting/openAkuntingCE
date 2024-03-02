@@ -24,9 +24,7 @@ import { LanguageService } from './service/language.service';
 import { BranchComponent } from './masterData/branch/branch.component';
 import { OutletComponent } from './masterData/outlet/outlet.component';
 import { JournalComponent } from './generalLedger/journal/journal.component';
-import { CashBankComponent } from './generalLedger/cash-bank/cash-bank.component';
 import { JournalCreateComponent } from './generalLedger/journal/journal-create/journal-create.component';
-import { CashBankCreateComponent } from './generalLedger/cash-bank/cash-bank-create/cash-bank-create.component';
 import { JournalDetailComponent } from './generalLedger/journal/journal-detail/journal-detail.component';
 import { JournalListReportComponent } from './report/journal-list-report/journal-list-report.component';
 import { ProfitAndLossReportComponent } from './report/profit-and-loss-report/profit-and-loss-report.component';
@@ -37,6 +35,7 @@ import { TrailBalanceComponent } from './report/trail-balance/trail-balance.comp
 import { TrailBalanceDetailComponent } from './report/trail-balance/trail-balance-detail/trail-balance-detail.component';
 import { JournalByAccountComponent } from './generalLedger/journal-by-account/journal-by-account.component';
 import { OutletAccountComponent } from './masterData/outlet-account/outlet-account.component';
+import { CashbankCreateComponent } from './generalLedger/journal/cashbank-create/cashbank-create.component';
 
 @NgModule({
   declarations: [
@@ -56,8 +55,10 @@ import { OutletAccountComponent } from './masterData/outlet-account/outlet-accou
     BranchComponent,
     OutletComponent,
     JournalComponent,
-    CashBankComponent,
-    JournalCreateComponent, CashBankCreateComponent, JournalDetailComponent, JournalListReportComponent, ProfitAndLossReportComponent, BalanceSheetReportComponent, AccountImportComponent, LedgerComponent, TrailBalanceComponent, TrailBalanceDetailComponent, JournalByAccountComponent, OutletAccountComponent,
+    JournalCreateComponent,  JournalDetailComponent, 
+    JournalListReportComponent, ProfitAndLossReportComponent, BalanceSheetReportComponent, 
+    AccountImportComponent, LedgerComponent, TrailBalanceComponent, TrailBalanceDetailComponent, 
+    JournalByAccountComponent, OutletAccountComponent, CashbankCreateComponent,
   ],
   imports: [
     BrowserModule,
