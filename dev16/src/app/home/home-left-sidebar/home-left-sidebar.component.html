@@ -1,0 +1,31 @@
+<p>Master Data</p>
+<ul>
+    <li> <a  [routerLink]="[ '/md/u' ]">User</a> </li>
+    <li> <a  [routerLink]="[ '/md/at' ]">Type of Account</a> </li> 
+    <li> <a  [routerLink]="[ '/md/a' ]">Chart of Accounts</a> </li> 
+    <li> <a  [routerLink]="[ '/md/an' ]">Auto Number</a> </li>
+    <li> <a  [routerLink]="[ '/md/glp' ]">Global Parameter</a> </li> 
+    <li> <a  [routerLink]="[ '/md/branch' ]">Branch & Outlet</a> </li> 
+     
+</ul>
+<hr>
+<p>General Ledger</p>
+<ul> 
+    <li> <a  [routerLink]="[ '/gl/jurnal' ]">Journal</a> </li> 
+    <li> <a  [routerLink]="[ '/gl/cashBank' ]" [queryParams]="{cb:1}">Cash Bank</a> </li>  
+    <li> <a  [routerLink]="[ '/gl/ledger' ]">Ledger</a> </li> 
+</ul>
+<hr>
+<p>
+    <a [routerLink]="[ '/trialBalance']">trialBalance</a>
+</p>
+<hr>
+<!-- <p>Report</p> 
+select date :  <input type="date" [(ngModel)]="startDate" > s.d <input type="date" [(ngModel)]="endDate" > -->
+<ul>  
+    <li> <a [routerLink]="[ '/report/journalList' ]" [queryParams]="{startDate: startDate, endDate:endDate}"   > Journal List</a>    </li> 
+    <li> <a [routerLink]="[ '/report/profitAndLoss' ]"  [queryParams]="{startDate: startDate, endDate:endDate}" > Profit And Loss</a> </li> 
+    <li> <a [routerLink]="[ '/report/balanceSheet' ]"  [queryParams]="{startDate: startDate, endDate:endDate}"  > Balance Sheet</a> </li> 
+</ul>
+<hr>
+<button type="button" class="btn btn-dark btn-sm" (click)="logout()">Logout</button>

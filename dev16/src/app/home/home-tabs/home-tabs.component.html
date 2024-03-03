@@ -1,0 +1,22 @@
+<div class="container-fluid position-fixed bg-white header-tab-main ">
+    <div class="default-tab py-1 ">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="javascript:;"> Home <span><i class="bi bi-x"></i></span> </a>
+            </li>
+            <li class="nav-item" *ngFor="let item of tabHistory">
+                <span class="nav-link">
+                    <a href="javascript:;" (click)="navigate(item)" >{{item.name}}
+                    </a> 
+
+                    <!-- <a href="#/{{item.active}}?{{item.queryParams}}"  >{{item.name}}
+                    </a>  -->
+                    <span (click)="removeTab(item);"><i class="bi bi-x"></i></span>
+                </span>
+            </li>
+
+        </ul>
+    </div>
+</div>
+
+ 

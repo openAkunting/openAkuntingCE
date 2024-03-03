@@ -40,15 +40,16 @@ const routes: Routes = [
   { path: "md/ud", component: UserDetailComponent, data: { active: "md/ud" },canActivate:[authGuard] },
   { path: "md/ur", component: UserRoleComponent, data: { active: "md/ur" },canActivate:[authGuard] },
 
-  { path: "gl/j", component: JournalComponent, data: { active: "gl/j", tabs: true, name: 'Journal', role: 'journal', controller: 'Journal' }, canActivate:[authGuard]},
-  { path: "gl/cb", component: JournalComponent, data: { active: "gl/cb", tabs: true, name: 'Cash Bank', role: 'cashBank', controller: 'CashBank' }, canActivate:[authGuard]},
-  { path: "gl/l", component: LedgerComponent, data: { active: "gl/l", tabs: true, name: 'Ledger', role: 'journal', controller: 'Journal' }, canActivate:[authGuard]},
+  { path: "gl/jurnal", component: JournalComponent, data: { active: "gl/jurnal",   tabs: true, name: 'Journal', role: 'journal' }, canActivate:[authGuard]},
+  { path: "gl/cashBank", component: JournalComponent, data: { active: "gl/cashBank",   tabs: true, name: 'Cash Bank', role: 'journal' }, canActivate:[authGuard]},
+  
+  { path: "gl/ledger", component: LedgerComponent, data: {  active: "gl/ledger",  tabs: true, name: 'Ledger', role: 'journal' }, canActivate:[authGuard]},
 
-  { path: "tb", component: TrailBalanceComponent, data: { active: "tb", role: 'report', controller: 'Journal' }, canActivate:[authGuard]},
+  { path: "trialBalance", component: TrailBalanceComponent, data: { active: "trialBalance",  tabs: true, role: 'report' }, canActivate:[authGuard]},
 
-  { path: "report/journalList", component: JournalListReportComponent, data: { active: "", role: 'report', controller: '' }, canActivate:[authGuard]},
-  { path: "report/profitAndLoss", component: ProfitAndLossReportComponent, data: { active: "", role: 'report', controller: '' }, canActivate:[authGuard]},
-  { path: "report/balanceSheet", component: BalanceSheetReportComponent, data: { active: "", role: 'report', controller: '' },canActivate:[authGuard] },
+  { path: "report/journalList", component: JournalListReportComponent, data: { active: "report/journalList", tabs: true, name: 'Journal Report', role: 'report', }, canActivate:[authGuard]},
+  { path: "report/profitAndLoss", component: ProfitAndLossReportComponent, data: { active: "report/profitAndLoss", tabs: true, name: 'Profit And Loss', role: 'report',  }, canActivate:[authGuard]},
+  { path: "report/balanceSheet", component: BalanceSheetReportComponent, data: { active: "report/balanceSheet", tabs: true,  name: 'Balance Sheet', role: 'report',   },canActivate:[authGuard] },
 
 
 

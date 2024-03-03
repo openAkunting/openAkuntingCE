@@ -1,0 +1,49 @@
+ /* You can add global styles to this file, and also import other style files */
+ .content-body {
+    margin-left: auto;
+ }
+ .left-sidebar{
+   position: fixed;
+   left: 0px;
+   top: 0px;
+   width: 15rem;
+ }
+ 
+ .main{
+   margin-left :15rem; 
+ }
+.main-component{
+   padding-top: 50px;
+}
+ .header-tab-main {
+   z-index: 999;
+ }
+ .font-code {
+    font-family: "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-size: 0.9rem;
+ }
+
+ .td-header td,
+ .td-header th {
+    background-color: #f8f9fa;
+ }
+
+ .td-zoom {
+    cursor: pointer;
+ }
+
+ .td-zoom .icon-popup {
+    visibility: hidden;
+ }
+
+ .td-zoom:hover .icon-popup {
+    visibility: visible;
+ }
+
+ .ui-state-highlight {
+    height: 1.5rem;
+    line-height: 1.2em;
+    background-color: rgb(250, 255, 205, 0.4) !important;
+ }
