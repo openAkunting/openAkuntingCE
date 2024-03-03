@@ -45,7 +45,7 @@ const routes: Routes = [
   
   { path: "gl/ledger", component: LedgerComponent, data: {  active: "gl/ledger",  tabs: true, name: 'Ledger', role: 'journal' }, canActivate:[authGuard]},
 
-  { path: "trialBalance", component: TrailBalanceComponent, data: { active: "trialBalance",  tabs: true, role: 'report' }, canActivate:[authGuard]},
+  { path: "trialBalance", component: TrailBalanceComponent, data: { active: "trialBalance",  tabs: true, name: 'Trial Balance',  role: 'report' }, canActivate:[authGuard]},
 
   { path: "report/journalList", component: JournalListReportComponent, data: { active: "report/journalList", tabs: true, name: 'Journal Report', role: 'report', }, canActivate:[authGuard]},
   { path: "report/profitAndLoss", component: ProfitAndLossReportComponent, data: { active: "report/profitAndLoss", tabs: true, name: 'Profit And Loss', role: 'report',  }, canActivate:[authGuard]},

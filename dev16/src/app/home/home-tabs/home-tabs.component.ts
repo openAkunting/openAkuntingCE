@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class HomeTabsComponent implements OnInit, OnDestroy {
   tabHistory: any = [];
+  active: string = "";
   private routerEventsSubscription: Subscription;
 
   constructor(
@@ -23,14 +24,27 @@ export class HomeTabsComponent implements OnInit, OnDestroy {
 
       if (event instanceof ActivationStart) {
         // Handling NavigationStart event
-       // console.log('URL berubah - NavigationStart:', event);
+        // console.log('URL berubah - NavigationStart:', event);
         const url = this.router.url; // Membaca URL saat ActivationStart terjadi
-       // console.log('ActivationStart - URL:', url); 
+        // console.log('ActivationStart - URL:', url); 
       }
       else if (event instanceof NavigationEnd) {
         // Handling NavigationEnd event
-      //  console.log('Navigasi selesai - NavigationEnd:', event.url);
-        if (event.url != '' ) {  
+
+        let str = event.url;
+        if (str.charAt(0) === '/') {
+          // Menghapus karakter '/' di awal string
+          str = str.substring(1); 
+        } 
+        // Mencari posisi pertama tanda tanya untuk memotong string
+        const index = str.indexOf('?'); 
+        // Jika tanda tanya ditemukan, maka kita memotong string dari awal hingga sebelum tanda tanya
+        const result = index !== -1 ? str.split('?')[0] : str;
+       
+        this.active = result;
+
+        //console.log('Navigasi selesai - NavigationEnd:', event.url);
+        if (event.url != '') {
           this.tabs.addTabs(event.url);
           this.tabHistory = this.tabs.getTabs();
         }
@@ -63,11 +77,11 @@ export class HomeTabsComponent implements OnInit, OnDestroy {
 
 
   navigate(item: any) {
-     // Mengenkod parameter query secara manual
-     const encodedQueryParams = encodeURIComponent(item.queryParams);
+    // Mengenkod parameter query secara manual
+    const encodedQueryParams = encodeURIComponent(item.queryParams);
 
-     // Navigasi menggunakan router.navigate()
-     console.log(item.queryParams);
-     this.router.navigate([item.active], {queryParams: item.queryParams});
-}
+    // Navigasi menggunakan router.navigate()
+    console.log(item.queryParams);
+    this.router.navigate([item.active], { queryParams: item.queryParams });
+  }
 }

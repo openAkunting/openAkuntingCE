@@ -21,7 +21,7 @@ export class TabsService {
   }
   addTabs(queryParams: string) {
     const splittedArray = queryParams.split('?');
-    console.log(splittedArray);
+    //console.log(splittedArray);
     let path = splittedArray[0];
 
     let tabs: any;
@@ -38,7 +38,7 @@ export class TabsService {
     }
 
     const data: any = this.router.config;
-    console.log('tabs', tabs, path);
+    //console.log('tabs', tabs, path);
     // console.log('data',data);  
 
     if (path.charAt(0) === '/') {
@@ -48,7 +48,7 @@ export class TabsService {
 
 
     let index = data.findIndex((item: { path: string; }) => item.path === path);
-    console.log("data[index] :", data[index]);
+    //console.log("data[index] :", data[index]);
     if (data[index] !== undefined && data[index].data.tabs === true) {
       data[index].data['id'] = Math.round(Math.random() * 10000);
 
