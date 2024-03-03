@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { JournalCreateComponent } from './journal-create/journal-create.component';
 import { JournalDetailComponent } from './journal-detail/journal-detail.component';
 import {   ActivatedRoute, Router } from '@angular/router';
+import { CashbankCreateComponent } from './cashbank-create/cashbank-create.component';
 
 @Component({
   selector: 'app-journal',
@@ -50,12 +51,21 @@ export class JournalComponent implements OnInit {
       }
     )
   }
-  open() {
-    const modalRef = this.modalService.open(JournalCreateComponent, { size: 'xl' }); 
-    modalRef.componentInstance.controller = this.controller;  
-    modalRef.componentInstance.newItemEvent.subscribe(() => {
-      this.httpGet();
-    });
+  open(component : string) {
+    if(component == 'journal'){
+      const modalRef = this.modalService.open(JournalCreateComponent, { size: 'xl' }); 
+      modalRef.componentInstance.controller = this.controller;  
+      modalRef.componentInstance.newItemEvent.subscribe(() => {
+        this.httpGet();
+      });
+    }
+    if(component == 'cashBank'){
+      const modalRef = this.modalService.open(CashbankCreateComponent, { size: 'xl' }); 
+      modalRef.componentInstance.controller = this.controller;  
+      modalRef.componentInstance.newItemEvent.subscribe(() => {
+        this.httpGet();
+      });
+    }
   }
 
   detail(item: any) { 
