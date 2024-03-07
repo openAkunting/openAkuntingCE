@@ -18,6 +18,13 @@ export class Model {
     
   ) { }
 }
+
+export class CashBank {
+  constructor(
+    public accountId: string, 
+    public position : string,
+  ) { }
+}
 @Component({
   selector: 'app-journal-create',
   templateUrl: './journal-create.component.html',
@@ -25,11 +32,7 @@ export class Model {
 })
 export class JournalCreateComponent implements OnInit {
   @HostListener('window:keydown', ['$event'])
-  onKeyPress($event: KeyboardEvent) {
-    // if (($event.ctrlKey || $event.metaKey) && $event.keyCode == 67) {
-    //   this.calculation(); console.log('CTRL + C 2');
-    // }
-
+  onKeyPress($event: KeyboardEvent) { 
     // case 67: break;  //Keyboard.C
     // case 86: break;  //Keyboard.V
     // case 88: break;  //Keyboard.X
@@ -43,6 +46,7 @@ export class JournalCreateComponent implements OnInit {
   }
   @Output() newItemEvent = new EventEmitter<string>();
   @Input() controller: any;
+  typeOfJournal : string = "journal";
   account: any;
   outlet: any;
   items: any = [];
@@ -59,7 +63,9 @@ export class JournalCreateComponent implements OnInit {
   selectTemplate: any = [];
   selectAccount: any = [];
   selectOutlet: any = [];
-  typeJournal: string = 'single';
+  recurringOfJournal: string = 'oneTime';
+  cashbank : any  = new CashBank("","debit");
+  selectAccountCashBank : any = [];
   constructor(
     public activeModal: NgbActiveModal,
     private http: HttpClient,
@@ -68,11 +74,7 @@ export class JournalCreateComponent implements OnInit {
   ) { }
 
 
-  ngOnInit(): void {
-    
-    // if(this.activeRouter.snapshot.url[1].path == 'cb') {
-    //     this.controller = "CashBank";
-    // }
+  ngOnInit(): void { 
     this.newItem();
     this.httpGet();
   }
@@ -112,6 +114,7 @@ export class JournalCreateComponent implements OnInit {
         this.selectAccount = data['account'];
         this.selectOutlet = data['outlet'];
         this.selectTemplate = data['template'];
+        this.selectAccountCashBank = data['accountCashBank'];
         console.log(data);
       },
       error => {
@@ -186,9 +189,20 @@ export class JournalCreateComponent implements OnInit {
         i += 1000;
       }
     }
+
+    if(this.typeOfJournal == 'cashbank'){
+      this.submit = true;
+      this.summary.balance = 0;
+    }
   }
 
-
+  fnClearCredit(){
+    for (let i = 0; i < this.items.length; i++) { 
+      this.items[i].credit = 0; 
+    }
+    this.calculation();
+  }
+   
 
   onSubmit() {
 
@@ -201,8 +215,9 @@ export class JournalCreateComponent implements OnInit {
     const body = {
       items: items,
       model: this.model,
-      typeJournal: this.typeJournal,
+      recurringOfJournal: this.recurringOfJournal,
       templateId: this.templateId,
+      typeOfJournal : this.typeOfJournal
     } 
     this.http.post<any>(environment.api +   "Journal/onSubmit", body, {
       headers: this.configService.headers(),

@@ -26,7 +26,7 @@ class Account extends BaseController
         FROM " . $this->prefix . "account as a  
         left join " . $this->prefix . "account AS p ON p.id = a.parentId
         left join " . $this->prefix . "account_type AS t ON t.id = a.accountTypeId
-        WHERE a.presence = 1 and a.parentId != '0'
+        WHERE a.presence = 1 
         ORDER BY a.id ASC, a.parentId ASC";
 
         $acccountType = "SELECT *

@@ -137,7 +137,6 @@ class Journal extends BaseController
         }
 
 
-
         $outlet = "SELECT o.*, b.name as 'branch'
         FROM  " . $this->prefix . "outlet  as o
         left join branch as b on b.id = o.branchId 
@@ -149,12 +148,19 @@ class Journal extends BaseController
         WHERE  presence = 1 and tableName = 'Journal'
         ORDER BY name ASC";
 
+        $accountCashBank = "SELECT id, name
+        FROM  " . $this->prefix . "account   
+        WHERE  presence = 1 and cashBank = '1'
+        ORDER BY id  ASC";
+
         $data = [
             "error" => false,
             "code" => 200,
             "account" => $account,
             "outlet" => $this->db->query($outlet)->getResult(),
             "template" => $this->db->query($template)->getResult(),
+            "accountCashBank" => $this->db->query($accountCashBank)->getResult(),
+
         ];
         return $this->response->setJSON($data);
     }
@@ -172,7 +178,7 @@ class Journal extends BaseController
         GROUP BY a.accountTypeId";
         $account = $this->db->query($accountTypeQuery)->getResultArray();
         $i = 0;
-        foreach ($account as $rec) { 
+        foreach ($account as $rec) {
             $q = "SELECT t1.id, t1.name , o.status
             FROM account AS t1
             LEFT JOIN outlet_account AS o ON t1.id = o.accountId
@@ -229,7 +235,7 @@ class Journal extends BaseController
         $data = [
             "error" => false,
             "header" => $this->db->query($header)->getResult()[0],
-          //  "account" => $this->db->query($account)->getResult(),
+            //  "account" => $this->db->query($account)->getResult(),
             "outlet" => $this->db->query($outlet)->getResult(),
             "items" => $this->db->query($items)->getResult(),
         ];
@@ -247,18 +253,26 @@ class Journal extends BaseController
         ];
         if ($post) {
             $debit = 0;
-            $credit = 0;
-            foreach ($post['items'] as $row) {
-                $debit += $row['debit'];
-                $credit += $row['credit'];
+            $credit = 0; 
+            
+            if ($post['typeOfJournal'] == "cashbank") {
+                $debit = 0;
+                $credit = 0;
+            } else {
+                foreach ($post['items'] as $row) {
+                    $debit += $row['debit'];
+                    $credit += $row['credit'];
+                }
             }
+
+
             if (($credit - $debit) == 0) {
 
                 //  $this->db->transStart();
                 $debit = 0;
                 $credit = 0;
                 $dates = [];
-                if ($post['typeJournal'] == 'recurring') {
+                if ($post['recurringOfJournal'] == 'recurring') {
 
                     $startPeriod = $post['model']['startPeriod']['year'] . "-" . $post['model']['startPeriod']['month'] . "-" . $post['model']['startPeriod']['day'];
                     $endPeriod = $post['model']['endPeriod']['year'] . "-" . $post['model']['endPeriod']['month'] . "-" . $post['model']['endPeriod']['day'];
@@ -279,9 +293,9 @@ class Journal extends BaseController
                         // $dates[] = $date->format('Y-m-d');
 
                         $month = (int) $date->format('m');
-                      
+
                         if ($nextMonth != $month) {
-                            $dates[] = $month.' '.$n;
+                            $dates[] = $month . ' ' . $n;
                             $nextMonth = $month;
                             $n++;
 

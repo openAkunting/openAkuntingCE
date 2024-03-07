@@ -37,8 +37,8 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
   }
   @Output() newItemEvent = new EventEmitter<string>();
   @Input() id: any;
-  @Input() controller: any;
-
+ // @Input() controller: any;
+  
   account: any;
   outlet: any;
   items: any = [];
@@ -82,7 +82,7 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
   }
 
   httpGet() {
-    this.http.get<any>(environment.api + this.controller + "/detail", {
+    this.http.get<any>(environment.api +  "journal/detail", {
       headers: this.configService.headers(),
       params: {
         id: this.id
@@ -143,7 +143,7 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
   addrow() {
     const body = {
       id: this.id,
-      controller: this.controller,
+      controller: "journal",
     }
     this.http.post<any>(environment.api + "journal/addRow", body, {
       headers: this.configService.headers(),
