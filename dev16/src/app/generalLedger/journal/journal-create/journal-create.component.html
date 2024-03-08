@@ -6,7 +6,7 @@
     <div class="row g-1">
         <div class="col">
             <label>Type of Journal :</label>
-            <select class="form-control form-control-sm" (change)="fnClearCredit()"  [(ngModel)]="typeOfJournal">
+            <select class="form-control form-control-sm" (change)="fnClearCredit();onChangeTemplate();nameOfTemplate =''"  [(ngModel)]="typeOfJournal">
                 <option value="journal">Journal</option>
                 <option value="cashbank">Cash Bank</option>
             </select>
@@ -75,12 +75,12 @@
                 </div>
             </div>
 
-            <div>
+            <!-- <div>
                 Filter by branch
                 <select class="form-control form-control-sm">
                     <option>- All Branchs -</option>
                 </select>
-            </div>
+            </div> -->
 
 
         </div>

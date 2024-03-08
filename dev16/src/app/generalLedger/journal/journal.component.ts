@@ -6,8 +6,7 @@ import { LanguageService } from 'src/app/service/language.service';
 import { environment } from 'src/environments/environment';
 import { JournalCreateComponent } from './journal-create/journal-create.component';
 import { JournalDetailComponent } from './journal-detail/journal-detail.component';
-import {   ActivatedRoute, Router } from '@angular/router';
-import { CashbankCreateComponent } from './cashbank-create/cashbank-create.component';
+import {   ActivatedRoute, Router } from '@angular/router'; 
 
 @Component({
   selector: 'app-journal',
@@ -43,8 +42,7 @@ export class JournalComponent implements OnInit {
       headers : this.configService.headers(),
     }).subscribe(
       data => {
-        this.items = data['items'];
-        console.log(data);
+        this.items = data['items']; 
       },
       error => {
         console.log(error);
@@ -59,13 +57,7 @@ export class JournalComponent implements OnInit {
         this.httpGet();
       });
     }
-    if(component == 'cashBank'){
-      const modalRef = this.modalService.open(CashbankCreateComponent, { size: 'xl' }); 
-      modalRef.componentInstance.controller = this.controller;  
-      modalRef.componentInstance.newItemEvent.subscribe(() => {
-        this.httpGet();
-      });
-    }
+    
   }
 
   detail(item: any) { 

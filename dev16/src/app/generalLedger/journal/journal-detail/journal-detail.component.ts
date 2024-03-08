@@ -13,6 +13,14 @@ export class Model {
     public ref: string,
   ) { }
 }
+
+export class CashBank {
+  constructor(
+    public id : string,
+    public accountId: string,
+    public position: string,
+  ) { }
+}
 @Component({
   selector: 'app-journal-detail',
   templateUrl: './journal-detail.component.html',
@@ -47,7 +55,8 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
   summary: any = {
     totalCredit: 0,
     totalDebit: 0,
-    balance: 0
+    balance: 0,
+    summary : 0,
   }
   templateId: string = "";
   nameOfTemplate: string = "";
@@ -57,7 +66,11 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
   selectAccount: any = [];
   selectOutlet: any = [];
   journalHeader: any = [];
-  typeJournal: string = 'single';
+ // typeJournal: string = 'single';
+  typeOfJournal: string = "journal";
+  cashbank: any = new CashBank("","", "debit");
+  selectAccountCashBank: any = [];
+
   constructor(
     public activeModal: NgbActiveModal,
     private http: HttpClient,
@@ -89,6 +102,9 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
       }
     }).subscribe(
       data => {
+        console.log(data);
+        this.selectAccountCashBank = data['accountCashBank'];
+        this.typeOfJournal = data['typeOfJournal'];
         const parts = data['header']['journalDate'].split('-');
         // Membuat objek JSON dengan bagian-bagian yang diekstrak
         const journalDate = {
@@ -119,6 +135,7 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
             description: el['description'],
             debit: el['debit'],
             credit: el['credit'],
+            amount : el['amount'],
           },)
         });
 
@@ -126,12 +143,11 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
         this.model['journalDate'] = journalDate;
         this.model['note'] = data['header']['note'];
         this.journalHeader = data['header'];
-        console.log(data);
-        this.calculation();
-
-        for(let i = 0; i < this.items.length; i++){
-          console.log(i);
-          this.onSelectOutlet(this.items[i]['outletId'], i);
+        this.cashbank = new CashBank(data['cashbank']['id'], data['cashbank']['accountId'], data['cashbank']['position']);
+        console.log(this.items);
+        this.calculation(); 
+        for(let i = 0; i < this.items.length; i++){ 
+          this.onSelectOutlet(this.items[i]['outletId'], i); 
         }
       },
       error => {
@@ -154,6 +170,7 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
           id: data['item']['id'],
           outletId: "",
           accountId: "",
+          selectAccount : [],
           description: "",
           debit: 0,
           credit: 0,
@@ -169,8 +186,12 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
   }
 
   removeRow(index: number) {
-    this.items.splice(index, 1);
-    this.calculation();
+   
+    if(confirm("Delete this item ?") ){
+      this.items.splice(index, 1);
+      this.calculation();
+      this.onUpdate();
+    }
   }
 
   keyPress(item: any, type: string) {
@@ -182,13 +203,14 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
       item.debit = "0";
     }
     this.calculation();
+    console.log(this.items);
   }
 
   calculation() {
 
     this.summary.credit = 0;
     this.summary.debit = 0;
-
+    this.summary.amount = 0;
     for (let i = 0; i < this.items.length; i++) {
 
       this.summary.credit += parseFloat(this.items[i].credit);
@@ -197,15 +219,21 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
     this.summary.balance = this.summary.credit - this.summary.debit;
 
     this.submit = true;
-    for (let i = 0; i < this.items.length; i++) {
-      console.log(this.items[i]['accountId']);
+    for (let i = 0; i < this.items.length; i++) {  
+     this.summary.amount += parseFloat(this.items[i]['amount']);
       if (this.items[i]['accountId'] == '') {
         this.submit = false;
         i += 1000;
       }
     }
+    if (this.typeOfJournal == 'cashbank') {
+      this.submit = true;
+      this.summary.balance = 0;
+    }
+
+    
   }
-  onSelectOutlet(outletId: string, index: number) {
+   onSelectOutlet(outletId: string, index: number) {
     this.calculation();
     this.http.get<any>(environment.api + "journal/onSelectOutlet", {
       headers: this.configService.headers(),
@@ -213,8 +241,7 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
         outletId: outletId
       }
     }).subscribe(
-      data => {
-        console.log(data);
+      data => { 
         this.items[index]['selectAccount'] = data['items'];
       },
       error => {
@@ -227,7 +254,9 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
     const body = {
       items: this.items,
       model: this.model,
-      journalId: this.id
+      journalId: this.id,
+      cashbank : this.cashbank,
+      typeOfJournal : this.typeOfJournal,
     }
     this.http.post<any>(environment.api + "journal/onUpdate", body, {
       headers: this.configService.headers(),
@@ -235,7 +264,7 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
       data => {
         console.log(data);
         this.newItemEvent.emit();
-        this.activeModal.close();
+      //  this.activeModal.close();
       },
       error => {
         console.log(error);

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controllers;
- 
+
 class Template extends BaseController
 {
     function __construct()
@@ -22,12 +22,44 @@ class Template extends BaseController
             "code" => 400
         ];
         if ($post) {
-            $this->db->transStart();
+            //$this->db->transStart();
             $id = model("Core")->select("id", "template", "name='" . $post['nameOfTemplate'] . "' and tableName = '" . $post['tableName'] . "' and  presence = 1 ");
+            
+            if ($post['tableName'] == 'cashbank') {
+                $newItem = [];
+                $balance = 0;
+                foreach ($post['items'] as $row) { 
+                    $isDebit = (float) $row['debit'];
+                    if ($isDebit > 0) { 
+
+                        if ($post['cashbank']['position'] == 'credit') {
+                            $row['debit'] = (float) $isDebit;
+                            $row['credit'] = 0;
+                        } else if ($post['cashbank']['position'] == 'debit') {
+                            $row['debit'] = 0;
+                            $row['credit'] = (float) $isDebit;
+                        }
+
+                        $balance += $row['credit'] + $row['debit'];
+
+                        $newItem[] = $row;
+                    }
+                }
+                $newItem[] = array(
+                    "accountId" => $post['cashbank']['accountId'],
+                    "credit" => $post['cashbank']['position'] == 'credit' ? $balance : 0,
+                    "debit" => $post['cashbank']['position'] == 'debit' ? $balance : 0,
+                    "description" => "",
+                    "outletId" => "",
+                );
+                $post['items'] = $newItem;
+            }
+            
+            
             if ($id) {
                 /**
                  * OVERWRITE
-                 */ 
+                 */
                 $this->db->table($this->prefix . "template")->update([
                     "id" => $id,
                     "ref" => $post['model']['ref'],
@@ -46,7 +78,7 @@ class Template extends BaseController
                 foreach ($post['items'] as $row) {
                     /**
                      * JOURNAL TEMPLATE
-                     */
+                     */  
                     $this->db->table($this->prefix . "journal_template")->insert([
                         "templateId" => $id,
                         "outletId" => $row['outletId'],
@@ -71,7 +103,7 @@ class Template extends BaseController
                 $this->db->table($this->prefix . "template")->insert([
                     "id" => $id,
                     "name" => $post['nameOfTemplate'],
-                    "tableName" => $post['tableName'], 
+                    "tableName" => $post['tableName'],
                     "ref" => $post['model']['ref'],
                     "note" => $post['model']['note'],
                     "presence" => 1,
@@ -106,15 +138,18 @@ class Template extends BaseController
                 }
             }
 
-            if ($this->db->transStatus() != false) {
-                $this->db->transComplete();
-            } else {
-                $this->db->transRollback();
-            }
+            $this->db->table("journal_template")->delete(" presence = 0");
+
+            // if ($this->db->transStatus() != false) {
+            //     $this->db->transComplete();
+            // } else {
+            //     $this->db->transRollback();
+            // }
 
             $data = [
                 "error" => false,
-                "transaction" => $this->db->transStatus() === false ? false : true,
+                "post" => $post,
+              //  "transaction" => $this->db->transStatus() === false ? false : true,
                 "code" => 200
             ];
         }
@@ -125,8 +160,7 @@ class Template extends BaseController
     public function loadTemplate()
     {
         $templateId = $this->request->getVar()['templateId'];
-
-
+ 
         $template = "SELECT *
         FROM  " . $this->prefix . "template   
         WHERE  presence = 1 AND id = '$templateId'
@@ -134,12 +168,42 @@ class Template extends BaseController
 
         $journal_template = "SELECT *
         FROM  " . $this->prefix . "journal_template   
-        WHERE  presence = 1 AND templateId  = '$templateId'
+        WHERE  presence = 1 AND templateId  = '$templateId' and outletId != '' 
         ORDER BY id ASC";
 
-        $data = array(
+        $cashbank2= "SELECT accountId, credit, debit
+        FROM  " . $this->prefix . "journal_template   
+        WHERE  presence = 1 AND templateId  = '$templateId' and outletId = '' 
+        ORDER BY id ASC";
+        $cashbank2 = $this->db->query($cashbank2)->getResultArray();
+        $cashbank =  count($cashbank2) >0 ? $cashbank2[0]: [
+            "accountId" => 0,
+            "debit" => 0, 
+        ];
+
+        $data = array(  
             "template" => $this->db->query($template)->getResult()[0],
             "journal_template" => $this->db->query($journal_template)->getResult(),
+            "cashbank" => array(
+                "accountId" => $cashbank['accountId'],
+                "position" => $cashbank['debit'] > 0 ? 'debit' : 'credit'
+            ),
+        );
+        return $this->response->setJSON($data);
+    }
+
+    public function onChangeTemplate()
+    {
+        $tableName = $this->request->getVar()['tableName'];
+
+        $template = "SELECT *
+        FROM  " . $this->prefix . "template   
+        WHERE  presence = 1 and tableName = '$tableName'
+        ORDER BY name ASC";
+
+        $data = array(
+            "template" => $this->db->query($template)->getResult(),
+            "q" => $template,
         );
         return $this->response->setJSON($data);
     }
