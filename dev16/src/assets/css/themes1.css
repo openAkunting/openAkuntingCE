@@ -1,0 +1,203 @@
+@charset "UTF-8"; 
+
+:root { 
+  --bs-blue: #5e72e4;
+  --bs-indigo: #6610f2;
+  --bs-purple: #BB6BD9;
+  --bs-pink: #e83e8c;
+  --bs-red: #EE3232;
+  --bs-orange: #ff9900;
+  --bs-yellow: #FFFA6F;
+  --bs-green: #297F00;
+  --bs-teal: #20c997;
+  --bs-cyan: #3065D0;
+  --bs-white: #fff;
+  --bs-gray: #6c757d;
+  --bs-gray-dark: #343a40;
+  --bs-gray-100: #f8f9fa;
+  --bs-gray-200: #e9ecef;
+  --bs-gray-300: #dee2e6;
+  --bs-gray-400: #ced4da;
+  --bs-gray-500: #adb5bd;
+  --bs-gray-600: #6c757d;
+  --bs-gray-700: #495057;
+  --bs-gray-800: #343a40;
+  --bs-gray-900: #212529;
+  --bs-primary: #452B90;
+  --bs-secondary: #F8B940;
+  --bs-success: #3A9B94;
+  --bs-info: #58bad7;
+  --bs-warning: #FF9F00;
+  --bs-danger: #FF5E5E;
+  --bs-light: #c8c8c8;
+  --bs-dark: #6e6e6e;
+  --bs-primary-rgb: 69, 43, 144;
+  --bs-secondary-rgb: 248, 185, 64;
+  --bs-success-rgb: 58, 155, 148;
+  --bs-info-rgb: 88, 186, 215;
+  --bs-warning-rgb: 255, 159, 0;
+  --bs-danger-rgb: 255, 94, 94;
+  --bs-light-rgb: 200, 200, 200;
+  --bs-dark-rgb: 110, 110, 110;
+  --bs-primary-text-emphasis: #1c113a;
+  --bs-secondary-text-emphasis: #634a1a;
+  --bs-success-text-emphasis: #173e3b;
+  --bs-info-text-emphasis: #234a56;
+  --bs-warning-text-emphasis: #664000;
+  --bs-danger-text-emphasis: #662626;
+  --bs-light-text-emphasis: #495057;
+  --bs-dark-text-emphasis: #495057;
+  --bs-primary-bg-subtle: #dad5e9;
+  --bs-secondary-bg-subtle: #fef1d9;
+  --bs-success-bg-subtle: #d8ebea;
+  --bs-info-bg-subtle: #def1f7;
+  --bs-warning-bg-subtle: #ffeccc;
+  --bs-danger-bg-subtle: #ffdfdf;
+  --bs-light-bg-subtle: #fcfcfd;
+  --bs-dark-bg-subtle: #ced4da;
+  --bs-primary-border-subtle: #b5aad3;
+  --bs-secondary-border-subtle: #fce3b3;
+  --bs-success-border-subtle: #b0d7d4;
+  --bs-info-border-subtle: #bce3ef;
+  --bs-warning-border-subtle: #ffd999;
+  --bs-danger-border-subtle: #ffbfbf;
+  --bs-light-border-subtle: #e9ecef;
+  --bs-dark-border-subtle: #adb5bd;
+  --bs-white-rgb: 255, 255, 255;
+  --bs-black-rgb: 0, 0, 0;
+  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+  --bs-body-font-family: "poppins", sans-serif, sans-serif;
+  --bs-body-font-size: 0.875rem;
+  --bs-body-font-weight: 400;
+  --bs-body-line-height: 1.5;
+  --bs-body-color: #888888;
+  --bs-body-color-rgb: 136, 136, 136;
+  --bs-body-bg: #F3F0EC;
+  --bs-body-bg-rgb: 243, 240, 236;
+  --bs-emphasis-color: #000;
+  --bs-emphasis-color-rgb: 0, 0, 0;
+  --bs-secondary-color: rgba(136, 136, 136, 0.75);
+  --bs-secondary-color-rgb: 136, 136, 136;
+  --bs-secondary-bg: #e9ecef;
+  --bs-secondary-bg-rgb: 233, 236, 239;
+  --bs-tertiary-color: rgba(136, 136, 136, 0.5);
+  --bs-tertiary-color-rgb: 136, 136, 136;
+  --bs-tertiary-bg: #f8f9fa;
+  --bs-tertiary-bg-rgb: 248, 249, 250;
+  --bs-heading-color: #374557;
+  --bs-link-color: #452B90;
+  --bs-link-color-rgb: 69, 43, 144;
+  --bs-link-decoration: underline;
+  --bs-link-hover-color: #372273;
+  --bs-link-hover-color-rgb: 55, 34, 115;
+  --bs-code-color: #e83e8c;
+  --bs-highlight-bg: #fffee2;
+  --bs-border-width: 1px;
+  --bs-border-style: solid;
+  --bs-border-color: #CCCCCC;
+  --bs-border-color-translucent: rgba(0, 0, 0, 0.175);
+  --bs-border-radius: 0.75rem;
+  --bs-border-radius-sm: 0.25rem;
+  --bs-border-radius-lg: 0.5rem;
+  --bs-border-radius-xl: 1rem;
+  --bs-border-radius-xxl: 2rem;
+  --bs-border-radius-2xl: var(--bs-border-radius-xxl);
+  --bs-border-radius-pill: 50rem;
+  --bs-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  --bs-box-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  --bs-box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+  --bs-box-shadow-inset: inset 0 1px 2px rgba(0, 0, 0, 0.075);
+  --bs-focus-ring-width: 0.25rem;
+  --bs-focus-ring-opacity: 0.25;
+  --bs-focus-ring-color: rgba(69, 43, 144, 0.25);
+  --bs-form-valid-color: #3A9B94;
+  --bs-form-valid-border-color: #3A9B94;
+  --bs-form-invalid-color: #FF5E5E;
+  --bs-form-invalid-border-color: #FF5E5E;  
+  --font-regular:"Roboto", sans-serif;
+}
+
+body{
+  font-family: var(--font-regular) !important; 
+}
+
+.font-code {
+  font-family: "Roboto Mono", monospace;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-size: 0.9rem;
+}
+
+.roboto-thin {
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.roboto-thin-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.roboto-light {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.roboto-light-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.roboto-regular {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.roboto-regular-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.roboto-medium {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.roboto-medium-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.roboto-bold {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.roboto-bold-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.roboto-black {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.roboto-black-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}

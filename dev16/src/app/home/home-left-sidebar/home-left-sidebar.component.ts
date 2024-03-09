@@ -12,6 +12,7 @@ export class HomeLeftSidebarComponent {
   date: any = new Date();
   startDate: string = "2024-" + ("0" + (this.date.getMonth() + 1)).slice(-2) + "-01";
   endDate: string = "2024-" + ("0" + (this.date.getMonth() + 1)).slice(-2) + "-29";
+  public isCollapsed = false;
   constructor(
     private activeRouter: ActivatedRoute,
     private router: Router,

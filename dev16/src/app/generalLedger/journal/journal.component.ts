@@ -43,6 +43,7 @@ export class JournalComponent implements OnInit {
     }).subscribe(
       data => {
         this.items = data['items']; 
+        console.log(data);
       },
       error => {
         console.log(error);

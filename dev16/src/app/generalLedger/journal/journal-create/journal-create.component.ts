@@ -292,7 +292,7 @@ export class JournalCreateComponent implements OnInit {
       data => {
         this.selectTemplate = data['template'];
 
-        console.log(data);
+       // console.log(data);
       },
       error => {
         console.log(error);

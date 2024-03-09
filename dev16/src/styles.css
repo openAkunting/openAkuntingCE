@@ -1,4 +1,65 @@
+body{
+  font-size: 1rem;
+}
+a{
+  text-decoration: none;
+}
+.content-body {
+  margin-left: auto;
+}
 
+.left-sidebar {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 15rem; 
+}
+
+.main {
+  margin-left: 15rem;
+}
+
+.main-component {
+  padding-top: 2.4rem;
+}
+
+.header-tab-main {
+  z-index: 10;
+}
+
+
+.td-header td,
+.td-header th {
+  background-color: #f8f9fa;
+}
+
+.td-zoom {
+  cursor: pointer;
+}
+
+.td-zoom .icon-popup {
+  visibility: hidden;
+}
+
+.td-zoom:hover .icon-popup {
+  visibility: visible;
+}
+
+.ui-state-highlight {
+  height: 1.5rem;
+  line-height: 1.2em;
+  background-color: rgb(250, 255, 205, 0.4) !important;
+}
+
+.form-control.form-control-sm {
+  line-height: normal;
+}
+
+.table th,
+.table td {
+  border-color: #dad8d4;
+  padding: 0px;
+}
 
 @media (max-width: 1200px) {
   .modal-xl {
@@ -27,4 +88,25 @@
   .main{
     margin-left :0rem !important;
   }
+}
+.left-sidebar{ 
+  height: 100vh;
+  overflow-y: scroll; 
+  background-color: #f4f6f9; 
+   /* background-color: #eceff8; */
+  
+}
+
+.left-sidebar::-webkit-scrollbar {
+  width: 8px;               /* width of the entire scrollbar */
+}
+
+.left-sidebar::-webkit-scrollbar-track {
+  background: #f4f6f9;        /* color of the tracking area */
+}
+
+.left-sidebar::-webkit-scrollbar-thumb {
+  background-color: #ccc;    /* color of the scroll thumb */
+  border-radius: 5px;       /* roundness of the scroll thumb */
+  border: 1px solid #f4f6f9;  /* creates padding around scroll thumb */
 }

@@ -22,7 +22,7 @@ class Journal extends BaseController
         $items = $this->db->query($q)->getResultArray();
         foreach ($items as $row) {
 
-            $q1 = "SELECT j.id, j.accountId, j.description, j.debit, j.credit,  a.name as 'account', o.name as 'outlet', b.name as 'branch'
+            $q1 = "SELECT j.id, j.accountId, j.description, j.debit, j.credit,  a.name as 'account', o.name as 'outlet', b.name as 'branch', j.updateDate
             FROM  " . $this->prefix . "journal as j
             left join account as a on a.id = j.accountId
             left join outlet as o on o.id = j.outletId
@@ -31,7 +31,7 @@ class Journal extends BaseController
             ORDER BY j.sorting ASC, j.id ASC";
             $debit = $this->db->query($q1)->getResultArray();
 
-            $q2 = "SELECT j.id, j.accountId, j.description, j.debit, j.credit,  a.name as 'account', o.name as 'outlet', b.name as 'branch'
+            $q2 = "SELECT j.id, j.accountId, j.description, j.debit, j.credit,  a.name as 'account', o.name as 'outlet', b.name as 'branch', j.updateDate
             FROM  " . $this->prefix . "journal as j
             left join account as a on a.id = j.accountId
             left join outlet as o on o.id = j.outletId
@@ -42,12 +42,24 @@ class Journal extends BaseController
 
             $journal = array_merge($debit, $credit);
 
+            $debit = 0;
+            $credit = 0;
+            foreach ($journal as $x) {
+                $debit += $x['debit'];
+                $credit += $x['credit'];
+            }
+
+
             $rest[] = array(
                 "id" => $row['id'],
                 "note" => $row['note'],
                 "ref" => $row['ref'],
                 "journalDate" => $row['journalDate'],
                 "journal" => $journal,
+                "total" => array(
+                    "debit" => $debit,
+                    "credit" => $credit,
+                ),
                 "inputDate" => $row['inputDate'],
                 "inputBy" => $row['inputBy'],
 
@@ -580,7 +592,7 @@ class Journal extends BaseController
 
             if (($credit - $debit) == 0) {
 
-                //  $this->db->transStart();
+                $this->db->transStart();
  
                 
                 $debit = 0;
@@ -630,11 +642,11 @@ class Journal extends BaseController
                 ], " presence =  4 ");
 
 
-                // if ($this->db->transStatus() != false) {
-                //     $this->db->transComplete();
-                // } else {
-                //     $this->db->transRollback();
-                // }
+                if ($this->db->transStatus() != false) {
+                    $this->db->transComplete();
+                } else {
+                    $this->db->transRollback();
+                }
                 $data = [
                     "error" => false,
                     // "accountBalance" => $accountBalance,

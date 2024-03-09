@@ -22,9 +22,9 @@ class Template extends BaseController
             "code" => 400
         ];
         if ($post) {
-            //$this->db->transStart();
+             $this->db->transStart();
             $id = model("Core")->select("id", "template", "name='" . $post['nameOfTemplate'] . "' and tableName = '" . $post['tableName'] . "' and  presence = 1 ");
-            
+             
             if ($post['tableName'] == 'cashbank') {
                 $newItem = [];
                 $balance = 0;
@@ -140,11 +140,11 @@ class Template extends BaseController
 
             $this->db->table("journal_template")->delete(" presence = 0");
 
-            // if ($this->db->transStatus() != false) {
-            //     $this->db->transComplete();
-            // } else {
-            //     $this->db->transRollback();
-            // }
+            if ($this->db->transStatus() != false) {
+                $this->db->transComplete();
+            } else {
+                $this->db->transRollback();
+            }
 
             $data = [
                 "error" => false,
@@ -203,7 +203,7 @@ class Template extends BaseController
 
         $data = array(
             "template" => $this->db->query($template)->getResult(),
-            "q" => $template,
+            //"q" => $template,
         );
         return $this->response->setJSON($data);
     }

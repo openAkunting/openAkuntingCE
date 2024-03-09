@@ -1,0 +1,10 @@
+.nav-item .nav-link{
+    padding: 3px 10px; 
+    color: var(--bs-black-rgb);
+    font-weight: 500;
+}
+
+.nav-item .nav-link a{
+    font-size: 0.8rem;
+    color: var(--bs-black-rgb);
+}
