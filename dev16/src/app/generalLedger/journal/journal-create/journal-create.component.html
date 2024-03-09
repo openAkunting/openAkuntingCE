@@ -2,11 +2,12 @@
     <strong class="modal-title">Journal</strong>
     <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
 </div>
-<div class="modal-body">
+<div class="modal-body bg-light">
     <div class="row g-1">
         <div class="col">
             <label>Type of Journal :</label>
-            <select class="form-control form-control-sm" (change)="fnClearCredit();onChangeTemplate();nameOfTemplate =''"  [(ngModel)]="typeOfJournal">
+            <select class="form-control form-control-sm"
+                (change)="fnClearCredit();onChangeTemplate();nameOfTemplate =''" [(ngModel)]="typeOfJournal">
                 <option value="journal">Journal</option>
                 <option value="cashbank">Cash Bank</option>
             </select>
@@ -33,7 +34,7 @@
     </div>
 
     <hr>
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-6">
             <div class="d-flex" *ngIf="recurringOfJournal == 'recurring'">
                 <div class="me-2">
@@ -99,148 +100,168 @@
 
 
         </div>
+    </div>
+    <div class="row mb-3 px-2">
+        <div class="form-journal border  bg-white  py-2">
 
-        <!-- JOURNAL -->
-        <div class="col-12" *ngIf="typeOfJournal == 'journal' ">
-            <table class="table table-sm">
-                <thead>
-                    <tr>
-                        <th>Outlet</th>
-                        <th>Account</th>
-                        <th>Description</th>
-                        <th>Debit</th>
-                        <th>Credit</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let x of items; let i = index">
-                        <td>
-                            <select class="form-control form-control-sm" [(ngModel)]="x.outletId"
-                                (change)="onSelectOutlet(x.outletId, i);">
-                                <option [value]="a.id" *ngFor="let a of selectOutlet">{{a.branch+" : "+a.name}}</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select class="form-control form-control-sm" [(ngModel)]="x.accountId"
-                                (change)="calculation()">
-                                <optgroup [label]="a.name" *ngFor="let a of x.selectAccount">
-                                    <option [hidden]="c.status != '1' " [value]="c.id" *ngFor="let c of a.coa">
-                                        {{c.id+" : "+c.name}}
-                                    </option>
-                                </optgroup>
-                            </select>
-                        </td>
+            <!-- JOURNAL -->
+            <div class="col-12" *ngIf="typeOfJournal == 'journal' ">
+                <div class="row g-0">
+                    <div class="col-2">
+                        <div class="px-2"> Outlet</div>
+                    </div>
+                    <div class="col-3">
+                        <div class="px-2"> Account</div>
+                    </div>
+                    <div class="col-3">
+                        <div class="px-2"> Description</div>
+                    </div>
+                    <div class="col-4">
+                        <div class="row g-0">
+                            <div class="col-5 text-end">
+                                <div class="px-2"> Debit</div>
+                            </div>
+                            <div class="col-5 text-end">
+                                <div class="px-2"> Credit</div>
+                            </div>
+                            <div class="col-2">
 
-                        <td>
-                            <input type="text" maxlength="250" class="form-control form-control-sm"
-                                [(ngModel)]="x.description">
-                        </td>
-
-                        <td>
-                            <input type="text" currencyMask [options]="currencyOptions" (keypress)="keyPress(x,'debit')"
-                                class="form-control form-control-sm" [(ngModel)]="x.debit">
-                        </td>
-
-                        <td>
-                            <input type="text" currencyMask [options]="currencyOptions"
-                                (keypress)="keyPress(x,'credit')" class="form-control form-control-sm"
-                                [(ngModel)]="x.credit">
-                        </td>
-                        <td>
-                            <a *ngIf="i>1" (click)="removeRow(i);">removeRow</a>
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="4" class="text-end">
-                            <button type="button" (click)="addrow();" class="btn btn-sm btn-light">Add Row</button>
-                        </td>
-                        <td></td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-
-        <!-- CASH BANK -->
-        <div class="col-12" *ngIf="typeOfJournal == 'cashbank'  ">
-
-            <div class="row mb-3">
-                <div class="col-6"> 
-                    <label>Select Account</label>
-                    <select class="form-control form-control-sm" [(ngModel)]="cashbank.accountId">
-                        <option [value]="x.id" *ngFor="let x of selectAccountCashBank">
-                            {{x.id+" : "+x.name}}
-                        </option>
-                    </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-6">
-                    <label>Position</label>
-                    <select class="form-control form-control-sm" [(ngModel)]="cashbank.position">
-                        <option value="debit">Debit</option>
-                        <option value="credit">Credit</option>
-                    </select>
-                </div>
-            </div>
-
-            <div>
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th>Outlet</th>
-                            <th>Account</th>
-                            <th>Description</th>
-                            <th>Amount</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let x of items; let i = index">
-                            <td>
-                                <select class="form-control form-control-sm" [(ngModel)]="x.outletId"
-                                    (change)="onSelectOutlet(x.outletId, i);">
-                                    <option [value]="a.id" *ngFor="let a of selectOutlet">{{a.branch+" : "+a.name}}
-                                    </option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="form-control form-control-sm" [(ngModel)]="x.accountId"
-                                    (change)="calculation()">
-                                    <optgroup [label]="a.name" *ngFor="let a of x.selectAccount">
-                                        <option [hidden]="c.status != '1' " [value]="c.id" *ngFor="let c of a.coa">
-                                            {{c.id+" : "+c.name}}
-                                        </option>
-                                    </optgroup>
-                                </select>
-                            </td>
-
-                            <td>
-                                <input type="text" maxlength="250" class="form-control form-control-sm"
-                                    [(ngModel)]="x.description">
-                            </td>
-
-                            <td>
+                <div class="row g-0" *ngFor="let x of items; let i = index">
+                    <div class="col-2">
+                        <select class="form-control form-control-sm" [(ngModel)]="x.outletId"
+                            (change)="onSelectOutlet(x.outletId, i);">
+                            <option [value]="a.id" *ngFor="let a of selectOutlet">{{a.branch+" : "+a.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <select class="form-control form-control-sm" [(ngModel)]="x.accountId" (change)="calculation()">
+                            <optgroup [label]="a.name" *ngFor="let a of x.selectAccount">
+                                <option [hidden]="c.status != '1' " [value]="c.id" *ngFor="let c of a.coa">
+                                    {{c.id+" : "+c.name}}
+                                </option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <input type="text" maxlength="250" class="form-control form-control-sm"
+                            [(ngModel)]="x.description">
+                    </div>
+                    <div class="col-4">
+                        <div class="row g-0">
+                            <div class="col-5">
                                 <input type="text" currencyMask [options]="currencyOptions"
                                     (keypress)="keyPress(x,'debit')" class="form-control form-control-sm"
                                     [(ngModel)]="x.debit">
-                            </td>
+                            </div>
+                            <div class="col-5">
+                                <input type="text" currencyMask [options]="currencyOptions"
+                                    (keypress)="keyPress(x,'credit')" class="form-control form-control-sm"
+                                    [(ngModel)]="x.credit">
+                            </div>
+                            <div class="col-2 text-center">
+                                <a *ngIf="i>1" (click)="removeRow(i);"><i class="bi bi-trash3"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                            <td>
-                                <a *ngIf="i>1" (click)="removeRow(i);">removeRow</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="4" class="text-end">
-                                <button type="button" (click)="addrow();" class="btn btn-sm btn-light">Add Row</button>
-                            </td>
-                            <td></td>
-                        </tr>
-                    </tfoot>
-                </table>
+                <div class="row g-0 mt-3">
+                    <div class="offset-8 col-4 text-end">
+                        <div class="offset-5 col-5 d-grid">
+                            <button type="button" (click)="addrow();" class="btn btn-sm btn-light">Add Row</button>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
+
+            <!-- CASH BANK -->
+            <div class="col-12" *ngIf="typeOfJournal == 'cashbank'  ">
+
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label>Select Account</label>
+                        <select class="form-control form-control-sm" [(ngModel)]="cashbank.accountId">
+                            <option [value]="x.id" *ngFor="let x of selectAccountCashBank">
+                                {{x.id+" : "+x.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label>Position</label>
+                        <select class="form-control form-control-sm" [(ngModel)]="cashbank.position">
+                            <option value="debit">Debit</option>
+                            <option value="credit">Credit</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Outlet</th>
+                                <th>Account</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let x of items; let i = index">
+                                <td>
+                                    <select class="form-control form-control-sm" [(ngModel)]="x.outletId"
+                                        (change)="onSelectOutlet(x.outletId, i);">
+                                        <option [value]="a.id" *ngFor="let a of selectOutlet">{{a.branch+" : "+a.name}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control form-control-sm" [(ngModel)]="x.accountId"
+                                        (change)="calculation()">
+                                        <optgroup [label]="a.name" *ngFor="let a of x.selectAccount">
+                                            <option [hidden]="c.status != '1' " [value]="c.id" *ngFor="let c of a.coa">
+                                                {{c.id+" : "+c.name}}
+                                            </option>
+                                        </optgroup>
+                                    </select>
+                                </td>
+
+                                <td>
+                                    <input type="text" maxlength="250" class="form-control form-control-sm"
+                                        [(ngModel)]="x.description">
+                                </td>
+
+                                <td>
+                                    <input type="text" currencyMask [options]="currencyOptions"
+                                        (keypress)="keyPress(x,'debit')" class="form-control form-control-sm"
+                                        [(ngModel)]="x.debit">
+                                </td>
+
+                                <td>
+                                    <a *ngIf="i>1" (click)="removeRow(i);">removeRow</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" class="text-end">
+                                    <button type="button" (click)="addrow();" class="btn btn-sm btn-light">Add
+                                        Row</button>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -291,7 +312,7 @@
     {{typeOfJournal}}
     <code>{{model | json}}</code>
     <code>{{cashbank | json}}</code>
-    
+
 
 </div>
 <div class="modal-footer">

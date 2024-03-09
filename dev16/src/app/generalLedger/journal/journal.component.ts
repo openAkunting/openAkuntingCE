@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
@@ -13,8 +13,10 @@ import {   ActivatedRoute, Router } from '@angular/router';
   templateUrl: './journal.component.html',
   styleUrls: ['./journal.component.css']
 })
-export class JournalComponent implements OnInit {
+export class JournalComponent implements OnInit, AfterViewInit {
   items: any = []; 
+  controller:string = "Journal";
+  @ViewChild('mymodal') mymodal: ElementRef | undefined;
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
@@ -28,8 +30,10 @@ export class JournalComponent implements OnInit {
     config.backdrop = 'static';
     config.keyboard = false;
   }
-  controller:string = "Journal";
-
+  ngAfterViewInit(): void {
+  // this.open('journal');
+  }
+ 
   ngOnInit(): void { 
     console.log(this.activeRouter.snapshot.data['controller']); 
     this.controller = this.activeRouter.snapshot.data['controller'];
@@ -50,6 +54,7 @@ export class JournalComponent implements OnInit {
       }
     )
   }
+
   open(component : string) {
     if(component == 'journal'){
       const modalRef = this.modalService.open(JournalCreateComponent, { size: 'xl' }); 

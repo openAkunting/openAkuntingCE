@@ -1,5 +1,5 @@
 body{
-  font-size: 1rem;
+  font-size: 1rem; 
 }
 a{
   text-decoration: none;
@@ -20,7 +20,7 @@ a{
 }
 
 .main-component {
-  padding-top: 2.4rem;
+  padding-top: 30px;
 }
 
 .header-tab-main {
@@ -96,17 +96,37 @@ a{
    /* background-color: #eceff8; */
   
 }
-
-.left-sidebar::-webkit-scrollbar {
+.lh-125{
+  line-height: 135%;
+}
+::-webkit-scrollbar  {
   width: 8px;               /* width of the entire scrollbar */
 }
 
-.left-sidebar::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: #f4f6f9;        /* color of the tracking area */
 }
 
-.left-sidebar::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background-color: #ccc;    /* color of the scroll thumb */
   border-radius: 5px;       /* roundness of the scroll thumb */
   border: 1px solid #f4f6f9;  /* creates padding around scroll thumb */
+}
+
+.table-retro{
+  font-size: 0.9rem;
+  list-style: 100%;
+}
+
+.table-retro-header{
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding:0.5rem 0px;
+  background-color: #f3f3f3;
+}
+
+.table-retro-body{
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: calc(100vh - 120px);
 }

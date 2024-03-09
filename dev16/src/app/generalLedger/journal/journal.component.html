@@ -1,122 +1,114 @@
-<div class="wrapper">
-    <div class="row mb-2">
-        <div class="col-6">
-            <strong>Journal</strong>
+<div class="wrapper border bg-white">
+    <div class="row g-1 py-2">
+        <div class="col-4">
+            <div class="px-2">
+                <strong>Journal</strong>
+            </div>
+
         </div>
-        <div class="col-6 text-end ">
-            <button class="btn btn-sm btn-primary mx-1" (click)="open('journal')">New Journal</button>
+        <div class="col-8 text-end ">
+            <div class="d-flex justify-content-end">
+                <div>
+                    <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
+                        <button type="button" class="btn btn-sm btn-outline-primary " id="dropdownManual" ngbDropdownAnchor
+                            (focus)="myDrop.open()">
+                           Today
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                            <button ngbDropdownItem>Action - 1</button>
+                            <button ngbDropdownItem>Another Action</button>
+                            <button ngbDropdownItem>Something else is here</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <button class="btn btn-sm btn-primary mx-1" (click)="open('journal')">New Journal</button>
+                </div>
+            </div>
+
+
         </div>
     </div>
 
-    <div class="border">
+    <div class="border table-retro">
+        <div class="shadow-sm border">
+            <div class="row g-1  table-retro-header">
 
-        <div class="border-bottom " *ngFor="let x of items; let i = index">
-            <div class="row g-1">
-                <div class="col-12 border-bottom">
-                    <div class="px-2">
-                        <div>Transaction date : {{x.journalDate | date}}</div>
-                        <div>
-                            {{x.note}}
-                        </div>
-                    </div>
-                   
-                </div>
-                <div class="col-2 ">
-                    <div class="px-2  border-bottom">
-                        <div class="d-flex">
-                            <div>{{i+1}}.</div>
-                            <div class="ms-2">
-                                <a href="javascript:;" (click)="detail(x)">{{x.id}}<span class="ms-1 icon-popup"><i
-                                            class="bi bi-zoom-in"></i></span></a>
-                            </div>
-                           
-                        </div> 
-                    </div>
-                     
-                    <div class="px-2">  
-                        <code> {{x.ref}} </code> 
-                    </div>
-                   
-                   
-                </div> 
+                <div class="col-2 px-2">ID</div>
+
                 <div class="col-10">
-                    <div class="row g-1 " *ngFor="let j of x.journal">
-                        <div class="col-6 border-bottom">
-                            <div [ngClass]="{'ms-4': j.credit > 0}">{{j.accountId}} : {{j.account}}</div>
-                            <div [ngClass]="{'ms-4': j.credit > 0}"> <small>{{j.description}}</small> </div>
-                            <div [ngClass]="{'ms-4': j.credit > 0}"> <small> {{j.branch ? j.branch+" : " : "" }}
-                                    {{j.outlet}} </small></div>
-                        </div>
-                        <div class="col-2 text-end border-bottom">{{j.debit | number}}</div>
-                        <div class="col-2 text-end border-bottom">{{j.credit | number}}</div>
-                        <div class="col-2 text-end px-2 border-bottom">
-                            <small>{{j.updateDate}}</small>
-                        </div>
-                    </div>
-                    <div class="row g-1 ">
-                        <div class="col-6"><strong>Total</strong></div>
-                        <div class="col-2 text-end  "><strong>{{x.total.debit | number}}</strong></div>
-                        <div class="col-2 text-end  "><strong>{{x.total.credit | number }}</strong></div>
-                        <div class="col-2">
-
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-
-
-    <div class="row">
-
-        <div class="col-12">
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="row  g-1 ">
-                        <div class="col-2">Date</div>
-                        <div class="col-1">Ref</div>
-                        <div class="col-8">
-                            <div class="row g-1">
-                                <div class="col-8">
-                                    Description
-                                </div>
-                                <div class="col-2 text-end">Debit</div>
-                                <div class="col-2 text-end">Credit</div>
-
-                            </div>
-                        </div>
-                        <div class="col-1"></div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row g-1 border-bottom" *ngFor="let x of items">
-                        <div class="col-2">
-                            <div> {{x.journalDate | date}}</div>
-                            <small>{{x.inputDate}}</small>
-                        </div>
-                        <div class="col-1">{{x.ref}}</div>
-                        <div class="col-8">
-                            <div class="row g-1 mb-2" *ngFor="let j of x.journal">
-                                <div class="col-8">
-                                    <div [ngClass]="{'ms-4': j.credit > 0}">{{j.accountId}} : {{j.account}}</div>
-                                    <div [ngClass]="{'ms-4': j.credit > 0}"> <small>{{j.description}}</small> </div>
-                                    <div [ngClass]="{'ms-4': j.credit > 0}"> <small> {{j.branch ? j.branch+" : " : "" }}
-                                            {{j.outlet}} </small></div>
-                                </div>
-                                <div class="col-2 text-end">{{j.debit | number}}</div>
-                                <div class="col-2 text-end">{{j.credit | number}}</div>
-                            </div>
-                        </div>
-                        <div class="col-1 text-end">
-                            <button type="button" (click)="detail(x)" class="btn btn-sm btn-primary">Detail</button>
+                    <div class="row g-1">
+                        <div class="col-6"> ACCOUNT/DESCRIPTION </div>
+                        <div class="col-2 text-end">DEBIT</div>
+                        <div class="col-2 text-end">CREDIT</div>
+                        <div class="col-2 text-end px-2">
+                            UPDATE DATE
                         </div>
                     </div>
                 </div>
             </div>
 
+
         </div>
+        <div class="table-retro-body py-3">
+ 
+            <div class="border-bottom" *ngFor="let x of items; let i = index">
+                <div class="row g-1">
+                    <div class="col-12 border-bottom">
+                        <div class="row g-1">
+                            <div class="col-2">
+                                <div class="px-2">
+                                    <strong>{{x.journalDate | date}}</strong>
+                                </div>
+                            </div>
+                            <div class="col-10">
+                                <em>{{x.note}}</em>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-2 ">
+                        <div class="px-2  border-bottom">
+                            <div class="d-flex">
+                                <div>{{i+1}}.</div>
+                                <div class="ms-2">
+                                    <a href="javascript:;" (click)="detail(x)">{{x.id}}<span class="ms-1 icon-popup"><i
+                                                class="bi bi-zoom-in"></i></span></a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="px-2">
+                            <code> {{x.ref}} </code>
+                        </div>
+
+                    </div>
+                    <div class="col-10">
+                        <div class="row g-1 " *ngFor="let j of x.journal">
+                            <div class="col-6 border-bottom lh-125">
+                                <div [ngClass]="{'ms-4': j.credit > 0}">{{j.accountId}} : {{j.account}}</div>
+                                <div [ngClass]="{'ms-4': j.credit > 0}"> <small>{{j.branch ? j.branch+" : " : "" }} {{j.outlet}} <em>{{j.description}}</em> </small></div>
+                            </div>
+                            <div class="col-2 text-end border-bottom">{{j.debit | number}}</div>
+                            <div class="col-2 text-end border-bottom">{{j.credit | number}}</div>
+                            <div class="col-2 text-end px-2 border-bottom">
+                                <small>{{j.updateDate}}</small>
+                            </div>
+                        </div>
+                        <div class="row g-1 ">
+                            <div class="col-6"><strong>Total</strong></div>
+                            <div class="col-2 text-end  "><strong>{{x.total.debit | number}}</strong></div>
+                            <div class="col-2 text-end  "><strong>{{x.total.credit | number }}</strong></div>
+                            <div class="col-2">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div> 
     </div>
+
 </div>

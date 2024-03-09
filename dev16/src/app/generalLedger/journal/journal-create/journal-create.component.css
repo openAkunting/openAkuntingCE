@@ -1,0 +1,9 @@
+.form-journal input,  .form-journal select, .form-journal textarea {
+    outline: 1px; 
+    border-radius: 0px; 
+}
+
+.form-journal input:focus, .form-journal select:focus, .form-journal textarea:focus { 
+    border-color: none;
+    box-shadow: none;
+}
