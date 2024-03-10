@@ -2,7 +2,12 @@ body{
   font-size: 1rem; 
 }
 a{
+  color: var(--text-color-primary);
   text-decoration: none;
+}
+
+small{
+  font-size: 0.8rem;
 }
 .content-body {
   margin-left: auto;
@@ -122,11 +127,21 @@ a{
   font-size: 0.8rem;
   font-weight: 600;
   padding:0.5rem 0px;
-  background-color: #f3f3f3;
+  background-color:var(--style-color-light);
 }
 
 .table-retro-body{
   overflow-y: scroll;
   overflow-x: hidden;
   height: calc(100vh - 120px);
+}
+
+.form-journal input,  .form-journal select, .form-journal textarea {
+  outline: 1px; 
+  border-radius: 0px; 
+}
+
+.form-journal input:focus, .form-journal select:focus, .form-journal textarea:focus { 
+  border-color: none;
+  box-shadow: none;
 }

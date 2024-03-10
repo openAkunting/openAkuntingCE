@@ -66,6 +66,7 @@ export class JournalCreateComponent implements OnInit {
   recurringOfJournal: string = 'oneTime';
   cashbank: any = new CashBank("", "debit");
   selectAccountCashBank: any = [];
+  prod : boolean = environment.production;
   constructor(
     public activeModal: NgbActiveModal,
     private http: HttpClient,

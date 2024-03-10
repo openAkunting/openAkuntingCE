@@ -6,18 +6,19 @@
 
     <div class="row">
         <div class="col-12">
-           Template : {{journalHeader.template}}
+            Template : {{journalHeader.template}}
         </div>
         <div class="col-12">
             Type Of Journal : {{typeOfJournal}}
-         </div>
+        </div>
         <div class="col-6">
 
             <small>Jurnal Date</small>
             <div class="input-group">
                 <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model.journalDate"
                     ngbDatepicker #d="ngbDatepicker" [disabled]="disable" />
-                <button class="btn btn-outline-secondary bi bi-calendar3" [disabled]="disable" (click)="d.toggle()" type="button"></button>  
+                <button class="btn btn-outline-secondary bi bi-calendar3" [disabled]="disable" (click)="d.toggle()"
+                    type="button"></button>
             </div>
 
 
@@ -31,153 +32,183 @@
             <small>Note</small>
             <textarea class="form-control form-control-sm" [(ngModel)]="model.note" [disabled]="disable"></textarea>
         </div>
- 
-        <div class="col-12" *ngIf="typeOfJournal== 'journal' ">
-            <table class="table table-sm">
-                <thead>
-                    <tr>
-                        <th>Outlet</th>
-                        <th>Account</th>
-                        <th>Description</th>
+        <div>
+            <small>Transaction detail</small>
+        </div>
+        <div class="form-journal bg-white  py-2 border-style-primary">
+            <div class="col-12" *ngIf="typeOfJournal== 'journal' ">
 
-                        <th>Debit</th>
-                        <th>Credit</th>
-                        <th *ngIf="!disable"></th>
-                        <th *ngIf="!disable"></th>
-                    </tr>
-                </thead>
-                <tbody id="sortable">
-                    <tr *ngFor="let x of items; let i = index">
-                        <td>
+                <div class="row g-0">
+                    <div class="col-2">
+                        <div class="px-2"> Outlet</div>
+                    </div>
+                    <div class="col-3 align-self-center">
+                        <div class="px-2"> Account</div>
+                    </div>
+                    <div class="col-3 align-self-center">
+                        <div class="px-2"> Description</div>
+                    </div>
+                    <div class="col-4">
+                        <div class="row g-0">
+                            <div class="col-5 text-end">
+                                <div class="px-2"> Debit</div>
+                            </div>
+                            <div class="col-5 text-end">
+                                <div class="px-2"> Credit</div>
+                            </div>
+                            <div class="col-2">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sortable"> 
+
+                    <div class="row g-0" *ngFor="let x of items; let i = index">
+                        <div class="col-2">
                             <select class="form-control form-control-sm" [(ngModel)]="x.outletId" [disabled]="disable"
                                 (change)="onSelectOutlet(x.outletId, i);">
-                                <option [value]="a.id" *ngFor="let a of selectOutlet">{{a.branch+" : "+a.name}}</option>
+                                <option [value]="a.id" *ngFor="let a of selectOutlet">{{a.branch+" : "+a.name}}
+                                </option>
                             </select>
-                        </td>
-                        <td>
+                        </div>
+                        <div class="col-3 align-self-center">
                             <select class="form-control form-control-sm" [(ngModel)]="x.accountId" [disabled]="disable"
                                 (change)="calculation()">
                                 <optgroup [label]="a.name" *ngFor="let a of x.selectAccount">
-                                    <option [hidden]="c.status != '1' "  [value]="c.id" *ngFor="let c of a.coa">
+                                    <option [hidden]="c.status != '1' " [value]="c.id" *ngFor="let c of a.coa">
                                         {{c.id+" : "+c.name}}
                                     </option>
                                 </optgroup>
                             </select>
-                        </td>
+                        </div>
+                        <div class="col-3 align-self-center">
+                            <input type="text" maxlength="250" class="form-control form-control-sm" [disabled]="disable"
+                                [(ngModel)]="x.description">
+                        </div>
+                        <div class="col-4">
+                            <div class="row g-0">
+                                <div class="col-5 text-end">
+                                    <input type="text" currencyMask [options]="currencyOptions"
+                                        (keypress)="keyPress(x,'debit')" [disabled]="disable"
+                                        class="form-control form-control-sm" [(ngModel)]="x.debit">
+                                </div>
+                                <div class="col-5 text-end">
+                                    <input type="text" currencyMask [options]="currencyOptions"
+                                        (keypress)="keyPress(x,'credit')" [disabled]="disable"
+                                        class="form-control form-control-sm" [(ngModel)]="x.credit">
+                                </div>
+                                <div class="col-2 text-center">
+                                    <span *ngIf="!disable" class="mx-1">
+                                        <a *ngIf="items.length > 2" (click)="removeRow(i);"><i
+                                                class="bi bi-trash-fill"></i></a>
+                                    </span>
+                                    <span *ngIf="!disable" class="handle mx-1" [attr.data-id]="x.id"><i
+                                            class="bi bi-arrows-vertical"></i></span>
 
-                        <td>
-                            <input type="text" maxlength="250" class="form-control form-control-sm" [disabled]="disable"  [(ngModel)]="x.description">
-                        </td>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                        <td>
-                            <input type="text" currencyMask [options]="currencyOptions" (keypress)="keyPress(x,'debit')" [disabled]="disable"
-                                class="form-control form-control-sm" [(ngModel)]="x.debit">
-                                 
-                        </td> 
+                </div> 
 
-                        <td>
-                            <input type="text" currencyMask [options]="currencyOptions"
-                                (keypress)="keyPress(x,'credit')" class="form-control form-control-sm" [disabled]="disable"
-                                [(ngModel)]="x.credit">
-                        </td>
-                        <td *ngIf="!disable">
-                            <a *ngIf="items.length > 2" (click)="removeRow(i);"><i class="bi bi-trash-fill"></i></a>
-                        </td>
-                        <td *ngIf="!disable"><span class="handle"   [attr.data-id]="x.id"><i class="bi bi-arrows-vertical"></i></span></td>
-                    </tr>
-                </tbody>
-                
-            </table>
-        </div>
-
-        <div class="col-12"  *ngIf="typeOfJournal== 'cashbank' ">
-            {{cashbank | json}}
-            <div class="row mb-3">
-                <div class="col-6"> 
-                    <label>Select Account</label>
-                    <select class="form-control form-control-sm" [(ngModel)]="cashbank.accountId" [disabled]="disable">
-                        <option [value]="x.id" *ngFor="let x of selectAccountCashBank">
-                            {{x.id+" : "+x.name}}
-                        </option>
-                    </select>
-                </div>
-                <div class="col-6">
-                    <label>Position</label>
-                    <select class="form-control form-control-sm" [(ngModel)]="cashbank.position" [disabled]="disable">
-                        <option value="debit">Debit</option>
-                        <option value="credit">Credit</option>
-                    </select>
-                </div>
             </div>
 
-            <table class="table table-sm">
-                <thead>
-                    <tr>
-                        <th>Outlet</th>
-                        <th>Account</th>
-                        <th>Description</th>
+            <div class="col-12" *ngIf="typeOfJournal== 'cashbank' ">
+                {{cashbank | json}}
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label>Select Account</label>
+                        <select class="form-control form-control-sm" [(ngModel)]="cashbank.accountId"
+                            [disabled]="disable">
+                            <option [value]="x.id" *ngFor="let x of selectAccountCashBank">
+                                {{x.id+" : "+x.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label>Position</label>
+                        <select class="form-control form-control-sm" [(ngModel)]="cashbank.position"
+                            [disabled]="disable">
+                            <option value="debit">Debit</option>
+                            <option value="credit">Credit</option>
+                        </select>
+                    </div>
+                </div>
 
-                        <th>Amount</th> 
-                        <th *ngIf="!disable"></th>
-                        <th *ngIf="!disable"></th>
-                    </tr>
-                </thead>
-                <tbody id="sortable">
-                    <tr *ngFor="let x of items; let i = index">
-                        <td>
-                            <select class="form-control form-control-sm" [(ngModel)]="x.outletId" [disabled]="disable"
-                                (change)="onSelectOutlet(x.outletId, i);">
-                                <option [value]="a.id" *ngFor="let a of selectOutlet">{{a.branch+" : "+a.name}}</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select class="form-control form-control-sm" [(ngModel)]="x.accountId" [disabled]="disable"
-                                (change)="calculation()">
-                                <optgroup [label]="a.name" *ngFor="let a of x.selectAccount">
-                                    <option [hidden]="c.status != '1' "  [value]="c.id" *ngFor="let c of a.coa">
-                                        {{c.id+" : "+c.name}}
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Outlet</th>
+                            <th>Account</th>
+                            <th>Description</th>
+
+                            <th>Amount</th>
+                            <th *ngIf="!disable"></th>
+                            <th *ngIf="!disable"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="sortable">
+                        <tr *ngFor="let x of items; let i = index">
+                            <td>
+                                <select class="form-control form-control-sm" [(ngModel)]="x.outletId"
+                                    [disabled]="disable" (change)="onSelectOutlet(x.outletId, i);">
+                                    <option [value]="a.id" *ngFor="let a of selectOutlet">{{a.branch+" : "+a.name}}
                                     </option>
-                                </optgroup>
-                            </select>
-                        </td>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="form-control form-control-sm" [(ngModel)]="x.accountId"
+                                    [disabled]="disable" (change)="calculation()">
+                                    <optgroup [label]="a.name" *ngFor="let a of x.selectAccount">
+                                        <option [hidden]="c.status != '1' " [value]="c.id" *ngFor="let c of a.coa">
+                                            {{c.id+" : "+c.name}}
+                                        </option>
+                                    </optgroup>
+                                </select>
+                            </td>
 
-                        <td>
-                            <input type="text" maxlength="250" class="form-control form-control-sm" [disabled]="disable"  [(ngModel)]="x.description">
-                        </td>
+                            <td>
+                                <input type="text" maxlength="250" class="form-control form-control-sm"
+                                    [disabled]="disable" [(ngModel)]="x.description">
+                            </td>
 
-                        <td>
-                            
-                            <input type="text" currencyMask [options]="currencyOptions" (keypress)="keyPress(x,'debit')" [disabled]="disable"
-                                class="form-control form-control-sm" [(ngModel)]="x.amount"> 
-                        </td>  
-                        
-                        <td *ngIf="!disable">
-                            <a *ngIf="items.length > 2" (click)="removeRow(i);"><i class="bi bi-trash-fill"></i></a>
-                        </td>
-                        <td *ngIf="!disable"><span class="handle"   [attr.data-id]="x.id"><i class="bi bi-arrows-vertical"></i></span></td>
-                    </tr>
-                </tbody>
-                
-            </table>
+                            <td>
+
+                                <input type="text" currencyMask [options]="currencyOptions"
+                                    (keypress)="keyPress(x,'debit')" [disabled]="disable"
+                                    class="form-control form-control-sm" [(ngModel)]="x.amount">
+                            </td>
+
+                            <td *ngIf="!disable">
+                                <a *ngIf="items.length > 2" (click)="removeRow(i);"><i class="bi bi-trash-fill"></i></a>
+                            </td>
+                            <td *ngIf="!disable"><span class="handle" [attr.data-id]="x.id"><i
+                                        class="bi bi-arrows-vertical"></i></span></td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
         </div>
- 
 
 
         <div class="col-12 text-end mb-3 " [hidden]="disable">
             <button type="button" (click)="addrow();" class="btn btn-sm btn-light">Add Row</button>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-6">
             <table>
-                <tr> 
-                    <td> Create Date </td>    
-                    <td>:  {{journalHeader.inputDate}} </td>    
+                <tr>
+                    <td> Create Date </td>
+                    <td>: {{journalHeader.inputDate}} </td>
                 </tr>
-                <tr> 
-                    <td> Create By </td>    
-                    <td>:  {{journalHeader.inputBy}} </td>    
+                <tr>
+                    <td> Create By </td>
+                    <td>: {{journalHeader.inputBy}} </td>
                 </tr>
             </table>
 
@@ -216,24 +247,25 @@
                         </tr>
                     </tbody>
                 </table>
-              
-            </div>  {{summary | json}}
+
+            </div> {{summary | json}}
         </div>
 
-    </div> 
- 
+    </div>
+
 </div>
 <div class="modal-footer">
-    <button type="button" [hidden]="disable" class="btn btn-warning mx-1" (click)="editable(true);" >Cancel</button>
-    
-    <button type="button" [hidden]="disable" class="btn btn-dark mx-1" [disabled]="!submit ||  summary.balance !=0 "  (click)="onUpdate();">Update</button>
+    <button type="button" [hidden]="disable" class="btn btn-warning mx-1" (click)="editable(true);">Cancel</button>
 
-   
-    <button type="button" [hidden]="!disable" class="btn btn-warning mx-1" (click)="editable(false);" >Edit</button>
+    <button type="button" [hidden]="disable" class="btn btn-dark mx-1" [disabled]="!submit ||  summary.balance !=0 "
+        (click)="onUpdate();">Update</button>
+
+
+    <button type="button" [hidden]="!disable" class="btn btn-warning mx-1" (click)="editable(false);">Edit</button>
 
     <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
 
-   
-    
-   
+
+
+
 </div>

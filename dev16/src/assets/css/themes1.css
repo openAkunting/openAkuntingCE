@@ -93,7 +93,7 @@
   --bs-link-hover-color: #372273;
   --bs-link-hover-color-rgb: 55, 34, 115;
   --bs-code-color: #e83e8c;
-  --bs-highlight-bg: #fffee2;
+  --bs-highlight-bg: #FFF6E9;
   --bs-border-width: 1px;
   --bs-border-style: solid;
   --bs-border-color: #CCCCCC;
@@ -117,6 +117,12 @@
   --bs-form-invalid-color: #FF5E5E;
   --bs-form-invalid-border-color: #FF5E5E;  
   --font-regular:"Roboto", sans-serif;
+  --text-color-primary: #0174BE;
+  --style-color-primary : #40A2E3;
+  --style-color-light : #FFF6E9;
+  --style-color-info : #BBE2EC;
+  --style-color-secondary : #0D9276; 
+  --style-color-gray : #dee2e6;
 }
 
 body{
@@ -129,75 +135,23 @@ body{
   font-style: normal;
   font-size: 0.9rem;
 }
+ 
 
-.roboto-thin {
-  font-family: "Roboto", sans-serif;
-  font-weight: 100;
-  font-style: normal;
+.style-color-primary{
+  background-color: var(--style-color-primary);
+}
+.style-color-light{
+  background-color: var(--style-color-light);
+}
+.style-color-info{
+  background-color: var(--style-color-info);
+}
+.style-color-secendary{
+  background-color: var(--style-color-secendary);
 }
 
-.roboto-thin-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 100;
-  font-style: italic;
-}
 
-.roboto-light {
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-  font-style: normal;
-}
-
-.roboto-light-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-  font-style: italic;
-}
-
-.roboto-regular {
-  font-family: "Roboto", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.roboto-regular-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 400;
-  font-style: italic;
-}
-
-.roboto-medium {
-  font-family: "Roboto", sans-serif;
-  font-weight: 500;
-  font-style: normal;
-}
-
-.roboto-medium-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 500;
-  font-style: italic;
-}
-
-.roboto-bold {
-  font-family: "Roboto", sans-serif;
-  font-weight: 700;
-  font-style: normal;
-}
-
-.roboto-bold-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 700;
-  font-style: italic;
-}
-
-.roboto-black {
-  font-family: "Roboto", sans-serif;
-  font-weight: 900;
-  font-style: normal;
-}
-
-.roboto-black-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 900;
-  font-style: italic;
+.border-style-primary{
+  border : 1px solid var(--style-color-gray);
+  border-left:5px solid var(--style-color-primary);
 }

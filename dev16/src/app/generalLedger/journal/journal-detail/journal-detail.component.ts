@@ -300,7 +300,7 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
   jqSortable() {
     var self = this;
     $(function () {
-      $("#sortable").sortable({
+      $(".sortable").sortable({
         placeholder: "ui-state-highlight",
         handle: ".handle",
         update: function (event: any, ui: any) {

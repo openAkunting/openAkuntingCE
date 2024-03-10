@@ -61,28 +61,68 @@
     </ul>
 </div>
 <hr>
-<p>General Ledger</p>
-<ul>
-    <li> <a class="actvie" [routerLink]="[ '/gl/jurnal' ]"><i class="bi bi-1-square-fill"></i> Journal</a> </li>
-    <li> <a [routerLink]="[ '/gl/cashBank' ]" [queryParams]="{cb:1}">Cash Bank</a> </li>
-    <li> <a [routerLink]="[ '/gl/ledger' ]">Ledger</a> </li>
-</ul>
-<hr>
-<p>
-    <a [routerLink]="[ '/trialBalance']">trialBalance</a>
-</p>
-<hr>
-<!-- <p>Report</p> 
-select date :  <input type="date" [(ngModel)]="startDate" > s.d <input type="date" [(ngModel)]="endDate" > -->
-<ul>
-    <li> <a [routerLink]="[ '/report/journalList' ]" [queryParams]="{startDate: startDate, endDate:endDate}"> Journal
-            List</a> </li>
-    <li> <a [routerLink]="[ '/report/profitAndLoss' ]" [queryParams]="{startDate: startDate, endDate:endDate}"> Profit
-            And Loss</a> </li>
-    <li> <a [routerLink]="[ '/report/balanceSheet' ]" [queryParams]="{startDate: startDate, endDate:endDate}"> Balance
-            Sheet</a> </li>
-</ul>
+<div class="a-menu p-1 mb-3">
+    <div class="a-menu-header">
+        <strong>General Ledger</strong>
+    </div>
+    <ul>
+        <li> <a [routerLink]="[ '/gl/jurnal' ]">
+                <span class="a-menu-icon">
+                    <i class="bi bi-people"></i>
+                </span>
+                <span class="a-menu-title"> Journal</span></a>
+        </li>
+
+        <li> <a [routerLink]="[ '/gl/cashBank' ]" [queryParams]="{cb:1}">
+                <span class="a-menu-icon">
+                    <i class="bi bi-people"></i>
+                </span>
+                <span class="a-menu-title"> Cash Bank</span>
+            </a>
+        </li> 
+        <li>
+            <a [routerLink]="[ '/trialBalance' ]">
+                <span class="a-menu-icon">
+                    <i class="bi bi-people"></i>
+                </span>
+                <span class="a-menu-title"> Trial Balance</span>
+            </a>
+        </li> 
+    </ul>
+</div>
 <hr>
 
+
+<div class="a-menu p-1 mb-3">
+    <div class="a-menu-header">
+        <strong>Report</strong>
+    </div>
+    <ul>
+        <li> <a [routerLink]="[ '/report/journalList' ]" [queryParams]="{startDate: startDate, endDate:endDate}">
+                <span class="a-menu-icon">
+                    <i class="bi bi-people"></i>
+                </span>
+                <span class="a-menu-title"> Journal  List</span></a>
+        </li>
+
+        <li> <a [routerLink]="[ '/report/profitAndLoss' ]" [queryParams]="{startDate: startDate, endDate:endDate}">
+                <span class="a-menu-icon">
+                    <i class="bi bi-people"></i>
+                </span>
+                <span class="a-menu-title"> Profit  And Loss</span>
+            </a>
+        </li> 
+        <li>
+            <a [routerLink]="[ '/report/balanceSheet' ]" [queryParams]="{startDate: startDate, endDate:endDate}">
+                <span class="a-menu-icon">
+                    <i class="bi bi-people"></i>
+                </span>
+                <span class="a-menu-title"> Balance  Sheet</span>
+            </a>
+        </li> 
+    </ul>
+</div>
+<hr>
+ 
 
 <button type="button" class="btn btn-dark btn-sm" (click)="logout()">Logout</button>

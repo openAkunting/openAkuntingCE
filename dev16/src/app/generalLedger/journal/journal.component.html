@@ -15,9 +15,9 @@
                            Today
                         </button>
                         <div ngbDropdownMenu aria-labelledby="dropdownManual">
-                            <button ngbDropdownItem>Action - 1</button>
-                            <button ngbDropdownItem>Another Action</button>
-                            <button ngbDropdownItem>Something else is here</button>
+                            <button ngbDropdownItem>Yesterday</button>
+                            <button ngbDropdownItem>Today</button>
+                            <button ngbDropdownItem>Next future day</button>
                         </div>
                     </div>
                 </div>
@@ -32,19 +32,16 @@
     </div>
 
     <div class="border table-retro">
-        <div class="shadow-sm border">
+        <div class="border">
             <div class="row g-1  table-retro-header">
 
-                <div class="col-2 px-2">ID</div>
-
+                <div class="col-2 px-2">ID</div> 
                 <div class="col-10">
                     <div class="row g-1">
                         <div class="col-6"> ACCOUNT/DESCRIPTION </div>
                         <div class="col-2 text-end">DEBIT</div>
                         <div class="col-2 text-end">CREDIT</div>
-                        <div class="col-2 text-end px-2">
-                            UPDATE DATE
-                        </div>
+                        <div class="col-2 text-end pe-3">UPDATE DATE</div>
                     </div>
                 </div>
             </div>
@@ -55,7 +52,7 @@
  
             <div class="border-bottom" *ngFor="let x of items; let i = index">
                 <div class="row g-1">
-                    <div class="col-12 border-bottom">
+                    <div class="col-12 border-bottom " [ngClass]="{'pt-2': i>0}">
                         <div class="row g-1">
                             <div class="col-2">
                                 <div class="px-2">
@@ -73,8 +70,7 @@
                             <div class="d-flex">
                                 <div>{{i+1}}.</div>
                                 <div class="ms-2">
-                                    <a href="javascript:;" (click)="detail(x)">{{x.id}}<span class="ms-1 icon-popup"><i
-                                                class="bi bi-zoom-in"></i></span></a>
+                                    <a href="javascript:;" (click)="detail(x)">{{x.id}}<span class="ms-1 icon-popup"><i class="bi bi-zoom-in"></i></span></a>
                                 </div>
 
                             </div>

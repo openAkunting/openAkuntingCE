@@ -15,9 +15,10 @@ class Journal extends BaseController
     public function index()
     {
 
+        //and journalDate >= CURDATE()
         $rest = [];
         $q = "SELECT * FROM " . $this->prefix . "journal_header 
-        WHERE presence = 1 and journalDate >= CURDATE()
+        WHERE presence = 1 
         ORDER BY journalDate ASC";
         $items = $this->db->query($q)->getResultArray();
         foreach ($items as $row) {

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
@@ -15,8 +15,7 @@ import {   ActivatedRoute, Router } from '@angular/router';
 })
 export class JournalComponent implements OnInit, AfterViewInit {
   items: any = []; 
-  controller:string = "Journal";
-  @ViewChild('mymodal') mymodal: ElementRef | undefined;
+  controller:string = "Journal"; 
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
@@ -31,7 +30,7 @@ export class JournalComponent implements OnInit, AfterViewInit {
     config.keyboard = false;
   }
   ngAfterViewInit(): void {
-  // this.open('journal');
+   //this.open('journal');
   }
  
   ngOnInit(): void { 
