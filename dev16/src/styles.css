@@ -1,19 +1,21 @@
-body{
-  font-size: 1rem; 
+body {
+  font-size: 1rem;
 }
-a{
+
+a {
   color: var(--text-color-primary);
   text-decoration: none;
 }
- 
-small{
+
+small {
   font-size: 0.8rem;
 }
 
-.wrapper{
+.wrapper {
   background-color: var(--bs-white);
   border: 1px solid var(--bs-gray-500);
 }
+
 .content-body {
   margin-left: auto;
 }
@@ -22,7 +24,7 @@ small{
   position: fixed;
   left: 0px;
   top: 0px;
-  width: 15rem; 
+  width: 15rem;
 }
 
 .main {
@@ -64,11 +66,16 @@ small{
 .form-control.form-control-sm {
   line-height: normal;
 }
+/* 
+input, select, textarea {
+  -webkit-border-radius: 0px !important;
+  -moz-border-radius: 0px !important;
+  border-radius: 0px !important;
+} */
 
-.table th,
-.table td {
-  border-color: #dad8d4;
-  padding: 0px;
+input:disabled,
+select:disabled {
+  background-color: #f1f4f6 !important;
 }
 
 @media (max-width: 1200px) {
@@ -80,16 +87,20 @@ small{
 }
 
 @media print {
-  button, select{
+
+  button,
+  select {
     display: none !important;
   }
+
   body {
     margin: 0;
     padding: 0;
   }
-  .wrapper{
+
+  .wrapper {
     background-color: none;
-    border:  none;
+    border: none;
   }
 
   .container {
@@ -99,84 +110,126 @@ small{
   .font-code {
     font-size: 0.8rem;
   }
-  .disable-printing{
+
+  .disable-printing {
     display: none;
   }
-  .main{
-    margin-left :0rem !important;
+
+  .main {
+    margin-left: 0rem !important;
   }
 }
-.left-sidebar{ 
+
+.left-sidebar {
   height: 100vh;
-  overflow-y: scroll; 
-  background-color: #f4f6f9; 
-   /* background-color: #eceff8; */
-  
+  overflow-y: scroll;
+  background-color: #f4f6f9;
+  /* background-color: #eceff8; */
+
 }
-.lh-125{
+
+.lh-125 {
   line-height: 135%;
 }
-::-webkit-scrollbar  {
-  width: 8px;               /* width of the entire scrollbar */
+
+::-webkit-scrollbar {
+  width: 8px;
+  /* width of the entire scrollbar */
 }
 
 ::-webkit-scrollbar-track {
-  background: #f4f6f9;        /* color of the tracking area */
+  background: #f4f6f9;
+  /* color of the tracking area */
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #ccc;    /* color of the scroll thumb */
-  border-radius: 5px;       /* roundness of the scroll thumb */
-  border: 1px solid #f4f6f9;  /* creates padding around scroll thumb */
+  background-color: #ccc;
+  /* color of the scroll thumb */
+  border-radius: 5px;
+  /* roundness of the scroll thumb */
+  border: 1px solid #f4f6f9;
+  /* creates padding around scroll thumb */
 }
-.table-font-small{
+
+.table-font-small {
   font-size: 0.8rem;
 }
-.table-retro{
+
+.table-retro {
   font-size: 0.9rem;
   list-style: 100%;
 }
-.sticky-top { 
+
+.sticky-top {
   z-index: 20;
 }
-.table td, .table th{
+
+.table td,
+.table th {
   padding: 3px 5px;
   font-size: 0.9rem;
 }
-.table th{
+
+.table th {
   font-weight: 500;
 }
+ 
+ 
+.table td select, .table td input  {
+  border: none;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  background-color: none;
+}
 
-.table thead.style-color-primary th{
-  border-bottom:5px solid var(--style-color-primary);
+.thead-style-primary tr th{
+  border-bottom: 5px solid var(--style-color-primary);
+  background-color: var(--bs-gray-200);
+}
+
+.border-bottom-style-primary{
+  border-bottom: 5px solid var(--style-color-primary);
+  background-color: var(--bs-gray-200);
+}
+
+
+.table thead.style-color-primary th {
+  border-bottom: 5px solid var(--style-color-primary);
   background-color: var(--bs-gray-100);
 }
 
-.table-retro-header{
+.table-retro-header {
   font-size: 0.8rem;
   font-weight: 600;
-  padding:0.5rem 0px;
-  background-color:var(--style-color-light);
+  padding: 0.5rem 0px;
+  background-color: var(--style-color-light);
 }
 
-.table-retro-body{
+.table-retro-body {
   overflow-y: scroll;
   overflow-x: hidden;
   height: calc(100vh - 120px);
 }
 
-.form-journal input,  .form-journal select, .form-journal textarea {
-  outline: 1px; 
-  border-radius: 0px; 
+
+
+
+
+.form-journal input,
+.form-journal select,
+.form-journal textarea {
+  outline: 1px;
+  border-radius: 0px;
 }
 
-.form-journal input:focus, .form-journal select:focus, .form-journal textarea:focus { 
+.form-journal input:focus,
+.form-journal select:focus,
+.form-journal textarea:focus {
   border-color: none;
   box-shadow: none;
 }
 
-textarea{
+textarea {
   line-height: 125%;
 }
-
- 

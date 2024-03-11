@@ -1,12 +1,15 @@
-<div class="container my-5">
-    <div class="row">
+<div class="wrapper border bg-white">
+    <div class="row g-1 py-2">
         <div class="col-12">
-            <strong>Type Of Account</strong>
+            <div class="px-2">
+                <strong>Account Classification</strong>
+            </div>
+
         </div>
         <div class="col-12 ">
-            
+
             <table class="table table-sm table-bordered table-hover">
-                <thead>
+                <thead class="thead-style-primary">
                     <tr>
                         <th *ngIf="!disable"></th>
                         <th>Code</th>
@@ -55,11 +58,11 @@
                         <td [ngClass]="{'disable': disable}" class="text-center">
 
                             <div *ngIf="x.status == '0'" (click)="onCheckBox(x,'0','status')">
-                                <i class="bi bi-toggle-off fx-4"></i>
+                                <i class="bi bi-square"></i>
                             </div>
 
-                            <div *ngIf="x.status == '1'" (click)="onCheckBox(x,'1','status')">
-                                <i class="bi bi-toggle-on  fx-4"></i>
+                            <div *ngIf="x.status == '1'" (click)="onCheckBox(x,'1','status')"> 
+                                <i class="bi bi-check-square-fill"></i>
                             </div>
                         </td>
 
@@ -71,7 +74,7 @@
 
         <div class="col-12">
             <div class="text-end">
-                
+
                 <button type="button" class="btn btn-sm btn-primary mx-5" (click)="open(content)" [hidden]="disable">Add
                     Item</button>
 

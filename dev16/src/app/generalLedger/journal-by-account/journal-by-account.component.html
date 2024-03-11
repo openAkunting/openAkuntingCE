@@ -2,128 +2,72 @@
     <strong class="modal-title">{{title}} - Journal</strong>
     <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
 </div>
-<div class="modal-body">
+<div class="">
     <div class="border table-retro">
-        <div class="border">
-            <div class="row g-1  table-retro-header">
-                <div class="col-2 px-2">ID</div>
+        <div class="border  bg-light py-2  sticky-top">
+            <div class="row g-1">
+                <div class="col-2 px-2"><strong>Id</strong></div>
                 <div class="col-10">
                     <div class="row g-1">
-                        <div class="col-6"> ACCOUNT/DESCRIPTION </div>
-                        <div class="col-2 text-end">DEBIT</div>
-                        <div class="col-2 text-end">CREDIT</div>
-                        <div class="col-2 text-end pe-3">UPDATE DATE</div>
+                        <div class="col-6"> <strong>Account / Description </strong></div>
+                        <div class="col-2 text-end"><strong>Debit</strong></div>
+                        <div class="col-2 text-end"><strong>Credit</strong></div>
+                        <div class="col-2 text-end pe-3"><strong>Update Date</strong></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="   py-3">
- 
-            <div class="border-bottom" >
+        <div  >
+            <div class="border-bottom " [ngClass]="{'mt-3': i>0}" *ngFor="let x of items; let i = index">
                 <div class="row g-1">
-                    <div class="col-12 border-bottom "  >
+                    <div class="col-12 border-bottom">
                         <div class="row g-1">
                             <div class="col-2">
                                 <div class="px-2">
-                                    <strong>journalDate</strong>
+                                    <strong>{{x.journalDate | date}}</strong>
                                 </div>
                             </div>
-                            <div class="col-10">
-                                <em>note</em>
-                            </div>
+                            <div class="col-10"> <em>{{x.note}}</em> </div>
                         </div>
-
                     </div>
                     <div class="col-2 ">
                         <div class="px-2  border-bottom">
                             <div class="d-flex">
-                                <div>1.</div>
-                                <div class="ms-2">
-                                     id
-                                </div>
-
+                                <div>{{i+1}}.</div>
+                                <div class="ms-2">{{x.id}}</div>
                             </div>
                         </div>
-                        <div class="px-2">
-                            <code> ref </code>
-                        </div>
+                        <div class="px-2"> <code> {{x.ref}} </code> </div>
 
                     </div>
                     <div class="col-10">
-                        <div class="row g-1 "  >
-                            <div class="col-6 border-bottom lh-125">
-                                <div  >accountId : account</div>
-                                <div  > <small>branch outlet <em>description</em> </small></div>
+                        <div class="row g-1" *ngFor="let j of x.journal" >
+                            <div class="col-6 border-bottom lh-125" [ngClass]="{'style-color-light': j.accountId == id, 'text-primary':j.accountId == id}">
+                                <div [ngClass]="{'ms-4': j.credit > 0}">{{j.accountId}} : {{j.account}}</div>
+                                <div [ngClass]="{'ms-4': j.credit > 0}"> <small>{{j.description}}</small> </div>
+                                <div [ngClass]="{'ms-4': j.credit > 0}"> <small> {{j.branch ? j.branch+" : " : "" }}
+                                        {{j.outlet}} </small></div>
                             </div>
-                            <div class="col-2 text-end border-bottom">debit</div>
-                            <div class="col-2 text-end border-bottom">credit</div>
-                            <div class="col-2 text-end px-2 border-bottom">
-                                <small>updateDate</small>
-                            </div>
+                            <div class="col-2 text-end border-bottom"  [ngClass]="{'style-color-light': j.accountId == id, 'text-primary':j.accountId == id}">{{j.debit | number}}</div>
+                            <div class="col-2 text-end border-bottom"  [ngClass]="{'style-color-light': j.accountId == id, 'text-primary':j.accountId == id}">{{j.credit | number}}</div>
+                            <div class="col-2 text-end px-2 border-bottom"  [ngClass]="{'style-color-light': j.accountId == id, 'text-primary':j.accountId == id}"> <small>{{j.updateDate}}</small>  </div>
                         </div>
                         <div class="row g-1 ">
                             <div class="col-6"><strong>Total</strong></div>
-                            <div class="col-2 text-end  "><strong>x.total.debit</strong></div>
-                            <div class="col-2 text-end  "><strong>x.total.credit</strong></div>
-                            <div class="col-2">
-
-                            </div>
+                            <div class="col-2 text-end  "><strong>{{x.total.debit | number}}</strong></div>
+                            <div class="col-2 text-end  "><strong>{{x.total.credit | number}}</strong></div>
+                            <div class="col-2">  </div>
                         </div>
                     </div>
 
                 </div>
             </div>
-        </div> 
+        </div>
 
     </div>
-
-
-
-
-
-
-
-
-
-    <div class="card">
-        <div class="card-header">
-            <div class="row  g-1 ">
-                <div class="col-2">Date</div>
-                <div class="col-1">Ref</div>
-                <div class="col-9">
-                    <div class="row g-1">
-                        <div class="col-8"> Description </div>
-                        <div class="col-2 text-end">Debit</div>
-                        <div class="col-2 text-end">Credit</div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="row g-1 border-bottom" *ngFor="let x of items">
-                <div class="col-2">
-                    <div> {{x.journalDate | date}}</div>
-                    <small>{{x.inputDate}}</small>
-                </div>
-                <div class="col-1">{{x.ref}}</div>
-                <div class="col-9">
-                    <div class="row g-1 mb-2" *ngFor="let j of x.journal" [ngClass]="{'bg-warning': j.accountId == id}">
-                        <div class="col-8">
-                            <div [ngClass]="{'ms-4': j.credit > 0}">{{j.accountId}} : {{j.account}}</div>
-                            <div [ngClass]="{'ms-4': j.credit > 0}"> <small>{{j.description}}</small> </div>
-                            <div [ngClass]="{'ms-4': j.credit > 0}"> <small> {{j.branch ? j.branch+" : " : "" }}
-                                    {{j.outlet}} </small></div>
-                        </div>
-                        <div class="col-2 text-end">{{j.debit | number}}</div>
-                        <div class="col-2 text-end">{{j.credit | number}}</div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
+ 
+ 
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>

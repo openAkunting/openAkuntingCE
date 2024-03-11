@@ -59,7 +59,7 @@ class Journal extends BaseController
                 "journal" => $journal,
                 "total" => array(
                     "debit" => $debit,
-                    "credit" => $credit,
+                    "credit" => $credit, 
                 ),
                 "inputDate" => $row['inputDate'],
                 "inputBy" => $row['inputBy'],
@@ -90,22 +90,32 @@ class Journal extends BaseController
         $items = $this->db->query($q)->getResultArray();
         foreach ($items as $row) {
 
-            $j = "SELECT j.id, j.accountId, j.description, j.debit, j.credit,  a.name as 'account', 
+            $j = "SELECT j.id, j.accountId, j.description, j.debit, j.credit,  a.name as 'account',   a.updateDate,
             o.name as 'outlet', b.name as 'branch'
             FROM  " . $this->prefix . "journal as j
-            left join account as a on a.id = j.accountId
-            left join outlet as o on o.id = j.outletId
-            left join branch as b on b.id = o.branchId
+            LEFT JOIN account as a on a.id = j.accountId
+            LEFT JOIN outlet as o on o.id = j.outletId
+            LEFT JOIN branch as b on b.id = o.branchId
             WHERE  j.presence = 1 and j.journalId = '" . $row['id'] . "'
             ORDER BY j.id ASC";
             $journal = $this->db->query($j)->getResultArray();
-
+            
+            $debit = 0;
+            $credit = 0;
+            foreach ($journal as $x) {
+                $debit += $x['debit'];
+                $credit += $x['credit'];
+            }
             $rest[] = array(
                 "id" => $row['id'],
                 "note" => $row['note'],
                 "ref" => $row['ref'],
                 "journalDate" => $row['journalDate'],
                 "journal" => $journal,
+                "total" => array(
+                    "debit" => $debit,
+                    "credit" => $credit, 
+                ),
                 "inputDate" => $row['inputDate'],
                 "inputBy" => $row['inputBy'],
             );

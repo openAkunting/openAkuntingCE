@@ -1,60 +1,62 @@
-<div class="container  font-code ">
+<div class="wrapper   bg-white">
+    <div class="container  font-code ">
 
-    <div class="row mb-2 ">
-        <div class="col-12">
-            <strong>Montly Profit And Loss Report</strong>
-        </div>
-        <div class="col-6">
-            <div>Brand : PT RASA MANIS MALAKA</div>
-            <div>Period : {{params['startDate']}} until {{params['endDate']}}</div>
+        <div class="row mb-2 ">
+            <div class="col-12">
+                <strong>Montly Profit And Loss Report</strong>
+            </div>
+            <div class="col-6">
+                <div>Brand : PT RASA MANIS MALAKA</div>
+                <div>Period : {{params['startDate']}} until {{params['endDate']}}</div>
+            </div>
         </div>
     </div>
-</div>
-
-
-<div class="container font-code ">
-
-    <table class="table table-sm table-bordered">
-        <thead class="sticky-top">
-            <tr>
-                <th class="bg-light">Description</th>
-                <th  class="bg-light text-end ">Debit</th>
-                <th  class="bg-light text-end">Credit</th>
-                <th  class="bg-light text-end">Balance</th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let x of items">
-            <tr >
-                <td>{{x.typeOfAccount}}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr *ngFor="let a of x.account" >
-                <td class="td-zoom" (click)="detail(a)"><span [innerHTML]="addLevel(a)"></span> 
-                    <span class="ms-1 icon-popup"><i class="bi bi-zoom-in"></i></span>  </td>
-                <td class="text-end"> {{a.debit | number}} </td> 
-                <td class="text-end"> {{a.credit | number}}  </td>
-                <td class="text-end"> {{a.balance | number}}</td>
-            </tr>
-            <tr class="td-header"> 
-                <th class="text-end"> <strong>TOTAL {{x.typeOfAccount}}</strong> </th>
-                <th class="text-end"> <strong> {{x.subtotal.debit | number}} </strong>  </th>
-                <th class="text-end"> <strong> {{x.subtotal.credit | number}} </strong>  </th>
-                <th class="text-end"> <strong> {{x.subtotal.balance | number}} </strong> </th>
-            </tr>
-            <tr>
-                <td colspan="4"></td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr class="td-header"> 
-                <th class="text-end"> <strong>Grand Total</strong> </th>
-                <th class="text-end"> <strong> {{total['debit'] | number}} </strong>  </th>
-                <th class="text-end"> <strong> {{total['credit'] | number}} </strong>  </th>
-                <th class="text-end"> <strong> {{total['balance'] | number}} </strong> </th>
-            </tr>
-        </tfoot>
-    </table>
     
+    <div class="  font-code ">
+
+        <table class="table table-sm table-bordered">
+            <thead class="sticky-top thead-style-primary">
+                <tr>
+                    <th class="bg-light"><strong>Description</strong></th>
+                    <th class="bg-light text-end "><strong>Debit</strong></th>
+                    <th class="bg-light text-end"><strong>Credit</strong></th>
+                    <th class="bg-light text-end"><strong>Balance</strong></th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let x of items">
+                <tr>
+                    <td>{{x.typeOfAccount}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr *ngFor="let a of x.account">
+                    <td class="td-zoom" (click)="detail(a)"><span [innerHTML]="addLevel(a)"></span>
+                        <span class="ms-1 icon-popup"><i class="bi bi-zoom-in"></i></span>
+                    </td>
+                    <td class="text-end"> {{a.debit | number}} </td>
+                    <td class="text-end"> {{a.credit | number}} </td>
+                    <td class="text-end"> {{a.balance | number}}</td>
+                </tr>
+                <tr class="td-header">
+                    <th class="text-end"> <strong>TOTAL {{x.typeOfAccount}}</strong> </th>
+                    <th class="text-end"> <strong> {{x.subtotal.debit | number}} </strong> </th>
+                    <th class="text-end"> <strong> {{x.subtotal.credit | number}} </strong> </th>
+                    <th class="text-end"> <strong> {{x.subtotal.balance | number}} </strong> </th>
+                </tr>
+                <tr>
+                    <td colspan="4"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr class="td-header">
+                    <th class="text-end"> <strong>Grand Total</strong> </th>
+                    <th class="text-end"> <strong> {{total['debit'] | number}} </strong> </th>
+                    <th class="text-end"> <strong> {{total['credit'] | number}} </strong> </th>
+                    <th class="text-end"> <strong> {{total['balance'] | number}} </strong> </th>
+                </tr>
+            </tfoot>
+        </table>
+
+    </div>
 </div>

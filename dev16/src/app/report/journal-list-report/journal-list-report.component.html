@@ -1,69 +1,72 @@
-<div class="container  font-code ">
+<div class="wrapper   bg-white">
+    <div class="container  font-code ">
 
-    <div class="row mb-2 ">
-        <div class="col-12">
-            <strong>Journal List Report</strong>
-        </div>
-        <div class="col-6">
-            <div>Brand : PT RASA MANIS MALAKA</div>
-            <div>Period : {{params['startDate']}} until {{params['endDate']}}</div>
-        </div>
-    </div>
-</div>
-
-
-<div class="container  font-code mb-4">
-
-    <div class="row mb-1 sticky-top">
-        <div class="col-2 border-bottom border-top border-3">
-            <strong># Jurnal Id</strong>
-        </div>
-        <div class="col-10 border-bottom border-top border-3">
-            <div class="row g-1 ">
-                <div class="col-8"><strong>Account/Journal Description</strong></div>
-                <div class="col-2 text-end  "><strong>Debit</strong></div>
-                <div class="col-2 text-end  "><strong>Credit</strong></div>
+        <div class="row mb-2 ">
+            <div class="col-12">
+                <strong>Journal List Report</strong>
+            </div>
+            <div class="col-6">
+                <div>Brand : PT RASA MANIS MALAKA</div>
+                <div>Period : {{params['startDate']}} until {{params['endDate']}}</div>
             </div>
         </div>
     </div>
 
-    <div class="row mb-1" *ngFor="let x of items">
-        <div class="row g-1">
-            <div class="col-12 ">
-                <strong> <small>Transaction date : {{x.journalDate}}</small></strong>
-            </div>
-        </div>
 
-        <div class="row g-1  pb-1 border-bottom td-zoom" *ngFor="let header of x.header; let i = index">
-            <div class="col-2">
-                <div class="d-flex ms-2">
-                    <div>{{i+1}}.</div>
-                    <div class="ms-2">
-                        <a href="javascript:;" (click)="detail(header)">{{header.id}}<span class="ms-1 icon-popup"><i class="bi bi-zoom-in"></i></span></a> 
-                       
-                    </div>
+    <div class="container  font-code mb-4">
+
+        <div class="row mb-1  sticky-top">
+            <div class="col-2 py-1 border-bottom-style-primary border-top border-3">
+                <strong># Jurnal Id</strong>
+            </div>
+            <div class="col-10 py-1 border-bottom-style-primary border-top border-3">
+                <div class="row g-1 ">
+                    <div class="col-8"><strong>Account/Journal Description</strong></div>
+                    <div class="col-2 text-end  "><strong>Debit</strong></div>
+                    <div class="col-2 text-end  "><strong>Credit</strong></div>
                 </div>
             </div>
-            <div class="col-10">
-                <div class="row g-1   border-bottom" *ngFor="let j of header.journal">
-                    <div class="col-8">
-                        <div [ngClass]="{'ms-3': j.credit > 0}">
-                            <div> {{j.accountId +" "+j.account}} </div>
-                            <em><small>{{j.description}}</small></em>
+        </div>
+
+        <div class="row mb-1" *ngFor="let x of items">
+            <div class="row g-1">
+                <div class="col-12 ">
+                    <strong> <small>Transaction date : {{x.journalDate}}</small></strong>
+                </div>
+            </div>
+
+            <div class="row g-1  pb-1 border-bottom td-zoom" *ngFor="let header of x.header; let i = index">
+                <div class="col-2">
+                    <div class="d-flex ms-2">
+                        <div>{{i+1}}.</div>
+                        <div class="ms-2">
+                            <a href="javascript:;" (click)="detail(header)">{{header.id}}<span
+                                    class="ms-1 icon-popup"><i class="bi bi-zoom-in"></i></span></a>
+
                         </div>
                     </div>
-                    <div class="col-2 text-end">{{j.debit | number}}</div>
-                    <div class="col-2 text-end">{{j.credit | number }}</div>
                 </div>
+                <div class="col-10">
+                    <div class="row g-1   border-bottom" *ngFor="let j of header.journal">
+                        <div class="col-8">
+                            <div [ngClass]="{'ms-3': j.credit > 0}">
+                                <div> {{j.accountId +" "+j.account}} </div>
+                                <em><small>{{j.description}}</small></em>
+                            </div>
+                        </div>
+                        <div class="col-2 text-end">{{j.debit | number}}</div>
+                        <div class="col-2 text-end">{{j.credit | number }}</div>
+                    </div>
 
-                <div class="row g-1 ">
-                    <div class="col-8"><strong>Total</strong></div>
-                    <div class="col-2 text-end  "><strong>{{header.total.debit | number}}</strong></div>
-                    <div class="col-2 text-end  "><strong>{{header.total.credit | number }}</strong></div>
+                    <div class="row g-1 ">
+                        <div class="col-8"><strong>Total</strong></div>
+                        <div class="col-2 text-end  "><strong>{{header.total.debit | number}}</strong></div>
+                        <div class="col-2 text-end  "><strong>{{header.total.credit | number }}</strong></div>
+                    </div>
                 </div>
             </div>
+
         </div>
 
     </div>
-
 </div>

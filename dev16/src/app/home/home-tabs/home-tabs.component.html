@@ -2,7 +2,7 @@
     <div class="default-tab  ">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <span class="nav-link"><a [routerLink]="[ '/', ]">Home</a></span>
+                <span class="nav-link" [ngClass]="{'active': active == '' }" ><a [routerLink]="[ '/', ]">Home</a></span>
             </li> 
             <li class="nav-item" *ngFor="let item of tabHistory">
                 <span class="nav-link " [ngClass]="{'active': active == item.active }">
@@ -10,7 +10,7 @@
                     <span (click)="removeTab(item);"><i class="bi bi-x"></i></span>
                 </span>
             </li>
-
+         
         </ul> 
     </div>
     

@@ -1,10 +1,11 @@
-<div class="container my-2">
-    <div class="row mb-2">
+<div class="wrapper   bg-white">
+    <div class="row g-1 py-2">
         <div class="col-6">
-            <strong>Chart Of Account</strong>
+            <div class="px-2">
+                 <strong>Chart Of Account</strong> 
+            </div> 
         </div>
-        <div class="col-6 text-end">
-
+        <div class="col-6 text-end"> 
             <a [routerLink]="[ '/md/a/i' ]" class="btn btn-sm btn-dark mx-2">Import</a>
             <button type="button" class="btn btn-sm btn-dark" (click)="modal(modalExport)">Export to *.CSV</button>
         </div>
@@ -13,7 +14,7 @@
 
         <div class="col-12 ">
             <table class="table table-sm table-bordered table-hover">
-                <thead class="sticky-top">
+                <thead class="sticky-top thead-style-primary">
                     <tr>
                         <th *ngIf="!disable"></th>
                         <th *ngIf="!disable">Add Child</th>
@@ -48,6 +49,7 @@
                         </th>
                     </tr>
                 </thead>
+
                 <tbody>
                     <tr *ngFor="let x of items; let i = index">
                         <td *ngIf="!disable">
@@ -80,7 +82,7 @@
                         <td>{{fnDetailAccountType(x.accountTypeId, 'position')}}</td>
 
 
-                        <td [ngClass]="{'disable': disable}">
+                        <td [ngClass]="{'disable': disable}" class="text-center">
 
                             <div *ngIf="x.cashBank == '0'" (click)="onCheckBox(x,'0','cashBank')">
                                 <i class="bi bi-square"></i>
@@ -91,7 +93,7 @@
                             </div>
                         </td>
 
-                        <td [ngClass]="{'disable': disable}">
+                        <td [ngClass]="{'disable': disable}" class="text-center">
                             <div *ngIf="x.status == '0'" (click)="onCheckBox(x,'0','status')">
                                 <i class="bi bi-square"></i>
                             </div>
@@ -103,26 +105,27 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
-
-
-        <div class="col-12 sticky-bottom bg-white ">
-            <div class="text-end py-2">
-                <button type="button" class="btn btn-sm btn-primary mx-5" (click)="open(content, { 'id':'1' })"
-                    [hidden]="disable">Add Item</button>
-
-                <button type="button" class="btn btn-sm btn-danger mx-1" (click)="fnDelete()" [hidden]="disable">Delete
-                    Check</button>
-                <button type="button" class="btn btn-sm btn-warning mx-1" (click)="fnRollback()"
-                    [hidden]="disable">Cancel</button>
-                <button type="button" class="btn btn-sm btn-warning mx-1" (click)="disable=false"
-                    [hidden]="!disable">Edit</button>
-
-                <button type="button" class="btn btn-sm btn-primary mx-1" (click)="fnUpdate()"
-                    [hidden]="disable">Save</button>
+            <div class="sticky-bottom bg-white border-top">
+                <div class="text-end py-2">
+                    <button type="button" class="btn btn-sm btn-primary mx-5" (click)="open(content, { 'id':'1' })"
+                        [hidden]="disable">Add Item</button>
+    
+                    <button type="button" class="btn btn-sm btn-danger mx-1" (click)="fnDelete()" [hidden]="disable">Delete
+                        Check</button>
+                    <button type="button" class="btn btn-sm btn-warning mx-1" (click)="fnRollback()"
+                        [hidden]="disable">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-warning mx-1" (click)="disable=false"
+                        [hidden]="!disable">Edit</button>
+    
+                    <button type="button" class="btn btn-sm btn-primary mx-1" (click)="fnUpdate()"
+                        [hidden]="disable">Save</button>
+                </div>
+    
             </div>
-
         </div>
+
+
+       
     </div>
 </div>
 

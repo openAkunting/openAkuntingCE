@@ -27,10 +27,10 @@ const routes: Routes = [
   { path: "login", component: LoginComponent, data: { active: "Login" }, },
   { path: "relogin", component: ReloginComponent, data: { active: "relogin" }, },
 
-  { path: "md/glp", component: GeneralLedgerParameterComponent, data: { active: "md/glp", tabs: true },canActivate:[authGuard] },
-  { path: "md/an", component: AutoNumberComponent, data: { active: "md/an", tabs: true }, canActivate:[authGuard]},
-  { path: "md/a", component: AccountComponent, data: { active: "md/a", tabs: true }, canActivate:[authGuard]},
-  { path: "md/a/i", component: AccountImportComponent, data: { active: "md/a/i", tabs: true },canActivate:[authGuard] },
+  { path: "md/glp", component: GeneralLedgerParameterComponent, data: { active: "md/glp", tabs: true, name: 'GL Parameter' },canActivate:[authGuard] },
+  { path: "md/an", component: AutoNumberComponent, data: { active: "md/an", tabs: true, name: 'Auto Number', }, canActivate:[authGuard]},
+  { path: "md/a", component: AccountComponent, data: { active: "md/a", tabs: true, name: 'Chart Of Account', }, canActivate:[authGuard]},
+  { path: "md/a/i", component: AccountImportComponent, data: { active: "md/a/i" },canActivate:[authGuard] },
   { path: "md/branch", component: BranchComponent, data: { active: "md/branch", name: 'Branch & Outlet', role: 'journal', tabs: true },canActivate:[authGuard] },
 
 

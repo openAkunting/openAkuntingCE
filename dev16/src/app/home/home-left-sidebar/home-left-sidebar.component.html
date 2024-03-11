@@ -45,17 +45,17 @@
         <strong>Master Data</strong>
     </div>
     <ul>
-        <li> <a class="active" [routerLink]="[ '/md/u' ]"> <span class="a-menu-icon"> <i class="bi bi-people"></i>
+        <li> <a [ngClass]="{'active': active == 'md/u'}" [routerLink]="[ '/md/u' ]"> <span class="a-menu-icon"> <i class="bi bi-people"></i>
                 </span> <span class="a-menu-title"> User</span></a> </li>
-        <li> <a [routerLink]="[ '/md/at' ]"> <span class="a-menu-icon"> <i class="bi bi-people"></i> </span> <span
+        <li> <a [ngClass]="{'active': active == 'md/at'}" [routerLink]="[ '/md/at' ]"> <span class="a-menu-icon"> <i class="bi bi-people"></i> </span> <span
                     class="a-menu-title"> Type of Account</span></a> </li>
-        <li> <a [routerLink]="[ '/md/a' ]"><span class="a-menu-icon"> <i class="bi bi-diagram-3"></i> </span> <span
+        <li> <a [ngClass]="{'active': active == 'md/a'}" [routerLink]="[ '/md/a' ]"><span class="a-menu-icon"> <i class="bi bi-diagram-3"></i> </span> <span
                     class="a-menu-title"> Chart of Accounts </span></a> </li>
-        <li> <a [routerLink]="[ '/md/an' ]"><span class="a-menu-icon"> <i class="bi bi-people"></i> </span> <span
+        <li> <a [ngClass]="{'active': active == 'md/an'}" [routerLink]="[ '/md/an' ]"><span class="a-menu-icon"> <i class="bi bi-people"></i> </span> <span
                     class="a-menu-title"> Auto Number </span></a> </li>
-        <li> <a [routerLink]="[ '/md/glp' ]"><span class="a-menu-icon"> <i class="bi bi-people"></i> </span> <span
+        <li> <a [ngClass]="{'active': active == 'md/glp'}" [routerLink]="[ '/md/glp' ]"><span class="a-menu-icon"> <i class="bi bi-people"></i> </span> <span
                     class="a-menu-title"> Global Parameter </span> </a> </li>
-        <li> <a [routerLink]="[ '/md/branch' ]"><span class="a-menu-icon"> <i class="bi bi-people"></i> </span> <span
+        <li> <a [ngClass]="{'active': active == 'md/branch'}" [routerLink]="[ '/md/branch' ]"><span class="a-menu-icon"> <i class="bi bi-people"></i> </span> <span
                     class="a-menu-title"> Branch & Outlet </span> </a> </li>
 
     </ul>
@@ -66,14 +66,14 @@
         <strong>General Ledger</strong>
     </div>
     <ul>
-        <li> <a [routerLink]="[ '/gl/jurnal' ]">
+        <li> <a [ngClass]="{'active': active == 'gl/jurnal'}"  [routerLink]="[ '/gl/jurnal' ]">
                 <span class="a-menu-icon">
                     <i class="bi bi-people"></i>
                 </span>
                 <span class="a-menu-title"> Journal</span></a>
         </li>
 
-        <li> <a [routerLink]="[ '/gl/cashBank' ]" [queryParams]="{cb:1}">
+        <li> <a [ngClass]="{'active': active == 'gl/cashBank'}"   [routerLink]="[ '/gl/cashBank' ]" [queryParams]="{cb:1}">
                 <span class="a-menu-icon">
                     <i class="bi bi-people"></i>
                 </span>
@@ -81,7 +81,7 @@
             </a>
         </li> 
         <li>
-            <a [routerLink]="[ '/trialBalance' ]">
+            <a [ngClass]="{'active': active == 'trialBalance'}"   [routerLink]="[ '/trialBalance' ]">
                 <span class="a-menu-icon">
                     <i class="bi bi-people"></i>
                 </span>
@@ -98,14 +98,14 @@
         <strong>Report</strong>
     </div>
     <ul>
-        <li> <a [routerLink]="[ '/report/journalList' ]" [queryParams]="{startDate: startDate, endDate:endDate}">
+        <li> <a [ngClass]="{'active': active == 'report/journalList'}"   [routerLink]="[ '/report/journalList' ]" [queryParams]="{startDate: startDate, endDate:endDate}">
                 <span class="a-menu-icon">
                     <i class="bi bi-people"></i>
                 </span>
                 <span class="a-menu-title"> Journal  List</span></a>
         </li>
 
-        <li> <a [routerLink]="[ '/report/profitAndLoss' ]" [queryParams]="{startDate: startDate, endDate:endDate}">
+        <li> <a [ngClass]="{'active': active == 'report/profitAndLoss'}"   [routerLink]="[ '/report/profitAndLoss' ]" [queryParams]="{startDate: startDate, endDate:endDate}">
                 <span class="a-menu-icon">
                     <i class="bi bi-people"></i>
                 </span>
@@ -113,7 +113,7 @@
             </a>
         </li> 
         <li>
-            <a [routerLink]="[ '/report/balanceSheet' ]" [queryParams]="{startDate: startDate, endDate:endDate}">
+            <a [ngClass]="{'active': active == 'report/balanceSheet'}"   [routerLink]="[ '/report/balanceSheet' ]" [queryParams]="{startDate: startDate, endDate:endDate}">
                 <span class="a-menu-icon">
                     <i class="bi bi-people"></i>
                 </span>
