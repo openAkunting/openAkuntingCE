@@ -1,6 +1,6 @@
 @charset "UTF-8"; 
 
-:root { 
+:root {  
   --bs-blue: #5e72e4;
   --bs-indigo: #6610f2;
   --bs-purple: #BB6BD9;
@@ -118,11 +118,14 @@
   --bs-form-invalid-border-color: #FF5E5E;  
   --font-regular:"Roboto", sans-serif;
   --text-color-primary: #0174BE;
+ 
   --style-color-primary : #40A2E3;
   --style-color-light : #FFF6E9;
   --style-color-info : #BBE2EC;
   --style-color-secondary : #0D9276; 
-  --style-color-gray : #dee2e6;
+  --style-color-gray : #dee2e6; 
+
+  
 }
 
 body{
@@ -154,4 +157,8 @@ body{
 .border-style-primary{
   border : 1px solid var(--style-color-gray);
   border-left:5px solid var(--style-color-primary);
+}
+
+.border-style-primary-bottom{ 
+  border-bottom:5px solid var(--style-color-primary);
 }

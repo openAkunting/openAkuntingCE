@@ -29,6 +29,10 @@ export class CashBank {
 export class JournalDetailComponent implements OnInit, AfterViewInit {
   @HostListener('window:keydown', ['$event'])
   onKeyPress($event: KeyboardEvent) {
+    console.log($event.keyCode);
+    if($event.keyCode == 27){
+      this.activeModal.dismiss();
+    }
     // if (($event.ctrlKey || $event.metaKey) && $event.keyCode == 67) {
     //   this.calculation(); console.log('CTRL + C 2');
     // }

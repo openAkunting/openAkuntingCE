@@ -1,8 +1,90 @@
 <div class="modal-header">
-    <strong class="modal-title">{{title}} :: Journal</strong>
+    <strong class="modal-title">{{title}} - Journal</strong>
     <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
 </div>
 <div class="modal-body">
+    <div class="border table-retro">
+        <div class="border">
+            <div class="row g-1  table-retro-header">
+                <div class="col-2 px-2">ID</div>
+                <div class="col-10">
+                    <div class="row g-1">
+                        <div class="col-6"> ACCOUNT/DESCRIPTION </div>
+                        <div class="col-2 text-end">DEBIT</div>
+                        <div class="col-2 text-end">CREDIT</div>
+                        <div class="col-2 text-end pe-3">UPDATE DATE</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="   py-3">
+ 
+            <div class="border-bottom" >
+                <div class="row g-1">
+                    <div class="col-12 border-bottom "  >
+                        <div class="row g-1">
+                            <div class="col-2">
+                                <div class="px-2">
+                                    <strong>journalDate</strong>
+                                </div>
+                            </div>
+                            <div class="col-10">
+                                <em>note</em>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-2 ">
+                        <div class="px-2  border-bottom">
+                            <div class="d-flex">
+                                <div>1.</div>
+                                <div class="ms-2">
+                                     id
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="px-2">
+                            <code> ref </code>
+                        </div>
+
+                    </div>
+                    <div class="col-10">
+                        <div class="row g-1 "  >
+                            <div class="col-6 border-bottom lh-125">
+                                <div  >accountId : account</div>
+                                <div  > <small>branch outlet <em>description</em> </small></div>
+                            </div>
+                            <div class="col-2 text-end border-bottom">debit</div>
+                            <div class="col-2 text-end border-bottom">credit</div>
+                            <div class="col-2 text-end px-2 border-bottom">
+                                <small>updateDate</small>
+                            </div>
+                        </div>
+                        <div class="row g-1 ">
+                            <div class="col-6"><strong>Total</strong></div>
+                            <div class="col-2 text-end  "><strong>x.total.debit</strong></div>
+                            <div class="col-2 text-end  "><strong>x.total.credit</strong></div>
+                            <div class="col-2">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div> 
+
+    </div>
+
+
+
+
+
+
+
+
 
     <div class="card">
         <div class="card-header">
@@ -13,10 +95,10 @@
                     <div class="row g-1">
                         <div class="col-8"> Description </div>
                         <div class="col-2 text-end">Debit</div>
-                        <div class="col-2 text-end">Credit</div> 
+                        <div class="col-2 text-end">Credit</div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
         <div class="card-body">
@@ -38,7 +120,7 @@
                         <div class="col-2 text-end">{{j.credit | number}}</div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>

@@ -1,19 +1,52 @@
  
-<div class="container my-2">
-    <div class="row">
-        <div class="col-12">
-            <strong>Trial Balance</strong>
+<div class="wrapper ">
+    <div class="row g-1 py-2">
+        <div class="col-3 ">
+            <div class="ms-2">
+                <strong>Trial Balance</strong>
+            </div> 
+        </div>
+        <div class="col-9 ">
+            <div class="d-flex justify-content-end">
+                <div class="me-2">
+                    <div class="input-group">
+                        <input
+                            class="form-control form-control-sm"
+                            placeholder="yyyy-mm-dd"
+                            name="dp" 
+                            ngbDatepicker
+                            #d="ngbDatepicker"
+                        />
+                        <button class="btn btn-sm btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+                    </div>
+                </div>
+                <div class="me-2">
+                    <div class="input-group">
+                        <input
+                            class="form-control form-control-sm"
+                            placeholder="yyyy-mm-dd"
+                            name="dp" 
+                            ngbDatepicker
+                            #d="ngbDatepicker"
+                        />
+                        <button class="btn btn-sm btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+                    </div>
+                </div>
+                <div class="me-2">
+                    <button type="button" class="btn btn-sm btn-primary">Filter</button>
+                </div>
+           </div>  
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
-            <table class="table table-sm table-bordered table-hover">
-                <thead>
+        <div class="col-12 ">
+            <table class="table table-sm table-bordered table-hover ">
+                <thead class="sticky-top  style-color-primary">
                     <tr> 
-                        <th class="bg-light  text-center">Account</th>
-                        <th class="bg-light text-center">Debit</th>
-                        <th class="bg-light text-center">Credit</th>
-                        <th class="bg-light text-center">Balance</th>
+                        <th class="text-center">Account</th>
+                        <th class="text-center">Debit</th>
+                        <th class="text-center">Credit</th>
+                        <th class="text-center">Balance</th>
                     </tr>
                 </thead>
                 <tbody *ngFor="let item of items" [hidden]="item.length <= 0">
