@@ -1,40 +1,77 @@
 <div class="wrapper border bg-white">
-    <div class="row g-1 py-2">
-        <div class="col-4">
-            <div class="px-2">
+    <div class="container-fluid">
+        <div class="row g-1 py-2">
+            <div class="col-2">
                 <strong>Journal</strong>
-            </div> 
-        </div>
-        <div class="col-8 text-end ">
-            <div class="d-flex justify-content-end">
-                <div>
-                    <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
-                        <button type="button" class="btn btn-sm btn-outline-primary " id="dropdownManual" ngbDropdownAnchor
-                            (focus)="myDrop.open()">
-                           Today
-                        </button>
-                        <div ngbDropdownMenu aria-labelledby="dropdownManual">
-                            <button ngbDropdownItem>Yesterday</button>
-                            <button ngbDropdownItem>Today</button>
-                            <button ngbDropdownItem>Next future day</button>
+            </div>
+            <div class="col-10 text-end ">
+                <div class="d-flex justify-content-end">
+                   
+
+                    <!-- <div class="me-2">
+                        <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-search"></i></button>
+                    </div> -->
+                    <div class="align-self-center ">Start : </div>
+                    <div class="me-1">
+                        <div class="input-group">
+                            <input
+                                class="form-control form-control-sm"
+                                placeholder="Start Date"
+                                name="dp"
+                                [(ngModel)]="range.startDate"
+                                (dateSelect)="onCheckRange();"
+                                ngbDatepicker
+                                #d1="ngbDatepicker"
+                                style="width: 100px;"
+                            />
+                            <button class="btn btn-sm btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()" type="button"></button>
                         </div>
                     </div>
-                </div>
-
-                <div>
-                    <button class="btn btn-sm btn-primary mx-1" (click)="open('journal')">New Journal</button>
+    
+                    <div class="align-self-center ">- End : </div>
+                    <div class="me-1">
+                        <div class="input-group">
+                            <input
+                                class="form-control form-control-sm"
+                                placeholder="End Date"
+                                name="dp"
+                                [(ngModel)]="range.endDate"
+                                ngbDatepicker
+                                (dateSelect)="onCheckRange();"
+                                [minDate]="range.startDate"
+                                #d2="ngbDatepicker"
+                                style="width: 100px;"
+                            />
+                            <button class="btn btn-sm btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()" type="button"></button>
+                        </div>
+                    </div>
+    
+                    <div class="me-3">
+                        <button class="btn btn-sm btn-dark" (click)="filterDate();">Filter</button>
+                    </div>
+    
+                    <div>
+                        <button class="btn btn-sm btn-primary" (click)="open('journal')">New Journal</button>
+                    </div>
                 </div>
             </div>
-
-
+           
+            <div class="col-12" *ngIf="warning != '' "> 
+                <em><small>{{warning}}</small></em>
+            </div>
+            <!-- <div class="col-12" > 
+                <input type="text" class="form-control form-control-sm" [(ngModel)]="search">
+                <button type="button" (click)="searchByAccount()">Search</button>
+            </div> -->
         </div>
     </div>
 
     <div class="border table-retro">
+      
         <div class="border">
             <div class="row g-1  table-retro-header">
 
-                <div class="col-2 px-2">ID</div> 
+                <div class="col-2 px-2">ID</div>
                 <div class="col-10">
                     <div class="row g-1">
                         <div class="col-6"> ACCOUNT/DESCRIPTION </div>
@@ -48,7 +85,7 @@
 
         </div>
         <div class="table-retro-body py-3">
- 
+        
             <div class="border-bottom" *ngFor="let x of items; let i = index">
                 <div class="row g-1">
                     <div class="col-12 border-bottom " [ngClass]="{'pt-2': i>0}">
@@ -69,7 +106,8 @@
                             <div class="d-flex">
                                 <div>{{i+1}}.</div>
                                 <div class="ms-2">
-                                    <a href="javascript:;" (click)="detail(x)">{{x.id}}<span class="ms-1 icon-popup"><i class="bi bi-zoom-in"></i></span></a>
+                                    <a href="javascript:;" (click)="detail(x)">{{x.id}}<span class="ms-1 icon-popup"><i
+                                                class="bi bi-zoom-in"></i></span></a>
                                 </div>
 
                             </div>
@@ -83,7 +121,8 @@
                         <div class="row g-1 " *ngFor="let j of x.journal">
                             <div class="col-6 border-bottom lh-125">
                                 <div [ngClass]="{'ms-4': j.credit > 0}">{{j.accountId}} : {{j.account}}</div>
-                                <div [ngClass]="{'ms-4': j.credit > 0}"> <small>{{j.branch ? j.branch+" : " : "" }} {{j.outlet}} <em>{{j.description}}</em> </small></div>
+                                <div [ngClass]="{'ms-4': j.credit > 0}"> <small>{{j.branch ? j.branch+" : " : "" }}
+                                        {{j.outlet}} <em>{{j.description}}</em> </small></div>
                             </div>
                             <div class="col-2 text-end border-bottom">{{j.debit | number}}</div>
                             <div class="col-2 text-end border-bottom">{{j.credit | number}}</div>
@@ -103,7 +142,7 @@
 
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
 
 </div>

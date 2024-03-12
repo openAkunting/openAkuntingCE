@@ -66,6 +66,18 @@ small {
 .form-control.form-control-sm {
   line-height: normal;
 }
+.form-control-line{ 
+  background: none !important; 
+ 
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+.form-control-line:disabled{
+
+  background: none !important; 
+ 
+}
 /* 
 input, select, textarea {
   -webkit-border-radius: 0px !important;
@@ -184,11 +196,6 @@ select:disabled {
 }
 
 .thead-style-primary tr th{
-  border-bottom: 5px solid var(--style-color-primary);
-  background-color: var(--bs-gray-200);
-}
-
-.border-bottom-style-primary{
   border-bottom: 5px solid var(--style-color-primary);
   background-color: var(--bs-gray-200);
 }

@@ -11,67 +11,78 @@ class Journal extends BaseController
             //   exit;
         }
     }
-
+ 
     public function index()
     {
 
         //and journalDate >= CURDATE()
+
+        $startDate = $this->request->getVar()['startDate'];
+        $endDate = $this->request->getVar()['endDate'];
+
+        $rangeDate = model("Core")->rangeDate($startDate, $endDate);
         $rest = [];
-        $q = "SELECT * FROM " . $this->prefix . "journal_header 
-        WHERE presence = 1 
-        ORDER BY journalDate ASC";
-        $items = $this->db->query($q)->getResultArray();
-        foreach ($items as $row) {
+        if ($rangeDate <= 100) {
 
-            $q1 = "SELECT j.id, j.accountId, j.description, j.debit, j.credit,  a.name as 'account', o.name as 'outlet', b.name as 'branch', j.updateDate
-            FROM  " . $this->prefix . "journal as j
-            left join account as a on a.id = j.accountId
-            left join outlet as o on o.id = j.outletId
-            left join branch as b on b.id = o.branchId
-            WHERE  j.presence = 1 and j.journalId = '" . $row['id'] . "' and j.debit > 0
-            ORDER BY j.sorting ASC, j.id ASC";
-            $debit = $this->db->query($q1)->getResultArray();
 
-            $q2 = "SELECT j.id, j.accountId, j.description, j.debit, j.credit,  a.name as 'account', o.name as 'outlet', b.name as 'branch', j.updateDate
-            FROM  " . $this->prefix . "journal as j
-            left join account as a on a.id = j.accountId
-            left join outlet as o on o.id = j.outletId
-            left join branch as b on b.id = o.branchId
-            WHERE  j.presence = 1 and j.journalId = '" . $row['id'] . "' and j.credit > 0
-            ORDER BY j.sorting ASC, j.id ASC";
-            $credit = $this->db->query($q2)->getResultArray();
 
-            $journal = array_merge($debit, $credit);
+            $date = " AND (journalDate >= '$startDate' AND  journalDate <= '$endDate' )";
 
-            $debit = 0;
-            $credit = 0;
-            foreach ($journal as $x) {
-                $debit += $x['debit'];
-                $credit += $x['credit'];
+            $q = "SELECT * FROM " . $this->prefix . "journal_header 
+            WHERE presence = 1    $date
+            ORDER BY journalDate ASC";
+            $items = $this->db->query($q)->getResultArray();
+            foreach ($items as $row) {
+
+                $q1 = "SELECT j.id, j.accountId, j.description, j.debit, j.credit,  a.name as 'account', o.name as 'outlet', b.name as 'branch', j.updateDate
+                FROM  " . $this->prefix . "journal as j
+                left join account as a on a.id = j.accountId
+                left join outlet as o on o.id = j.outletId
+                left join branch as b on b.id = o.branchId
+                WHERE  j.presence = 1 and j.journalId = '" . $row['id'] . "' and j.debit > 0
+                ORDER BY j.sorting ASC, j.id ASC";
+                $debit = $this->db->query($q1)->getResultArray();
+
+                $q2 = "SELECT j.id, j.accountId, j.description, j.debit, j.credit,  a.name as 'account', o.name as 'outlet', b.name as 'branch', j.updateDate
+                FROM  " . $this->prefix . "journal as j
+                left join account as a on a.id = j.accountId
+                left join outlet as o on o.id = j.outletId
+                left join branch as b on b.id = o.branchId
+                WHERE  j.presence = 1 and j.journalId = '" . $row['id'] . "' and j.credit > 0
+                ORDER BY j.sorting ASC, j.id ASC";
+                $credit = $this->db->query($q2)->getResultArray();
+
+                $journal = array_merge($debit, $credit);
+
+                $debit = 0;
+                $credit = 0;
+                foreach ($journal as $x) {
+                    $debit += $x['debit'];
+                    $credit += $x['credit'];
+                }
+
+
+                $rest[] = array(
+                    "id" => $row['id'],
+                    "note" => $row['note'],
+                    "ref" => $row['ref'],
+                    "journalDate" => $row['journalDate'],
+                    "journal" => $journal,
+                    "total" => array(
+                        "debit" => $debit,
+                        "credit" => $credit,
+                    ),
+                    "inputDate" => $row['inputDate'],
+                    "inputBy" => $row['inputBy'],
+
+                );
+
+
             }
-
-
-            $rest[] = array(
-                "id" => $row['id'],
-                "note" => $row['note'],
-                "ref" => $row['ref'],
-                "journalDate" => $row['journalDate'],
-                "journal" => $journal,
-                "total" => array(
-                    "debit" => $debit,
-                    "credit" => $credit, 
-                ),
-                "inputDate" => $row['inputDate'],
-                "inputBy" => $row['inputBy'],
-
-            );
-
-
         }
-
-
         $data = [
             "error" => false,
+            "rangeDate" => $rangeDate,
             //     "items" => $this->db->query($d)->getResult(),
             "items" => $rest,
 
@@ -99,7 +110,7 @@ class Journal extends BaseController
             WHERE  j.presence = 1 and j.journalId = '" . $row['id'] . "'
             ORDER BY j.id ASC";
             $journal = $this->db->query($j)->getResultArray();
-            
+
             $debit = 0;
             $credit = 0;
             foreach ($journal as $x) {
@@ -114,7 +125,7 @@ class Journal extends BaseController
                 "journal" => $journal,
                 "total" => array(
                     "debit" => $debit,
-                    "credit" => $credit, 
+                    "credit" => $credit,
                 ),
                 "inputDate" => $row['inputDate'],
                 "inputBy" => $row['inputBy'],
@@ -225,7 +236,7 @@ class Journal extends BaseController
             )  AND o.outletId = '$outletId' and accountTypeId = '" . $rec['id'] . "'
             ORDER BY t1.id ASC
             ";
-          //  $account[$i]['q'] = $q;
+            //  $account[$i]['q'] = $q;
             $account[$i]['coa'] = $this->db->query($q)->getResultArray();
             $account[$i]['total'] = count($this->db->query($q)->getResultArray());
             $i++;
@@ -259,9 +270,9 @@ class Journal extends BaseController
         WHERE o.presence = 1 and o.status = 1
         ORDER BY  b.name ASC, o.name ASC";
 
-       
 
- 
+
+
         $header = "SELECT h.* , t.name as 'template'
         FROM journal_header as h  
         LEFT JOIN template as t on t.id = h.templateId
@@ -271,28 +282,32 @@ class Journal extends BaseController
         $typeOfJournal = (int) $headerArray['cashbank'] == 1 ? "cashbank" : "journal";
 
 
-       if ($typeOfJournal == "cashbank") {
-            $items = "SELECT *, credit+debit as 'amount'  FROM journal 
-            where journalId = '$id' and presence = 1 and outletId != ''
-            ORDER BY sorting ASC, id ASC ";
-        }else{
-            $items = "SELECT *, 0 as 'amount' FROM journal 
-            where journalId = '$id' and presence = 1 
-            ORDER BY sorting ASC, id ASC ";
-        } 
+        if ($typeOfJournal == "cashbank") {
+            $items = "SELECT j.*, j.credit+j.debit as 'amount' , a.name
+            FROM journal as j
+            LEFT JOIN account as a on a.id = j.accountId
+            where j.journalId = '$id' and j.presence = 1 and j.outletId != ''
+            ORDER BY j.sorting ASC, j.id ASC ";
+        } else {
+            $items = "SELECT j.*, 0 as 'amount' , a.name
+              FROM journal as j
+            LEFT JOIN account as a on a.id = j.accountId
+            where j.journalId = '$id' and j.presence = 1 
+            ORDER BY j.sorting ASC, j.id ASC ";
+        }
         $items = $this->db->query($items)->getResultArray();
 
 
         $q1 = "SELECT *, credit+debit as 'amount'  FROM journal 
             where journalId = '$id' and presence = 1 and outletId = ''
             ORDER BY sorting ASC, id ASC ";
-        $itemsCashbank =  $this->db->query($q1)->getResultArray(); 
-        $cashbank =  count($itemsCashbank) >0 ? $itemsCashbank[0]: [
+        $itemsCashbank = $this->db->query($q1)->getResultArray();
+        $cashbank = count($itemsCashbank) > 0 ? $itemsCashbank[0] : [
             "id" => 0,
             "accountId" => 0,
-            "debit" => 0, 
+            "debit" => 0,
         ];
-        
+
         $accountCashBank = "SELECT id, name
         FROM  " . $this->prefix . "account   
         WHERE  presence = 1 and cashBank = '1'
@@ -334,15 +349,15 @@ class Journal extends BaseController
                 $balance = 0;
                 foreach ($post['items'] as $row) {
                     $isDebit = (float) $row['debit'];
-                    if ($isDebit > 0) { 
+                    if ($isDebit > 0) {
                         if ($post['cashbank']['position'] == 'credit') {
                             $row['debit'] = (float) $isDebit;
                             $row['credit'] = 0;
                         } else if ($post['cashbank']['position'] == 'debit') {
                             $row['debit'] = 0;
                             $row['credit'] = (float) $isDebit;
-                        } 
-                        $balance += $row['credit'] + $row['debit']; 
+                        }
+                        $balance += $row['credit'] + $row['debit'];
                         $newItem[] = $row;
                     }
                 }
@@ -565,22 +580,22 @@ class Journal extends BaseController
         if ($post) {
             $debit = 0;
             $credit = 0;
-        
+
 
             if ($post['typeOfJournal'] == "cashbank") {
                 $newItem = [];
                 $balance = 0;
                 foreach ($post['items'] as $row) {
                     $isDebit = (float) $row['amount'];
-                    if ($isDebit > 0) { 
+                    if ($isDebit > 0) {
                         if ($post['cashbank']['position'] == 'credit') {
                             $row['debit'] = (float) $isDebit;
                             $row['credit'] = 0;
-                        } else if($post['cashbank']['position'] == 'debit') {
+                        } else if ($post['cashbank']['position'] == 'debit') {
                             $row['debit'] = 0;
                             $row['credit'] = (float) $isDebit;
-                        } 
-                        $balance += (float) $isDebit; 
+                        }
+                        $balance += (float) $isDebit;
                         $newItem[] = $row;
                     }
                 }
@@ -604,8 +619,8 @@ class Journal extends BaseController
             if (($credit - $debit) == 0) {
 
                 $this->db->transStart();
- 
-                
+
+
                 $debit = 0;
                 $credit = 0;
                 $journalId = $post['journalId'];
@@ -619,7 +634,7 @@ class Journal extends BaseController
 
 
                 foreach ($post['items'] as $row) {
-                 
+
                     $update = [
                         "outletId" => $row['outletId'],
                         "accountId" => $row['accountId'],
@@ -630,10 +645,10 @@ class Journal extends BaseController
                         "updateDate" => date("Y-m-d H:i:s"),
                         "updateBy" => model("Token")->userId(),
                     ];
-                     
+
                     $this->db->table($this->prefix . "journal")->update($update, " id =  '" . $row['id'] . "' ");
                     $debit += $row['debit'];
-                    $credit += $row['credit']; 
+                    $credit += $row['credit'];
                 }
 
                 $this->db->table($this->prefix . "journal_header")->update([

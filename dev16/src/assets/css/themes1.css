@@ -138,10 +138,12 @@ body{
   font-style: normal;
   font-size: 0.9rem;
 }
- 
+.alpha-50{
+  opacity: 0.5;
+}
 
 .style-color-primary{
-  background-color: var(--style-color-primary);
+  background-color: var(--style-color-primary) !important;
 }
 .style-color-light{
   background-color: var(--style-color-light);
@@ -154,10 +156,15 @@ body{
 }
 
 
-.border-style-primary{
-  border : 1px solid var(--style-color-gray);
-  border-left:5px solid var(--style-color-primary);
+.border-bottom-style-primary{
+  border-bottom: 5px solid var(--style-color-primary);
+  background-color: var(--bs-gray-200);
 }
+.border-left-style-primary{
+  border-left: 5px solid var(--style-color-primary);
+  background-color: var(--bs-gray-200);
+}
+ 
 
 .border-style-primary-bottom{ 
   border-bottom:5px solid var(--style-color-primary);

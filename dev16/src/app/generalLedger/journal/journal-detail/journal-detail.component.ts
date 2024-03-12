@@ -33,19 +33,24 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
     if($event.keyCode == 27){
       this.activeModal.dismiss();
     }
-    // if (($event.ctrlKey || $event.metaKey) && $event.keyCode == 67) {
-    //   this.calculation(); console.log('CTRL + C 2');
-    // }
+    let reload = false;
     // case 67: break;  //Keyboard.C
     // case 86: break;  //Keyboard.V
     // case 88: break;  //Keyboard.X
-    if (($event.ctrlKey || $event.metaKey) && ($event.keyCode == 86 || $event.keyCode == 88)) {
-      var self = this;
+    var self = this;
+    if( $event.keyCode == 8){
+      reload = true;
+    }
+    if (($event.ctrlKey || $event.metaKey) && ($event.keyCode == 86 || $event.keyCode == 88 )) {
+      reload = true;  
+    }
+
+    if(reload == true){
+      
       setTimeout(function () {
         self.calculation();
-      }, 100);
-      console.log('CTRL +  V 1');
-    }
+      }, 100); 
+    } 
   }
   @Output() newItemEvent = new EventEmitter<string>();
   @Input() id: any;
@@ -131,7 +136,7 @@ export class JournalDetailComponent implements OnInit, AfterViewInit {
               coa : [
                 {
                   id :  el['accountId'],
-                  name : "loading...",
+                  name : el['name'],
                   status : "1"
                 }
               ]

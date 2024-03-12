@@ -1,21 +1,35 @@
 <div class="wrapper border bg-white">
-    <div class="container py-2">
+    <div class="row g-1 py-2 border-bottom">
+        <div class="col-6">
+            <div class="px-2">
+                <strong>Branch & Outlet</strong>
+            </div>
+        </div>
+        <div class="col-6 text-end">
+            <button class="btn btn-sm btn-warning mx-1" [hidden]="!disable" (click)="editable()">Editable</button>
+
+            <button class="btn btn-sm btn-warning mx-1" [hidden]="disable" (click)="disable=true">Finish</button>
+
+        </div>
+    </div>
+
+    <div class="container pb-2">
         <div class="row">
             <div class="col-6">
-                <div class="px-2"> <strong>Branch</strong> </div>
+                <div class="p-2"> <strong>Branch</strong> </div>
             </div>
             <div class="col-6">
-                <div class="px-2"> <strong>Outlet</strong></div>
+                <div class="p-2"> <strong>Outlet</strong></div>
             </div>
         </div>
         <div class="row ">
             <div class="col-6">
-                <div class="border p-2">
-                    <div class="d-flex py-1" *ngFor="let x of items; let i = index"
-                        [ngClass]="{'style-color-info': activeIndexItem == i}">
+                <div class="border bg-light">
+                    <div class="d-flex px-2 py-1" *ngFor="let x of items; let i = index"
+                        [ngClass]="{'bg-white': activeIndexItem == i, 'border-left-style-primary' : activeIndexItem == i, 'alpha-50': x.status != 1 }">
                         <div class="w-100">
-                            <input type="text" class="form-control form-control-sm mb-1" [disabled]="disable"
-                                [(ngModel)]="x.name">
+                            <input type="text" class="form-control form-control-sm  form-control-line mb-1 bg-white"
+                                [disabled]="disable" [(ngModel)]="x.name">
                         </div>
 
                         <div class="flex-shrink-1 px-1 ">
@@ -33,45 +47,66 @@
 
                     </div>
 
-                    <button class="btn btn-sm btn-primary me-1" (click)="addBranch()">Add Branch</button>
+                    <div class="p-2 text-end">
 
-                    <button class="btn btn-sm btn-warning me-1" [hidden]="disable"
-                        (click)="onUpdateBranch()">Save</button>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="border p-2">
-                    <div class="d-flex" *ngFor="let x of itemsChild; let i = index">
-                        <div class="flex-grow-1">
-                            <input type="text" class="form-control form-control-sm mb-1" [disabled]="disable"
-                                [(ngModel)]="x.name">
-                        </div>
-                        <div class=" px-1 ">
-                            <a href="javascript:;" (click)="open(x.id)">{{x.totalCoA}} AoC</a>
-                        </div>
-                        <div class=" px-1 ">
-                            <i class="bi bi-check-square-fill text-primary" *ngIf="x.status == 1"
-                                (click)="onCheckOutlet(i,'0')"></i>
-                            <i class="bi bi-square " *ngIf="x.status != 1" (click)="onCheckOutlet(i, '1')"></i>
-                        </div>
-                        <div class=" px-1 " *ngIf="!disable" (click)="onDeleteOutlet(x);">
-                            <i class="bi bi-trash3"></i>
-                        </div>
-
+                        <button class="btn btn-sm btn-primary me-1" [hidden]="disable" (click)="addBranch()">Add
+                            Branch</button>
+                        <button class="btn btn-sm btn-warning me-1" [hidden]="disable"
+                            (click)="onUpdateBranch()">Save</button>
                     </div>
                 </div>
+            </div>
 
-                <div *ngIf="activeIndexItem !== null">
-
-                    <button class="btn btn-sm btn-primary mx-1" (click)="addOutlet()">Add Outlet</button>
-                    <button class="btn btn-sm btn-warning mx-1" [hidden]="disable"
-                        (click)="onUpdateOutlet()">Save</button>
+            <div class="col-6 ">
+                <div *ngIf="activeIndexItem !== null"> 
+                    <div class="border p-2">
+                        <div class="row g-1">
+                            <div class="col-6">
+                                <div class="px-2">
+                                    <strong>Name outlet</strong>
+                                </div>
+                            </div>
+                            <div class="col-2"></div>
+                            <div class="col-2 text-center"><strong>AoC</strong></div>
+                            <div class="col-2"><strong>Action</strong></div>
+                        </div>
+                        <div class="row g-1" *ngFor="let x of itemsChild; let i = index">
+                            <div class="col-6">
+                                <input type="text" class="form-control form-control-sm mb-1" [disabled]="disable"  [(ngModel)]="x.name">
+                            </div>
+                            <div class="col-2">
+                                <a href="javascript:;" (click)="open(x.id)">Edit AoC </a>
+                            </div>
+                            <div class="col-2 text-center">
+                                <a href="javascript:;" (click)="open(x.id)">{{x.totalCoA}} </a>
+                            </div>
+                            <div class="col-2 ">
+                                <div class="d-flex" > 
+                                    <div class=" px-1 text-center">
+                                        <i class="bi bi-check-square-fill text-primary" *ngIf="x.status == 1"  (click)="onCheckOutlet(i,'0')"></i>
+                                        <i class="bi bi-square " *ngIf="x.status != 1" (click)="onCheckOutlet(i, '1')"></i>
+                                    </div>
+                                    <div class=" px-1 text-center" *ngIf="!disable" (click)="onDeleteOutlet(x);">
+                                        <i class="bi bi-trash3"></i>
+                                    </div> 
+                                </div> 
+                            </div>
+                        </div>
+                       
+                        <div class="p-2 text-end"> 
+                            <button class="btn btn-sm btn-primary mx-1" [hidden]="disable" (click)="addOutlet()">Add Outlet</button>
+                            <button class="btn btn-sm btn-warning mx-1" [hidden]="disable" (click)="onUpdateOutlet()">Save</button>
+                        </div> 
+                    </div>
+                  
                 </div>
+                 
+                <div *ngIf="activeIndexItem == null" class="border text-center py-5">
+                    <em>Select outlet first</em>
+                </div>
+            </div>
 
-            </div>
-            <div class="col-12">
-                <button class="btn btn-sm btn-warning mx-1" [hidden]="!disable" (click)="editable()">Editable</button>
-            </div>
+
         </div>
     </div>
 </div>

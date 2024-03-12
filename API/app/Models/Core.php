@@ -61,7 +61,16 @@ class Core extends Model
         }
     }
 
+    function rangeDate($startDate, $endDate)
+    {
+        $date1 = strtotime($startDate);
+        $date2 = strtotime($endDate);
 
+        $daysDiff = floor(($date2 - $date1) / (60 * 60 * 24));
+
+        // Periksa apakah perbedaan dalam hari kurang dari atau sama dengan 7
+        return $daysDiff;
+    }
 
 
 

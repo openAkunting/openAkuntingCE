@@ -1,7 +1,28 @@
-<div class="container">
+<div class="wrapper border bg-white">
+    <div class="row g-1 py-2 border-bottom">
+        <div class="col-6">
+            <div class="px-2">
+                <strong>Auto Number</strong>
+            </div>
+        </div>
+        <div class="col-6 text-end">
+            <div class="text-end">
+                <button type="button" class="btn btn-sm btn-warning mx-1" (click)="fnRollback()" [hidden]="disable">Cancel</button>
+                <button type="button" class="btn btn-sm btn-warning mx-1" (click)="disable=false" [hidden]="!disable">Edit</button>
+
+                
+                <button type="button" class="btn btn-sm btn-primary mx-1" (click)="fnUpdate()" [hidden]="disable">Save</button> 
+            </div>
+
+          
+        </div>
+    </div>
+
+
     <div class="row">
         <div class="col-12">
-            <table class="table table-sm table-bordered">
+            <table class="table table-sm table-bordered table-hover">
+                <thead class="sticky-top thead-style-primary">
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -25,13 +46,7 @@
                 </tbody>
                 
             </table>
-            <div class="text-end">
-                <button type="button" class="btn btn-sm btn-warning mx-1" (click)="fnRollback()" [hidden]="disable">Cancel</button>
-                <button type="button" class="btn btn-sm btn-warning mx-1" (click)="disable=false" [hidden]="!disable">Edit</button>
-
-                
-                <button type="button" class="btn btn-sm btn-primary mx-1" (click)="fnUpdate()" [hidden]="disable">Save</button> 
-            </div>
+          
         </div>
     </div>
 </div>
