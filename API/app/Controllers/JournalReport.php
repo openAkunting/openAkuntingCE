@@ -7,7 +7,7 @@ class JournalReport extends BaseController
     protected $maxDay = null;
     function __construct()
     {
-        $this->maxDay = 33;
+        $this->maxDay = 100;
         if (model("Token")->checkValidToken() == '') {
             //   exit;
         }
@@ -25,18 +25,18 @@ class JournalReport extends BaseController
         $totalDays = $interval->days;
        
         if ($totalDays < $this->maxDay) {
-            $data = self::treeJournalReport($this->request->getVar());
+            $data = self::journalReport($this->request->getVar());
         } else {
             $data = array(
                 "error" => true,
-                "note" => "Max " . $this->maxDay . " day"
+                "note" => "Max " . $this->maxDay . " days"
             );
         }
 
         return $this->response->setJSON($data);
     }
 
-    private function treeJournalReport($get)
+    private function journalReport($get)
     {
         $rest = [];
         $startDate = $get['startDate'];

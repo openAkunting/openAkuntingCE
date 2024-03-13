@@ -17,6 +17,13 @@ class Ledger extends BaseController
         $tblAccount = $this->prefix . 'account';
         $tblJournal = $this->prefix . 'journal';
 
+       
+        $startDate = $this->request->getVar()['startDate'];
+        $endDate = $this->request->getVar()['endDate'];
+
+        $rangeDate = model("Core")->rangeDate($startDate, $endDate);
+        $date = " AND (h.journalDate >= '$startDate' AND  h.journalDate <= '$endDate' )";
+
         $rest = [];
         $q = "SELECT t1.*, a.name FROM (
             SELECT accountId, COUNT(id) AS 'total', SUM(debit) AS 'debit', SUM(credit) AS 'credit' 
@@ -27,15 +34,15 @@ class Ledger extends BaseController
         $items = $this->db->query($q)->getResultArray();
         $i = 0;
         foreach ($items as $row) {
-            $ledgerQuery = "SELECT j.*, h.ref, h.note,   o.name AS 'outlet', b.name AS 'branch'
-           
+            $ledgerQuery = "SELECT j.*, h.ref, h.note,   o.name AS 'outlet', b.name AS 'branch' 
             FROM journal AS j
             LEFT JOIN journal_header AS h ON h.id = j.journalId
             LEFT JOIN outlet AS o ON o.id = j.outletId
             LEFT JOIN branch AS b ON b.id = o.branchId
-            WHERE accountId = '" . $row['accountId'] . "' 
+            WHERE accountId = '" . $row['accountId'] . "'  $date 
             ORDER BY j.accountId ASC ";
             $items[$i]['journal'] = $this->db->query($ledgerQuery)->getResultArray();
+            $items[$i]['q'] = $ledgerQuery;
 
             // foreach ($items[$i]['ledger'] as $rec) {
             //     $balance += ($rec['debit'] - $rec['credit']);

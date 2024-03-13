@@ -12,6 +12,8 @@ import { environment } from 'src/environments/environment';
 export class JournalByAccountComponent  implements OnInit {
   @Input() id: any;
   @Input() title: any;
+  @Input() startDate: any;
+  @Input() endDate: any;
   
   items: any = [];
 
@@ -29,7 +31,9 @@ export class JournalByAccountComponent  implements OnInit {
       headers: this.configService.headers(),
       params : {
         id : this.id,
-      }
+        startDate: this.startDate['year'] + "-" + this.startDate['month'].toString().padStart(2, '0') + "-" + this.startDate['day'],
+        endDate: this.endDate['year'] + "-" + this.endDate['month'].toString().padStart(2, '0') + "-" + this.endDate['day'],
+       }
     }).subscribe(
       data => {
         this.items = data['items'];

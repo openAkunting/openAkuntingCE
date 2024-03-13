@@ -151,21 +151,24 @@ body{
 .style-color-info{
   background-color: var(--style-color-info);
 }
-.style-color-secendary{
-  background-color: var(--style-color-secendary);
+.style-color-secondary{
+  background-color: var(--style-color-secondary);
 }
 
 
 .border-bottom-style-primary{
-  border-bottom: 5px solid var(--style-color-primary);
+  border-bottom: 5px solid var(--style-color-primary) !important;
   background-color: var(--bs-gray-200);
 }
-.border-left-style-primary{
+/* .border-left-style-primary{
   border-left: 5px solid var(--style-color-primary);
   background-color: var(--bs-gray-200);
 }
+  */
+.border-left-style-primary{
+  border-left: 5px solid var(--style-color-primary) !important; 
+}
  
-
 .border-style-primary-bottom{ 
   border-bottom:5px solid var(--style-color-primary);
 }

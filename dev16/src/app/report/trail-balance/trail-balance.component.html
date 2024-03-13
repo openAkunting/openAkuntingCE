@@ -50,10 +50,18 @@
                 </thead>
                 <tbody *ngFor="let item of items" [hidden]="item.length <= 0">
                     <tr>
-                        <th colspan="4">{{item.id + " "+ item.name}}</th>
+                        <th>{{item.id + " "+ item.name}} </th>
+
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     <tr *ngFor="let x of item.account">
-                        <td><a href="javascript:;" (click)="detail(x);"><span class="ms-2">{{x.id+" : "+x.name}}</span></a></td>
+                        <td><a href="javascript:;" (click)="detail(x);">
+                            <span class="mx-2">{{x.id+" : "+x.name}}</span>
+                            <span class="disable-printing"><i class="bi bi-zoom-in"></i></span>
+                        </a></td>
                         <td class="text-end">{{x.begining | number}}</td>
                         <td class="text-end">{{x.debit | number}}</td>
                         <td class="text-end">{{x.credit | number}}</td>
@@ -62,11 +70,11 @@
                 </tbody>
                 <tfoot>
                     <tr *ngFor="let x of balance">
-                        <th></th>
-                        <th class="text-end">{{x.begining | number}}</th>
-                        <th class="text-end">{{x.debit | number}}</th>
-                        <th class="text-end">{{x.credit | number}}</th>
-                        <th class="text-end">{{x.balance | number}}</th>
+                        <th class="text-end bg-light">TOTAL</th>
+                        <th class="text-end bg-light">{{x.begining | number}}</th>
+                        <th class="text-end bg-light">{{x.debit | number}}</th>
+                        <th class="text-end bg-light">{{x.credit | number}}</th>
+                        <th class="text-end bg-light">{{x.balance | number}}</th>
                     </tr>
                 </tfoot>
 

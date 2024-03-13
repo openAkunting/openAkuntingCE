@@ -1,39 +1,103 @@
-<div class="container">
-    <div class="row">
-        <div class="col-12"> 
-            <table class="table table-sm table-bordered">  
-                        
-                <tbody *ngFor="let item of items"  >
-                    <tr> 
-                        <th colspan="7"  class="bg-light">{{item.accountId+" : "+item.name}}</th> 
-                    </tr>
-                    <tr > 
-                        <th class="bg-light  text-center">Date</th>
-                        <th class="bg-light  text-center">Journal ID</th> 
-                        <th>Reference</th>
-                        <th class="bg-light ">Description</th>  
-                        <th class="bg-light ">Outlet</th>  
-                        
-                        <th class="bg-light text-center">Debit</th>
-                        <th class="bg-light text-center">Credit</th> 
-                    </tr>
-                    <tr *ngFor="let x of item.journal">
-                        <td>{{x.journalDate}}</td>
-                        <td>{{x.journalId}}</td> 
-                        <td>{{x.ref}}</td> 
-                        
-                        <td>{{x.description}}</td> 
-                        <td>{{x.branch+" "+x.outlet}}</td> 
-                        
-                        <td  class="text-end">{{x.debit | number}}</td>
-                        <td class="text-end">{{x.credit | number}}</td> 
-                    </tr>
-                    <tr>
-                        <td colspan="5">&nbsp;</td>
-                    </tr>
-                </tbody>
-               
-            </table>
+<div class="wrapper  bg-white">
+    <div class="container-fluid">
+        <div class="row g-1 py-2">
+            <div class="col-2">
+                <strong>Ledger</strong>
+            </div>
+            <div class="col-10 text-end ">
+                <div class="d-flex justify-content-end"> 
+                    <!-- <div class="me-2">
+                        <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-search"></i></button>
+                    </div> -->
+                    <div class="align-self-center ">Start : </div>
+                    <div class="me-1">
+                        <div class="input-group">
+                            <input
+                                class="form-control form-control-sm"
+                                placeholder="Start Date"
+                                name="dp"
+                                [(ngModel)]="range.startDate"
+                                (dateSelect)="onCheckRange();"
+                                ngbDatepicker
+                                #d1="ngbDatepicker"
+                                style="width: 100px;"
+                            />
+                            <button class="btn btn-sm btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()" type="button"></button>
+                        </div>
+                    </div>
+    
+                    <div class="align-self-center ">- End : </div>
+                    <div class="me-1">
+                        <div class="input-group">
+                            <input
+                                class="form-control form-control-sm"
+                                placeholder="End Date"
+                                name="dp"
+                                [(ngModel)]="range.endDate"
+                                ngbDatepicker
+                                (dateSelect)="onCheckRange();"
+                                [minDate]="range.startDate"
+                                #d2="ngbDatepicker"
+                                style="width: 100px;"
+                            />
+                            <button class="btn btn-sm btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()" type="button"></button>
+                        </div>
+                    </div>
+    
+                    <div class="me-3">
+                        <button class="btn btn-sm btn-dark" (click)="filterDate();">Filter</button>
+                    </div> 
+                </div>
+            </div>
+           
+            
         </div>
     </div>
+ 
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-sm table-bordered table-hover "> 
+                 
+                    <tbody *ngFor="let item of items">
+                        <tr class="sticky-top  ">
+                            <th colspan="7" class="bg-light border-bottom-style-primary">{{item.accountId+" : "+item.name}}</th>
+                        </tr>
+                        <tr>
+                            <th class="bg-light  text-center ">Date</th>
+                            <th class="bg-light  text-center">Journal ID</th>
+                            <th class="bg-light  text-center">Reference</th>
+                            <th class="bg-light ">Description</th>
+                            <th class="bg-light ">Outlet</th>
+
+                            <th class="bg-light text-center">Debit</th>
+                            <th class="bg-light text-center">Credit</th>
+                        </tr>
+                        <tr *ngFor="let x of item.journal">
+                            <td>{{x.journalDate}} </td>
+                            <td>
+                                <a href="javascript:;" (click)="detail(x)">  {{x.journalId}} 
+                                    <span class="ms-1 icon-popup"><i class="bi bi-zoom-in"></i></span> 
+                                </a> 
+                            </td>
+                            <td>{{x.ref}}</td>
+
+                            <td>{{x.description}}</td>
+                            <td>{{x.branch+" "+x.outlet}}</td>
+
+                            <td class="text-end">{{x.debit | number}}</td>
+                            <td class="text-end">{{x.credit | number}}</td>
+                        </tr>
+                        <tr *ngIf="item.journal.length < 1">
+                            <td colspan="7"> 
+                                <div class="text-center"><em><small>No data</small></em></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="bg-light">&nbsp;</td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div> 
 </div>

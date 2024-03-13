@@ -1,18 +1,43 @@
 <div class="wrapper   bg-white">
-    <div class="container  font-code ">
+    <div class="container-fluid  "> 
+        <div class="row g-1 py-2">
+            <div class="col-4 ">
+                <div class="ms-2 font-code">
+                    <div><strong>Journal List Report</strong></div>
+                    <div>Brand : PT RASA MANIS MALAKA</div> 
+                </div>
+            </div>
+            <div class="col-8 align-self-baseline">
+                <div class="d-flex justify-content-end">
+                    <div class="align-self-center ">Start : </div>
+                    <div class="me-1">
+                        <div class="input-group">
+                            <input class="form-control form-control-sm" placeholder="Start Date" name="dp"
+                                [(ngModel)]="range.startDate" (dateSelect)="onCheckRange();" ngbDatepicker
+                                #d1="ngbDatepicker" style="width: 100px;" />
+                            <button class="btn btn-sm btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()"
+                                type="button"></button>
+                        </div>
+                    </div>
 
-        <div class="row mb-2 ">
-            <div class="col-12">
-                <strong>Journal List Report</strong>
+                    <div class="align-self-center ">- End : </div>
+                    <div class="me-1">
+                        <div class="input-group">
+                            <input class="form-control form-control-sm" placeholder="End Date" name="dp"
+                                [(ngModel)]="range.endDate" ngbDatepicker (dateSelect)="onCheckRange();"
+                                [minDate]="range.startDate" #d2="ngbDatepicker" style="width: 100px;" />
+                            <button class="btn btn-sm btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()"
+                                type="button"></button>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-dark  this.httpGet();" (click)="filterDate();">Filter</button>
+                    </div>
+                </div>
             </div>
-            <div class="col-6">
-                <div>Brand : PT RASA MANIS MALAKA</div>
-                <div>Period : {{params['startDate']}} until {{params['endDate']}}</div>
-            </div>
-        </div>
+        </div> 
     </div>
-
-
+  
     <div class="container  font-code mb-4">
 
         <div class="row mb-1  sticky-top">
@@ -40,8 +65,7 @@
                     <div class="d-flex ms-2">
                         <div>{{i+1}}.</div>
                         <div class="ms-2">
-                            <a href="javascript:;" (click)="detail(header)">{{header.id}}<span
-                                    class="ms-1 icon-popup"><i class="bi bi-zoom-in"></i></span></a>
+                            <a href="javascript:;" (click)="detail(header)">{{header.id}} <span class="ms-1 icon-popup"><i class="bi bi-zoom-in"></i></span> </a>
 
                         </div>
                     </div>

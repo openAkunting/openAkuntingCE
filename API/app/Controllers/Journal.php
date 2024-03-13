@@ -11,7 +11,7 @@ class Journal extends BaseController
             //   exit;
         }
     }
- 
+
     public function index()
     {
 
@@ -93,15 +93,25 @@ class Journal extends BaseController
     public function searchById()
     {
         $id = $this->request->getVar()['id'];
-        $rest = [];
-        $q = "SELECT h.*  
-        FROM " . $this->prefix . "journal_header AS h
-        JOIN journal AS j ON j.journalId = h.id
-        WHERE j.presence = 1 AND j.accountId = '$id'";
-        $items = $this->db->query($q)->getResultArray();
-        foreach ($items as $row) {
 
-            $j = "SELECT j.id, j.accountId, j.description, j.debit, j.credit,  a.name as 'account',   a.updateDate,
+
+        $startDate = $this->request->getVar()['startDate'];
+        $endDate = $this->request->getVar()['endDate'];
+
+        $rangeDate = model("Core")->rangeDate($startDate, $endDate);
+        $rest = [];
+       // if ($rangeDate <= 100) { 
+
+            $date = " AND (h.journalDate >= '$startDate' AND  h.journalDate <= '$endDate' )";
+ 
+            $q = "SELECT h.*  
+            FROM " . $this->prefix . "journal_header AS h
+            JOIN journal AS j ON j.journalId = h.id
+            WHERE j.presence = 1 AND j.accountId = '$id' $date ";
+            $items = $this->db->query($q)->getResultArray();
+            foreach ($items as $row) {
+
+                $j = "SELECT j.id, j.accountId, j.description, j.debit, j.credit,  a.name as 'account',   a.updateDate,
             o.name as 'outlet', b.name as 'branch'
             FROM  " . $this->prefix . "journal as j
             LEFT JOIN account as a on a.id = j.accountId
@@ -109,29 +119,29 @@ class Journal extends BaseController
             LEFT JOIN branch as b on b.id = o.branchId
             WHERE  j.presence = 1 and j.journalId = '" . $row['id'] . "'
             ORDER BY j.id ASC";
-            $journal = $this->db->query($j)->getResultArray();
+                $journal = $this->db->query($j)->getResultArray();
 
-            $debit = 0;
-            $credit = 0;
-            foreach ($journal as $x) {
-                $debit += $x['debit'];
-                $credit += $x['credit'];
+                $debit = 0;
+                $credit = 0;
+                foreach ($journal as $x) {
+                    $debit += $x['debit'];
+                    $credit += $x['credit'];
+                }
+                $rest[] = array(
+                    "id" => $row['id'],
+                    "note" => $row['note'],
+                    "ref" => $row['ref'],
+                    "journalDate" => $row['journalDate'],
+                    "journal" => $journal,
+                    "total" => array(
+                        "debit" => $debit,
+                        "credit" => $credit,
+                    ),
+                    "inputDate" => $row['inputDate'],
+                    "inputBy" => $row['inputBy'],
+                );
             }
-            $rest[] = array(
-                "id" => $row['id'],
-                "note" => $row['note'],
-                "ref" => $row['ref'],
-                "journalDate" => $row['journalDate'],
-                "journal" => $journal,
-                "total" => array(
-                    "debit" => $debit,
-                    "credit" => $credit,
-                ),
-                "inputDate" => $row['inputDate'],
-                "inputBy" => $row['inputBy'],
-            );
-        }
-
+       // }
         $data = [
             "error" => false,
             "code" => 200,

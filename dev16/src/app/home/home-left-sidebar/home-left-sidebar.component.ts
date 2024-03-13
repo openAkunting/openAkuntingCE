@@ -11,8 +11,10 @@ import { filter } from 'rxjs/operators';
 })
 export class HomeLeftSidebarComponent implements OnInit {
   date: any = new Date();
-  startDate: string = "2024-" + ("0" + (this.date.getMonth() + 1)).slice(-2) + "-01";
-  endDate: string = "2024-" + ("0" + (this.date.getMonth() + 1)).slice(-2) + "-29";
+  thisMonth : any = new Date( this.date.getFullYear(), this.date.getMonth()+1, 1);
+  startDate: string = this.date.getFullYear()+"-" + ("0" + (this.date.getMonth() + 1)).slice(-2) + "-01";
+  endDate: string = this.thisMonth.toISOString().slice(0,10);
+  
   activeRouteData: any;
   active :string = "";
   public isCollapsed = false;
@@ -24,7 +26,7 @@ export class HomeLeftSidebarComponent implements OnInit {
     
   }
   ngOnInit() {
-
+    console.log("thisMonth",this.thisMonth.toISOString().slice(0,10));
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
