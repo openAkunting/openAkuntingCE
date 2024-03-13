@@ -78,7 +78,7 @@ class Reports extends BaseController
             "credit" => 0,
             "balance" => 0,
         );
-
+        $date = " AND (h.journalDate >= '$startDate' AND  h.journalDate <= '$endDate' )";
 
 
         foreach ($this->db->query($accountTypeQ)->getResultArray() as $row) {
@@ -99,8 +99,8 @@ class Reports extends BaseController
 
                 $balanceQ = "SELECT SUM(j.debit) AS 'debit' , SUM(j.credit) AS 'credit', SUM(j.debit-j.credit) AS 'balance' 
                 FROM journal AS j
-                JOIN journal_header AS h ON h.id = j.journalId
-                WHERE  j.accountId= '".$account[$i]['id']."'"; 
+                JOIN journal_header AS h ON h.id = j.journalId  $date  
+                WHERE  j.accountId= '".$account[$i]['id']."' "; 
 
                 $balance = $this->db->query($balanceQ)->getResultArray()[0];
 
@@ -108,12 +108,12 @@ class Reports extends BaseController
                 $account[$i]['debit'] = $balance['debit'];
                 $account[$i]['credit'] = $balance['credit'];
                 $account[$i]['balance'] = $balance['balance'];
+            
 
                 $total['debit'] += $account[$i]['debit'];
                 $total['credit'] += $account[$i]['credit'];
                 $total['balance'] += $account[$i]['balance'];
-
-
+ 
                 $subtotal['debit'] += $account[$i]['debit'];
                 $subtotal['credit'] += $account[$i]['credit'];
                 $subtotal['balance'] += $account[$i]['balance'];
@@ -129,8 +129,7 @@ class Reports extends BaseController
             $data[] = array(
                 "id" => $row['id'],
                 "typeOfAccount" => $row['name'],
-                "account" => $filteredAccounts,
-                //"account" => $account,
+                "account" => $filteredAccounts, 
                 "subtotal" => $subtotal,
             );
 

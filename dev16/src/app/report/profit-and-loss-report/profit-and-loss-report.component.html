@@ -1,18 +1,46 @@
 <div class="wrapper   bg-white">
-    <div class="container  font-code ">
+    <div class="container-fluid  "> 
+        <div class="row g-1 py-2">
 
-        <div class="row mb-2 ">
-            <div class="col-12">
-                <strong>Montly Profit And Loss Report</strong>
+            <div class="col-4">
+                <div class="ms-2 font-code">
+                    <strong>Profit And Loss Report</strong>
+                    <div>Brand : PT RASA MANIS MALAKA</div>
+                </div>
             </div>
-            <div class="col-6">
-                <div>Brand : PT RASA MANIS MALAKA</div>
-                <div>Period : {{params['startDate']}} until {{params['endDate']}}</div>
+
+            <div class="col-8 align-self-baseline">
+                <div class="d-flex justify-content-end">
+                    <div class="align-self-center ">Start : </div>
+                    <div class="me-1">
+                        <div class="input-group">
+                            <input class="form-control form-control-sm" placeholder="Start Date" name="dp"
+                                [(ngModel)]="range.startDate" (dateSelect)="onCheckRange();" ngbDatepicker
+                                #d1="ngbDatepicker" style="width: 100px;" />
+                            <button class="btn btn-sm btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()"
+                                type="button"></button>
+                        </div>
+                    </div>
+
+                    <div class="align-self-center ">- End : </div>
+                    <div class="me-1">
+                        <div class="input-group">
+                            <input class="form-control form-control-sm" placeholder="End Date" name="dp"
+                                [(ngModel)]="range.endDate" ngbDatepicker (dateSelect)="onCheckRange();"
+                                [minDate]="range.startDate" #d2="ngbDatepicker" style="width: 100px;" />
+                            <button class="btn btn-sm btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()"
+                                type="button"></button>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-dark  this.httpGet();" (click)="filterDate();">Filter</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    
-    <div class="  font-code ">
+
+    <div class="font-code ">
 
         <table class="table table-sm table-bordered">
             <thead class="sticky-top thead-style-primary">
