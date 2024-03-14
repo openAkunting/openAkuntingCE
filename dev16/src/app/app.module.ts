@@ -15,7 +15,7 @@ import { GeneralLedgerParameterComponent } from './masterData/general-ledger-par
 import { AutoNumberComponent } from './masterData/auto-number/auto-number.component';
 import { AccountComponent } from './masterData/account/account.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AccountTypeComponent } from './masterData/account-type/account-type.component';
+import { AccountTypeComponent } from './masterData/account/account-type/account-type.component';
 import { UserComponent } from './masterData/user/user.component';
 import { UserDetailComponent } from './masterData/user/user-detail/user-detail.component';
 import { UserRoleComponent } from './masterData/user/user-role/user-role.component';
@@ -29,12 +29,12 @@ import { JournalDetailComponent } from './generalLedger/journal/journal-detail/j
 import { JournalListReportComponent } from './report/journal-list-report/journal-list-report.component';
 import { ProfitAndLossReportComponent } from './report/profit-and-loss-report/profit-and-loss-report.component';
 import { BalanceSheetReportComponent } from './report/balance-sheet-report/balance-sheet-report.component';
-import { AccountImportComponent } from './masterData/account-import/account-import.component';
+import { AccountImportComponent } from './masterData/account/account-import/account-import.component';
 import { LedgerComponent } from './generalLedger/ledger/ledger.component';
 import { TrailBalanceComponent } from './report/trail-balance/trail-balance.component';
 import { TrailBalanceDetailComponent } from './report/trail-balance/trail-balance-detail/trail-balance-detail.component';
 import { JournalByAccountComponent } from './generalLedger/journal-by-account/journal-by-account.component';
-import { OutletAccountComponent } from './masterData/outlet-account/outlet-account.component'; 
+import { OutletAccountComponent } from './masterData/branch/outlet-account/outlet-account.component'; 
 import { HomeTabsComponent } from './home/home-tabs/home-tabs.component';
 import { HomeLeftSidebarComponent } from './home/home-left-sidebar/home-left-sidebar.component';
 

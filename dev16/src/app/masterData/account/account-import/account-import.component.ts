@@ -18,7 +18,7 @@ export class AccountImportComponent {
   selectedSheetName: string | null = null;
   sheetData: any[] = [];
   sheetHeader: any = [];
-
+  switch_expression : string = "";
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
@@ -69,6 +69,7 @@ export class AccountImportComponent {
     };
 
     reader.readAsArrayBuffer(this.file);
+    this.switch_expression = "step1";
   }
 
   onImportCoA(){

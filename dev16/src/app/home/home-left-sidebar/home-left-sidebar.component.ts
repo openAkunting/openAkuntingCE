@@ -17,7 +17,10 @@ export class HomeLeftSidebarComponent implements OnInit {
   
   activeRouteData: any;
   active :string = "";
-  public isCollapsed = false;
+  public isMasterData = true;
+  public isGeneralLedger = true;
+  public isReport = true;
+  
   constructor( 
     private router: Router,
     private configService: ConfigService,
@@ -41,7 +44,8 @@ export class HomeLeftSidebarComponent implements OnInit {
     this.configService.removeToken().subscribe(
       data => {
         console.log(data);
-        this.router.navigate(['relogin']);
+       // this.router.navigate(['relogin']);
+        location.reload();
       },
       error => {
         console.log(error);

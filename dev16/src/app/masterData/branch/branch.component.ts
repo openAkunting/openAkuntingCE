@@ -4,7 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
 import { environment } from 'src/environments/environment';
-import { OutletAccountComponent } from '../outlet-account/outlet-account.component';
+import { OutletAccountComponent } from './outlet-account/outlet-account.component';
 export class NewCoA {
   constructor(
     public id: number,

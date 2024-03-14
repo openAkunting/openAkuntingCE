@@ -1,0 +1,13 @@
+.content-custom-1 {
+    overflow: auto;
+    height: 40vh; 
+}
+
+.content-custom-2{
+    overflow: auto;
+    height: 40vh; 
+}
+
+table td, select option{
+    font-size: 0.8rem;
+}

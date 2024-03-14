@@ -1,0 +1,12 @@
+.signin{
+	width: 60vw;
+	margin: 10px auto;
+}
+
+@media (max-width: 900px) {
+	.signin {
+	  width: 100% !important;
+	  margin-right: auto;
+	  margin-left: auto;
+	}
+  }

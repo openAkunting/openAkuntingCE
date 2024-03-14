@@ -55,7 +55,12 @@ export class LoginComponent implements OnInit{
             data => { 
               if (data) {
                 console.log('Token set successfully');
-                this.router.navigate(['home']);
+                //this.router.navigate(['home']).then(
+               //   ()=>{
+                    location.reload();
+                    this.router.navigate(['home'])
+                //  }
+               // );
               } else {
                 console.error('Failed to set token');
               }

@@ -1,44 +1,75 @@
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <div class="card-body p-4 p-lg-5 text-black">
+<div class="signin   shadow rounded-3 bg-white">
 
-                <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
- 
 
-                    <h5 >Sign into your account
-                    </h5>
+    <div class="container py-5">
+        <div class="row g-1">
+            <div class="col-12 col-md-6">
+                <div class=" text-center py-5">
+                    <img src="https://colorlib.com/etc/regform/colorlib-regform-7/images/signin-image.jpg" class="w-50">
+                </div>
 
-                    <div class="form-outline mb-4">
-                        <label for="email">USERNAME</label>
-                        <input type="text" email="true" class="form-control form-control-lg" id="email" required
-                            [(ngModel)]="model.email" name="email" #email="ngModel">
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="py-5 me-lg-5 me-2">
+                    <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+
+
+                        <h5 class="mb-3">Sign in </h5>
+                        <div class="form-floating mb-1">
+                            <input type="email" class="form-control" id="email" email="true" placeholder="Your email"
+                                [(ngModel)]="model.email" name="email" #email="ngModel" required>
+                            <label for="email">Email address</label> 
+                        </div>
+                       
+
+
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
+                            [(ngModel)]="model.password" name="password" #password="ngModel" required>
+                            <label for="floatingPassword">Password</label>
+                        </div>
+                      
+
+                        <!-- <div class="form-outline mb-4"> 
+                            <input type="text" email="true" class="form-control form-control-lg" id="email" required
+                                [(ngModel)]="model.email" name="email" #email="ngModel" placeholder="Your email">
+                            <div [hidden]="email.valid || email.pristine" class="text-danger">
+                                <small> Email Wajib Isi</small>
+                            </div>
+                        </div> -->
+
+                        <!-- <div class="form-outline mb-4">
+
+                            <input type="password" class="form-control  form-control-lg" id="password" required
+                                [(ngModel)]="model.password" name="password" #password="ngModel" minlength="6"
+                                placeholder="Password">
+                            <div [hidden]="password.valid || password.pristine" class="text-danger">
+                                <small> Password Wajib Isi </small>
+                            </div>
+                        </div> -->
+
                         <div [hidden]="email.valid || email.pristine" class="text-danger">
-                            <small> Email Wajib Isi</small>
+                            <small> Email is required</small>
                         </div>
-                    </div>
-
-                    <div class="form-outline mb-4">
-                        <label for="password">PASSWORD</label>
-                        <input type="password" class="form-control  form-control-lg" id="password" required
-                            [(ngModel)]="model.password" name="password" #password="ngModel" minlength="6">
                         <div [hidden]="password.valid || password.pristine" class="text-danger">
-                            <small> Password Wajib Isi </small>
+                            <small> Password is required </small>
                         </div>
-                    </div>
 
-                    <div class="pt-1 mb-4">
-                        <button type="submit" class="btn btn-dark btn-lg btn-block"
-                            [disabled]="!heroForm.form.valid">LOGIN</button>
-                    </div>
+                        <div class="py-3">
+                            <button type="submit" class="btn btn-primary btn-block"
+                                [disabled]="!heroForm.form.valid">LOGIN</button>
+                        </div>
 
-                    <div class="alert alert-danger   text-center" [hidden]="!note">
-                        <b> {{note}}</b>
-                    </div>
-                    <a class="small text-muted">Privacy policy</a>
-                </form>
-
+                        <div class="alert alert-danger   text-center" [hidden]="!note">
+                            <b> {{note}}</b>
+                        </div>
+                        <a class="small text-muted">Privacy policy</a>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+
+
 </div>
