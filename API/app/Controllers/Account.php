@@ -42,7 +42,7 @@ class Account extends BaseController
             $i++;
         }
 
-        $view = isset($this->request->getVar()['view']) ? $this->request->getVar()['view'] : false;
+        $view = isset ($this->request->getVar()['view']) ? $this->request->getVar()['view'] : false;
 
 
         $col = $this->db->query('SHOW COLUMNS  FROM `account` ')->getResultArray();
@@ -314,7 +314,7 @@ class Account extends BaseController
         return $this->response->setJSON($data);
     }
 
-    public function onImportCoA()
+    public function onImportCoA_SAVE()
     {
         $json = file_get_contents('php://input');
         $post = json_decode($json, true);
@@ -328,7 +328,7 @@ class Account extends BaseController
                 if ($i > 0) {
                     $this->db->table($this->prefix . "account")->insert([
                         "id" => $post['sheetData'][$i][0] == "" ? "0" : $post['sheetData'][$i][0],
-                        "name" => isset($post['sheetData'][$i][2]) ? $post['sheetData'][$i][2] : "",
+                        "name" => isset ($post['sheetData'][$i][2]) ? $post['sheetData'][$i][2] : "",
                         "parentId" => $post['sheetData'][$i][1] == "" ? "0" : $post['sheetData'][$i][1],
                         "presence" => 1,
                         "updateDate" => date("Y-m-d H:i:s"),
@@ -347,6 +347,70 @@ class Account extends BaseController
             return $this->response->setJSON($data);
         }
     }
+
+    public function onImportCoA()
+    {
+        $json = file_get_contents('php://input');
+        $post = json_decode($json, true);
+        $data = [
+            "error" => true,
+            "code" => 400
+        ];
+        if ($post) {
+
+            $indexId = 0;
+            $indexName = 1;
+            $indexParentId = 2;
+            $indexAccountTypeId = 0;
+            $indexCashBank= 0;
+            for ($i = 0; $i < count($post['sheetHeader']); $i++) {
+                if ($post['sheetHeader'][$i]['field'] == 'id') {
+                    $indexId = $i;
+                }
+                if ($post['sheetHeader'][$i]['field'] == 'name') {
+                    $indexName = $i;
+                }
+                if ($post['sheetHeader'][$i]['field'] == 'parentId') {
+                    $indexParentId = $i;
+                }
+                if ($post['sheetHeader'][$i]['field'] == 'accountTypeId') {
+                    $indexAccountTypeId= $i;
+                }
+                if ($post['sheetHeader'][$i]['field'] == 'cashBank') {
+                    $indexCashBank= $i;
+                }
+
+            }
+
+
+            for ($i = 0; $i < count($post['sheetData']); $i++) {
+                if ($i > 0) {
+                    $this->db->table($this->prefix . "account")->insert([
+                        "id" => $post['sheetData'][$i][$indexId] == "" ? "0" : $post['sheetData'][$i][$indexId],
+                        "name" => isset ($post['sheetData'][$i][$indexName]) ? $post['sheetData'][$i][$indexName] : "",
+                        "parentId" => $post['sheetData'][$i][$indexParentId] == "" ? "0" : $post['sheetData'][$i][$indexParentId],
+
+                        // "id" => $post['sheetData'][$i][0] == "" ? "0" : $post['sheetData'][$i][0],
+                        // "name" => isset($post['sheetData'][$i][2]) ? $post['sheetData'][$i][2] : "",
+                        // "parentId" => $post['sheetData'][$i][1] == "" ? "0" : $post['sheetData'][$i][1],
+                        "presence" => 1,
+                        "updateDate" => date("Y-m-d H:i:s"),
+                        "updateBy" => model("Token")->userId(),
+                        "inputDate" => date("Y-m-d H:i:s"),
+                        "inputBy" => model("Token")->userId(),
+                    ]);
+                }
+            }
+            $data = [
+                "sheetHeader" => $post['sheetHeader'],
+                "sheetData" => $post['sheetData'][23],
+                "error" => false,
+                "code" => 200
+            ];
+            return $this->response->setJSON($data);
+        }
+    }
+
 
     public function exportAccount()
     {

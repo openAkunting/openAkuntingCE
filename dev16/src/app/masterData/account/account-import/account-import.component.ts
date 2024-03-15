@@ -12,14 +12,15 @@ import * as XLSX from 'xlsx';
   templateUrl: './account-import.component.html',
   styleUrls: ['./account-import.component.css']
 })
-export class AccountImportComponent implements OnInit{
+export class AccountImportComponent implements OnInit {
   file: File | null = null;
   sheetNames: string[] = [];
   selectedSheetName: string | null = null;
   sheetData: any[] = [];
   sheetHeader: any = [];
-  switch_expression : string = "";
-  selectAccount : any = [];
+  switch_expression: string = "";
+  selectAccount: any = [];
+  onSubmitDisable: boolean = true;
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
@@ -34,36 +35,68 @@ export class AccountImportComponent implements OnInit{
     this.file = event.target.files[0];
     this.readExcelFile();
   }
-  updateSelectAccount(){
+  updateSelectAccount() {
     console.log(this.selectAccount, this.sheetHeader);
+
+    for (let i = 0; i < this.selectAccount.length; i++) {
+      this.selectAccount[i]['status'] = false;
+    }
+
+    this.sheetHeader.forEach((el: any) => {
+      if (el['field'] == 'id') {
+        this.selectAccount[0]['status'] = true;
+      }
+      if (el['field'] == 'name') {
+        this.selectAccount[1]['status'] = true;
+      }
+      if (el['field'] == 'parentId') {
+        this.selectAccount[2]['status'] = true;
+      }
+      if (el['field'] == 'accountTypeId') {
+        this.selectAccount[3]['status'] = true;
+      }
+      if (el['field'] == 'cashBank') {
+        this.selectAccount[4]['status'] = true;
+      }
+    });
+    this.onSubmitDisable = true;
+    if (this.selectAccount[0]['status'] == true && this.selectAccount[1]['status'] == true) {
+      this.onSubmitDisable = false;
+    }
+
   }
-  resetAccount(){
+  resetAccount() {
     this.selectAccount = [
       {
-        name : "id",
-        label : 'Account ID',
-        status : false,
+        name: "id",
+        label: 'Account ID',
+        status: false,
+        required: true
       },
       {
-        name : "name",
-        label : 'Name',
-        status : false,
+        name: "name",
+        label: 'Name',
+        status: false,
+        required: true
       },
       {
-        name : "parentId",
-        label : 'Parent Account',
-        status : false,
+        name: "parentId",
+        label: 'Parent Account',
+        status: false,
+        required: false,
       },
       {
-        name : "accountTypeId",
-        label : 'Account Classification',
-        status : false,
+        name: "accountTypeId",
+        label: 'Account Classification',
+        status: false,
+        required: false,
       },
       {
-        name : "cashBank",
-        label : 'Cash Bank [0 or 1]',
-        status : false,
-      }, 
+        name: "cashBank",
+        label: 'Cash Bank [0 or 1]',
+        status: false,
+        required: false,
+      },
     ]
   }
   // onSelectSheet(){
@@ -78,7 +111,7 @@ export class AccountImportComponent implements OnInit{
     this.readExcelFile(index);
     // Gunakan nilai index di sini
   }
-  readExcelFile(index : number = 0): void {
+  readExcelFile(index: number = 0): void {
     if (!this.file) {
       return;
     }
@@ -98,14 +131,14 @@ export class AccountImportComponent implements OnInit{
       // Ambil data dari sheet yang dipilih
       const worksheet: XLSX.WorkSheet = workbook.Sheets[this.selectedSheetName];
       this.sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-      let i =0;
+      let i = 0;
 
-     
+
       this.sheetData[0].forEach((el: any) => {
         const temp = {
           index: i,
-          name : el,
-          field : "",
+          name: el,
+          field: "",
         }
         i++;
         this.sheetHeader.push(temp);
@@ -117,21 +150,26 @@ export class AccountImportComponent implements OnInit{
     this.switch_expression = "step1";
   }
 
-  onImportCoA(){
-    const body = {
-      sheetHeader: this.sheetHeader,
-      sheetData : this.sheetData
-    }
-    this.http.post<any>(environment.api + "account/onImportCoA", body, {
-      headers: this.configService.headers(),
-    }).subscribe(
-      data => {  
-        console.log(data);
-      },
-      error => {
-        console.log(error);
+  onImportCoA() {
+    if (this.selectAccount[0]['status'] == true && this.selectAccount[1]['status'] == true) {
+      const body = {
+        sheetHeader: this.sheetHeader,
+        sheetData: this.sheetData
       }
-    )
+      console.log(body);
+      // this.http.post<any>(environment.api + "account/onImportCoA", body, {
+      //   headers: this.configService.headers(),
+      // }).subscribe(
+      //   data => {
+      //     console.log(data);
+      //   },
+      //   error => {
+      //     console.log(error);
+      //   }
+      // )
+    }else{
+      alert("ERROR SUBMIT");
+    }
   }
-   
+
 }

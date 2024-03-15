@@ -8,6 +8,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use CodeIgniter\HTTP\IncomingRequest;
 
+use DateTime;
 class Account extends Model
 {
     protected $prefix = null;
@@ -25,7 +26,7 @@ class Account extends Model
     function accountBalance($post = [])
     {
         $data = [];
-        $table = isset($post['table']) ? $post['table'] : 'journal';
+        $table = isset ($post['table']) ? $post['table'] : 'journal';
         //BEGIN BALANCE is 1st month
         $whereBefore = " year = '" . $post['year'] . "' AND  
         month = '" . ($post['month'] - 1) . "' AND 
@@ -38,8 +39,8 @@ class Account extends Model
 
 
         $whereDebit = " presence = 1 AND  outletID =  '" . $post['outletID'] . "'  and accountId = '" . $post['accountId'] . "'  AND  YEAR(journalDate) = '" . $post['year'] . "' AND MONTH(journalDate) = '" . $post['month'] . "'  ";
-        $newDebit = (int)model("Core")->select("sum(debit)", $table, $whereDebit);
-        $newCredit = (int)model("Core")->select("sum(credit)", $table, $whereDebit);
+        $newDebit = (int) model("Core")->select("sum(debit)", $table, $whereDebit);
+        $newCredit = (int) model("Core")->select("sum(credit)", $table, $whereDebit);
 
         $endBalance = $beginBalance + ($newDebit + $newCredit);
 
@@ -62,19 +63,18 @@ class Account extends Model
                 "endBalance" => $endBalance,
                 "presence" => 1,
                 "inputDate" => date("Y-m-d H:i:s"),
-                "inputBy" =>  $userId,
+                "inputBy" => $userId,
                 "updateDate" => date("Y-m-d H:i:s"),
-                "updateBy" =>  $userId,
+                "updateBy" => $userId,
             );
             $this->db->table("account_balance")->insert($data);
-        }
-           else { 
-            $data = array(  
+        } else {
+            $data = array(
                 "debit" => $newDebit,
                 "credit" => $newCredit,
-                "endBalance" => $endBalance, 
+                "endBalance" => $endBalance,
                 "updateDate" => date("Y-m-d H:i:s"),
-                "updateBy" =>  $userId,
+                "updateBy" => $userId,
             );
             $this->db->table("account_balance")->update($data, "id =  $id ");
         }
@@ -92,12 +92,13 @@ class Account extends Model
     //             }
     //         }
     //     }
-    
+
     //     return -1; // Jika ID tidak ditemukan 
     // }
 
 
-      function getLevel($id, $data, $level = 0) {
+    function getLevel($id, $data, $level = 0)
+    {
         foreach ($data as $item) {
             if ($item['id'] === $id) {
                 if ($item['parentId'] == null || $item['parentId'] == '0') {
@@ -108,5 +109,20 @@ class Account extends Model
             }
         }
         return -1; // Jika ID tidak ditemukan
+    }
+
+    function getMonthList($startDate, $endDate)
+    {
+        $start = new DateTime($startDate);
+        $end = new DateTime($endDate);
+
+        $monthList = [];
+
+        while ($start <= $end) {
+            $monthList[] = array($start->format('Y'),$start->format('m'));
+            $start->modify('first day of next month');
+        }
+
+        return $monthList;
     }
 }

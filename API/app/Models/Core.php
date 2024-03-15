@@ -72,7 +72,20 @@ class Core extends Model
         return $daysDiff;
     }
 
+     function getMonthList($startDate, $endDate)
+    {
+        $start = new DateTime($startDate);
+        $end = new DateTime($endDate);
 
+        $monthList = [];
+
+        while ($start <= $end) {
+            $monthList[] = array($start->format('Y'),$start->format('m'));
+            $start->modify('first day of next month');
+        }
+
+        return $monthList;
+    }
 
     function isUrlValid($url)
     {

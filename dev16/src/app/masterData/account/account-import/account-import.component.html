@@ -24,7 +24,7 @@
               <small><strong>Account ID</strong> is Primary Key, cannot duplicate.</small>
             </div>
 
-            <div class="col-5">
+            <div class="col-6">
 
               <div class="input-group">
                 <span class="input-group-text">Tabs of Sheet</span>
@@ -36,7 +36,7 @@
             </div>
 
             <div class="col-1 d-grid">
-              <button class="btn btn-primary">Next</button>
+              <button class="btn btn-primary" (click)="onImportCoA()" [disabled]="onSubmitDisable">Next</button>
             </div>
 
           </div>
@@ -44,8 +44,8 @@
 
 
         <div class="my-2">
-          <div class="row">
-            <div class="col-6" *ngIf="sheetData.length > 0">
+          <div class="row g-1">
+            <div class="col-8" *ngIf="sheetData.length > 0">
               <div class="content-custom-2 border shadow-sm">
                 <table class="table table-sm table-bordered table-hover">
                   <thead class="sticky-top thead-style-primary">
@@ -60,10 +60,11 @@
                       <td>Column #{{i+1}}</td>
                       <td>{{item.name}}</td>
                       <td>
-                        <select class="form-control form-control-sm border" [(ngModel)]="item.field" (change)="updateSelectAccount();">
+                        <select class="form-control form-control-sm border" [(ngModel)]="item.field" 
+                          (change)="updateSelectAccount();">
                           <option selected value="">- Disable - </option>
-                          <option [value]="a.name" *ngFor="let a of selectAccount" [hidden]="a.status == true">{{a.label}}</option>
-
+                          <option [value]="a.name" *ngFor="let a of selectAccount" [hidden]="a.status == true">
+                            {{a.label}}</option> 
                         </select>
                       </td>
                     </tr>
@@ -71,16 +72,32 @@
                 </table>
               </div>
             </div>
-            <div class="col-6">
-              <div class="lh-1">
-                <code>{{sheetHeader | json}}</code>
-                <code>{{selectAccount | json}}</code>
+            <div class="col-4">
+             
+              <div class="card mx-3">
+                <div class="card-header">
+                  <small>Check list requirement</small>
+                </div>
+                <div class="card-body">
+                  <div class="row g-1" *ngFor="let x of selectAccount; let i = index"> 
+                    <div class="col-1">{{i+1}}</div>
+                    <div class="col-9">{{x.label}} <span [hidden]="!x.required">*</span></div>
+                    <div class="col-1">
+                      <div [hidden]="!x.required">
+                        <div class="text-danger" *ngIf="x.status == false">
+                          <i class="bi bi-exclamation-lg"></i>
+                        </div>
+                       
+                      </div>
+                      <div *ngIf="x.status == true">
+                        <i class="bi bi-check-lg"></i>
+                      </div>
+                    </div>
+                   
+                  </div>
+                </div>
               </div>
-              <div class="row" *ngFor="let x of selectAccount; let i = index" >
-                <div class="col-1">{{i+1}}</div>
-                <div class="col-8">{{x.label}}</div>
-                <div class="col-3">{{x.status}}</div>
-              </div>
+            
             </div>
 
           </div>
