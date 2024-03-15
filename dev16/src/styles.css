@@ -84,7 +84,13 @@ input, select, textarea {
   -moz-border-radius: 0px !important;
   border-radius: 0px !important;
 } */
-
+div code{
+  line-height: 100% !important;
+}
+code{
+    font-size: 0.7rem;
+   
+}
 input:disabled,
 select:disabled {
   background-color: #f1f4f6 !important;

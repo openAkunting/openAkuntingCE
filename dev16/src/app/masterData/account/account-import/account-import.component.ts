@@ -12,30 +12,73 @@ import * as XLSX from 'xlsx';
   templateUrl: './account-import.component.html',
   styleUrls: ['./account-import.component.css']
 })
-export class AccountImportComponent {
+export class AccountImportComponent implements OnInit{
   file: File | null = null;
   sheetNames: string[] = [];
   selectedSheetName: string | null = null;
   sheetData: any[] = [];
   sheetHeader: any = [];
   switch_expression : string = "";
+  selectAccount : any = [];
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
     private modalService: NgbModal,
     public lang: LanguageService
   ) { }
+  ngOnInit(): void {
+    this.resetAccount();
+  }
 
   onFileChange(event: any): void {
     this.file = event.target.files[0];
     this.readExcelFile();
   }
-
-  onSelectSheet(){
-    console.log(this.selectedSheetName);
-    this.readExcelFile()
+  updateSelectAccount(){
+    console.log(this.selectAccount, this.sheetHeader);
   }
-  readExcelFile(): void {
+  resetAccount(){
+    this.selectAccount = [
+      {
+        name : "id",
+        label : 'Account ID',
+        status : false,
+      },
+      {
+        name : "name",
+        label : 'Name',
+        status : false,
+      },
+      {
+        name : "parentId",
+        label : 'Parent Account',
+        status : false,
+      },
+      {
+        name : "accountTypeId",
+        label : 'Account Classification',
+        status : false,
+      },
+      {
+        name : "cashBank",
+        label : 'Cash Bank [0 or 1]',
+        status : false,
+      }, 
+    ]
+  }
+  // onSelectSheet(){
+  //   console.log(this.selectedSheetName);
+  //   this.readExcelFile()
+  // }
+
+  onSelectSheet(event: Event): void {
+    const index = (event.target as HTMLSelectElement).selectedIndex;
+    console.log(index);
+    this.sheetHeader = [];
+    this.readExcelFile(index);
+    // Gunakan nilai index di sini
+  }
+  readExcelFile(index : number = 0): void {
     if (!this.file) {
       return;
     }
@@ -56,6 +99,8 @@ export class AccountImportComponent {
       const worksheet: XLSX.WorkSheet = workbook.Sheets[this.selectedSheetName];
       this.sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
       let i =0;
+
+     
       this.sheetData[0].forEach((el: any) => {
         const temp = {
           index: i,
@@ -65,7 +110,7 @@ export class AccountImportComponent {
         i++;
         this.sheetHeader.push(temp);
       });
-      console.log(this.sheetNames, this.sheetData);
+      console.log(this.sheetHeader, this.sheetData[0]);
     };
 
     reader.readAsArrayBuffer(this.file);

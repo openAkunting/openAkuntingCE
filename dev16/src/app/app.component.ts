@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.config.getToken())
+  
 
     if( this.config.getToken() != '' && this.config.getToken() != null){
       this.login = true;
