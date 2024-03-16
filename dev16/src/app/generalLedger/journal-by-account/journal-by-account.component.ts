@@ -26,14 +26,19 @@ export class JournalByAccountComponent  implements OnInit {
     this.httpGet();
     console.log(this.id);
   }
+
+  
   httpGet() {
-    this.http.get<any>(environment.api + "journal/searchById",{
-      headers: this.configService.headers(),
-      params : {
+    let params  = {
         id : this.id,
         startDate: this.startDate['year'] + "-" + this.startDate['month'].toString().padStart(2, '0') + "-" + this.startDate['day'],
         endDate: this.endDate['year'] + "-" + this.endDate['month'].toString().padStart(2, '0') + "-" + this.endDate['day'],
-       }
+    } 
+  
+    
+    this.http.get<any>(environment.api + "journal/searchById",{
+      headers: this.configService.headers(),
+      params : params
     }).subscribe(
       data => {
         this.items = data['items'];
@@ -43,6 +48,7 @@ export class JournalByAccountComponent  implements OnInit {
         console.log(error);
       }
     )
+
   }
 }
 

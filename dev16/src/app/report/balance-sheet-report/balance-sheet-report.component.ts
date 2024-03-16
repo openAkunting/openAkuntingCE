@@ -19,6 +19,9 @@ export class BalanceSheetReportComponent implements OnInit {
   params : any = [];
   total : any = [];
   range: any = new DateRanges([], []);
+  listMonth : any = [];
+  totalObj : any = [];
+  width : number = 0;
   constructor(
     private http: HttpClient,
     private configService: ConfigService, 
@@ -51,7 +54,7 @@ export class BalanceSheetReportComponent implements OnInit {
 
 
   httpGet(){
-  
+    this.width = 340;
     this.http.get<any>(environment.api+"Reports/BalanceSheet",{
       headers:this.configService.headers(),
       params: {
@@ -62,6 +65,9 @@ export class BalanceSheetReportComponent implements OnInit {
       data=>{
         this.items = data['data'];
         this.total = data['total'];
+        this.width += data['total'].length * 130;
+        this.listMonth = data['listMonth'];
+        this.totalObj = data['total'];
         console.log(data);
       },
       error=>{
@@ -80,14 +86,29 @@ export class BalanceSheetReportComponent implements OnInit {
 
     return tab+account['name'] ;
   }
-  detail(x:any){
-    console.log(x);
+
+  getLevel(id: string, data: any, level: number = 0): number {
+    for (const item of data) {
+      if (item.id === id) {
+        if (item.parentId == null || item.parentId == '0') {
+          return level; // Jika ID merupakan root
+        } else {
+          return this.getLevel(item.parentId, data, level + 1); // Rekursif untuk mencari parent
+        }
+      }
+    }
+    return -1; // Jika ID tidak ditemukan
+  }
+
+  
+  detail(id:string, item:any){
+    console.log(item);
     const modalRef = this.modalService.open(JournalByAccountComponent, {size:'xl'});
-		modalRef.componentInstance.id = x.id;
-    modalRef.componentInstance.startDate= this.range.startDate;
-    modalRef.componentInstance.endDate= this.range.endDate;
+		modalRef.componentInstance.id = id;
+    modalRef.componentInstance.startDate= item.startDate;
+    modalRef.componentInstance.endDate= item.endDate;
     
-    modalRef.componentInstance.title = 'Profit And Loss '+this.params['startDate']+" "+this.params['endDate'];
+    modalRef.componentInstance.title = 'Balance Sheet '+this.params['startDate']+" "+this.params['endDate'];
     
   }
  

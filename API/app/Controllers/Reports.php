@@ -158,17 +158,15 @@ class Reports extends BaseController
         $dataAccount = $this->db->query($dataAccountQ)->getResultArray();
 
         $accountTypeQ = "SELECT * FROM account_type WHERE $typeReport ";
+        $accountType = $this->db->query($accountTypeQ)->getResultArray();
         $account = [];
-        $total = array(
-            "debit" => 0,
-            "credit" => 0,
-            "balance" => 0,
-        );
+        $total = [];
         // $date = " AND (h.journalDate >= '$startDate' AND  h.journalDate <= '$endDate' )";
         $date = "";
+        $subtotal = [];
         $getMonthList = model("Account")->getMonthList($startDate, $endDate);
-        foreach ($this->db->query($accountTypeQ)->getResultArray() as $row) {
-           
+        foreach ($accountType as $row) {
+
             $filteredAccounts = [];
             $q = "SELECT a.id , a.name
             FROM account AS a
@@ -176,6 +174,7 @@ class Reports extends BaseController
             WHERE a.presence = 1 AND t.$typeReport and a.accountTypeId = '" . $row['id'] . "'
             ORDER BY a.id ASC, a.parentId ASC
             ";
+            $i = 0;
             $account = $this->db->query($q)->getResultArray();
             foreach ($account as $rec) {
 
@@ -188,17 +187,26 @@ class Reports extends BaseController
                     JOIN journal_header AS h ON h.id = j.journalId  
                     WHERE  j.accountId= '" . $rec['id'] . "' and  j.presence = 1 and h.presence = 1 AND   
                     YEAR(j.journalDate) = '" . $has[0] . "' and  
-                     MONTH(j.journalDate) = '" . $has[1] . "' ";
+                    MONTH(j.journalDate) = '" . $has[1] . "' ";
 
                     $balance = $this->db->query($balanceQ)->getResultArray()[0];
 
-                    // $account[$i]['level'] = model("Account")->getLevel($account[$i]['id'], $dataAccount);
-// $account[$i]['debit'] = $balance['debit'];
-// $account[$i]['credit'] = $balance['credit'];
-// $account[$i]['balance'] = $balance['balance'];
-
-                    $dataByDate[] = array(
-                        "period" => $has[0] . ' ' . $has[1],
+                  //  $account[$i]['level'] = model("Account")->getLevel($rec['id'], $dataAccount); 
+                  //  $account[$i]['level22'] = model("Account")->totalChild($rec['id']); 
+                    
+                    // $account[$i]['balance'] = $balance['balance'];
+                    $i++;
+                    $dataByDate[] = array( 
+                        "startDate" => array(
+                            "year" => (int)date("Y", strtotime($has[0] . "-" . $has[1] . "-01")),
+                            "month" => (int)date("m", strtotime($has[0] . "-" . $has[1] . "-01")),
+                            "day" => (int)date("d", strtotime($has[0] . "-" . $has[1] . "-01"))
+                        ),
+                        "endDate" => array(
+                            "year" => (int)date("Y", strtotime($has[0] . "-" . $has[1] . "-01")),
+                            "month" => (int)date("m", strtotime($has[0] . "-" . $has[1] . "-01")),
+                            "day" => (int)date("t", strtotime($has[0] . "-" . $has[1] . "-01"))
+                        ),
 
                         "debit" => (float) $balance['debit'],
                         "credit" => (float) $balance['credit'],
@@ -212,21 +220,34 @@ class Reports extends BaseController
                     "id" => $rec['id'],
                     "name" => $rec['name'],
                     "level" => model("Account")->getLevel($rec['id'], $dataAccount),
+                    "hasChild" => model("Account")->totalChild($rec['id']),
                     "data" => $dataByDate,
-
-
-
                 );
 
 
                 $filteredAccounts[] = $allRec;
 
             }
-            $subtotal = array(
-                "totalDebit" => 1,
-                "totalCredit" => 2,
-                "totalBalance" => 3,
-            );
+            $subtotal = [];
+            foreach ($getMonthList as $has) {
+                $accountSummaryQuery = "SELECT SUM(j.debit) AS 'debit' , SUM(j.credit) AS 'credit', SUM(j.debit-j.credit) AS 'balance' 
+                FROM journal AS j
+                JOIN journal_header AS h ON h.id = j.journalId  
+                JOIN account AS a ON a.id = j.accountId
+                WHERE  a.accountTypeId = '" . $row['id'] . "' and  j.presence = 1 and h.presence = 1 AND   
+                YEAR(j.journalDate) = '" . $has[0] . "' and  
+                 MONTH(j.journalDate) = '" . $has[1] . "' ";
+                $accountSummary = $this->db->query($accountSummaryQuery)->getResultArray()[0];
+                $subtotal[] = array(
+                    //    "q" => $accountSummaryQuery,
+                    "accountTypeId" => $row['id'],
+                    "date" => $has,
+                    "totalDebit" => (float) $accountSummary['debit'],
+                    "totalCredit" => (float) $accountSummary['credit'],
+                    "totalBalance" => (float) $accountSummary['balance'],
+                );
+            }
+
 
             $data[] = array(
                 "id" => $row['id'],
@@ -236,14 +257,45 @@ class Reports extends BaseController
             );
 
         }
+
+
+        $accounTypeIdWhere = "";
+        $or = "";
+        foreach ($accountType as $a) {
+            $accounTypeIdWhere .= " $or a.accountTypeId = '" . $a['id'] . "'   ";
+            $or = " OR ";
+        }
+
+
+        foreach ($getMonthList as $has) {
+            $accountSummaryQuery = "SELECT SUM(j.debit) AS 'debit' , SUM(j.credit) AS 'credit', SUM(j.debit-j.credit) AS 'balance' 
+            FROM journal AS j
+            JOIN journal_header AS h ON h.id = j.journalId  
+            JOIN account AS a ON a.id = j.accountId
+            WHERE  ( $accounTypeIdWhere ) AND  j.presence = 1 and h.presence = 1 AND   
+            YEAR(j.journalDate) = '" . $has[0] . "' and  
+             MONTH(j.journalDate) = '" . $has[1] . "' ";
+            $accountSummary = $this->db->query($accountSummaryQuery)->getResultArray()[0];
+            $total[] = array(
+                "date" => $has,
+                "totalDebit" => (float) $accountSummary['debit'],
+                "totalCredit" => (float) $accountSummary['credit'],
+                "totalBalance" => (float) $accountSummary['balance'],
+            );
+        }
+
+
+
+
+
         $rest = [
             "error" => false,
             "code" => 200,
             "startDate" => $startDate,
             "endDate" => $endDate,
-
             "data" => $data,
             "total" => $total,
+            "listMonth" => $getMonthList,
         ];
 
         return $rest;

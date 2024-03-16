@@ -138,6 +138,11 @@ select:disabled {
   }
 }
 
+
+.bigReport table td,.bigReport table th {
+  font-size: 0.8rem;
+}
+
 .left-sidebar {
   height: 100vh;
   overflow-y: scroll;

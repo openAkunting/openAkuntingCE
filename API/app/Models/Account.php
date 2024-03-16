@@ -104,13 +104,19 @@ class Account extends Model
                 if ($item['parentId'] == null || $item['parentId'] == '0') {
                     return $level; // Jika ID merupakan root
                 } else {
-                    return self::getLevel($item['parentId'], $data, $level + 1); // Rekursif untuk mencari parent
+                    if($level > 5){
+                        return $level;
+                    }
+                    return self::getLevel($item['parentId'], $data, $level + 1); // Rekursif untuk mencari parent 
                 }
             }
         }
         return -1; // Jika ID tidak ditemukan
     }
 
+    function totalChild($id=0){
+        return (int)model('Core')->select("count(id)","account","parentId = '$id' "); 
+    }
     function getMonthList($startDate, $endDate)
     {
         $start = new DateTime($startDate);
@@ -119,7 +125,7 @@ class Account extends Model
         $monthList = [];
 
         while ($start <= $end) {
-            $monthList[] = array($start->format('Y'),$start->format('m'));
+            $monthList[] = array($start->format('Y'),$start->format('m'),$start->format('M'),$start->format('F'));
             $start->modify('first day of next month');
         }
 
