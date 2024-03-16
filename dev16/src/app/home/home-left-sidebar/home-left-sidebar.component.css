@@ -29,12 +29,13 @@ hr{
 .a-menu a.active {
     text-decoration: none;
     display: block;
-    background-color: var(--bs-white);
-    border: 1px solid var(--bs-border-color-translucent);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    background-color: #0174BE;
+    color: #fff;
+    /* border: 1px solid var(--bs-border-color-translucent); */
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    /* box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; */
 }
 
 .a-menu a .a-menu-icon {

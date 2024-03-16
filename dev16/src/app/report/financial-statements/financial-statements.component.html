@@ -1,0 +1,92 @@
+<div class="wrapper   bg-white">
+    <div class="container-fluid    ">
+        <div class="row g-1 py-2">
+
+
+            <div class="col-4">
+                <div class="ms-2 font-code">
+                    <strong>Balance Sheet</strong>
+                    <div>Brand : PT RASA MANIS MALAKA</div>
+                </div>
+            </div>
+
+            <div class="col-8 align-self-baseline">
+                <div class="d-flex justify-content-end">
+                    <div class="align-self-center ">Start : </div>
+                    <div class="me-1">
+                        <div class="input-group">
+                            <input class="form-control form-control-sm" placeholder="Start Date" name="dp"
+                                [(ngModel)]="range.startDate" (dateSelect)="onCheckRange();" ngbDatepicker
+                                #d1="ngbDatepicker" style="width: 100px;" />
+                            <button class="btn btn-sm btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()"
+                                type="button"></button>
+                        </div>
+                    </div>
+
+                    <div class="align-self-center ">- End : </div>
+                    <div class="me-1">
+                        <div class="input-group">
+                            <input class="form-control form-control-sm" placeholder="End Date" name="dp"
+                                [(ngModel)]="range.endDate" ngbDatepicker (dateSelect)="onCheckRange();"
+                                [minDate]="range.startDate" #d2="ngbDatepicker" style="width: 100px;" />
+                            <button class="btn btn-sm btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()"
+                                type="button"></button>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-dark  this.httpGet();" (click)="filterDate();">Generate Report</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="font-code bigReport">
+        <div class="overflow"  >
+ 
+           
+            <table class="table table-sm table-bordered "  [ngStyle]="{'min-width':  width+'px'}">
+                <thead class="sticky-top thead-style-primary">
+                    <tr>
+                        <th class="bg-light"  style="width: 300px;"><strong>Description</strong></th>
+                        <th class="bg-light text-end"   *ngFor="let item of listMonth" style="width: 100px;">
+                          <div><strong>{{item[0]}}</strong></div>
+                          <div><strong>{{item[2]}}</strong></div> 
+                        </th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let x of items">
+                    <tr>
+                        <td>{{x.typeOfAccount}}</td> 
+                    </tr>
+                    <tr *ngFor="let a of x.account">
+                        <td><span [innerHTML]="addLevel(a)"></span> </td>
+                        <!-- <td class="text-end"  colspan="3" >  {{a.data | json}}   </td>  -->
+                        <td class="text-end td-zoom" *ngFor="let y of a.data" >
+                            <div  [hidden]="a.hasChild"> 
+                            <a href="javascript:;" (click)="detail(a.id,y)">
+                                <span class="ms-1 icon-popup"><i class="bi bi-zoom-in"></i></span>
+                            </a>
+                            {{y.balance | number}}   </div>
+                        </td>
+                    </tr>
+                    <tr class="td-header">
+                        <th class="text-end"> <strong>TOTAL {{x.typeOfAccount}}</strong> </th> 
+                        <th class="text-end" *ngFor="let s of x.subtotal"> <strong> {{s.totalBalance | number}} </strong> </th>
+                    </tr>
+                    <tr>
+                        <td colspan="4"></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="td-header">
+                        <th class="text-end"> <strong>GRAND TOTAL</strong> </th>
+                        <th class="text-end" *ngFor="let s of totalObj"> <strong> {{s.totalBalance | number}} </strong> </th>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+    </div>
+</div>

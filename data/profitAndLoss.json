@@ -1,0 +1,898 @@
+{
+    "error": false,
+    "code": 200,
+    "startDate": "2023-03-01",
+    "endDate": "2024-03-31",
+    "data": [
+        {
+            "id": "40",
+            "typeOfAccount": "SALES",
+            "account": [],
+            "subtotal": [
+                {
+                    "accountTypeId": "40",
+                    "date": [
+                        "2023",
+                        "03",
+                        "Mar",
+                        "March"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "40",
+                    "date": [
+                        "2023",
+                        "04",
+                        "Apr",
+                        "April"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "40",
+                    "date": [
+                        "2023",
+                        "05",
+                        "May",
+                        "May"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "40",
+                    "date": [
+                        "2023",
+                        "06",
+                        "Jun",
+                        "June"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "40",
+                    "date": [
+                        "2023",
+                        "07",
+                        "Jul",
+                        "July"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "40",
+                    "date": [
+                        "2023",
+                        "08",
+                        "Aug",
+                        "August"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "40",
+                    "date": [
+                        "2023",
+                        "09",
+                        "Sep",
+                        "September"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "40",
+                    "date": [
+                        "2023",
+                        "10",
+                        "Oct",
+                        "October"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "40",
+                    "date": [
+                        "2023",
+                        "11",
+                        "Nov",
+                        "November"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "40",
+                    "date": [
+                        "2023",
+                        "12",
+                        "Dec",
+                        "December"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "40",
+                    "date": [
+                        "2024",
+                        "01",
+                        "Jan",
+                        "January"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "40",
+                    "date": [
+                        "2024",
+                        "02",
+                        "Feb",
+                        "February"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "40",
+                    "date": [
+                        "2024",
+                        "03",
+                        "Mar",
+                        "March"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                }
+            ]
+        },
+        {
+            "id": "50",
+            "typeOfAccount": "COGS MOKKA COFFE BINTARO",
+            "account": [],
+            "subtotal": [
+                {
+                    "accountTypeId": "50",
+                    "date": [
+                        "2023",
+                        "03",
+                        "Mar",
+                        "March"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "50",
+                    "date": [
+                        "2023",
+                        "04",
+                        "Apr",
+                        "April"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "50",
+                    "date": [
+                        "2023",
+                        "05",
+                        "May",
+                        "May"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "50",
+                    "date": [
+                        "2023",
+                        "06",
+                        "Jun",
+                        "June"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "50",
+                    "date": [
+                        "2023",
+                        "07",
+                        "Jul",
+                        "July"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "50",
+                    "date": [
+                        "2023",
+                        "08",
+                        "Aug",
+                        "August"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "50",
+                    "date": [
+                        "2023",
+                        "09",
+                        "Sep",
+                        "September"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "50",
+                    "date": [
+                        "2023",
+                        "10",
+                        "Oct",
+                        "October"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "50",
+                    "date": [
+                        "2023",
+                        "11",
+                        "Nov",
+                        "November"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "50",
+                    "date": [
+                        "2023",
+                        "12",
+                        "Dec",
+                        "December"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "50",
+                    "date": [
+                        "2024",
+                        "01",
+                        "Jan",
+                        "January"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "50",
+                    "date": [
+                        "2024",
+                        "02",
+                        "Feb",
+                        "February"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "50",
+                    "date": [
+                        "2024",
+                        "03",
+                        "Mar",
+                        "March"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                }
+            ]
+        },
+        {
+            "id": "60",
+            "typeOfAccount": "EXPENSE",
+            "account": [],
+            "subtotal": [
+                {
+                    "accountTypeId": "60",
+                    "date": [
+                        "2023",
+                        "03",
+                        "Mar",
+                        "March"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "60",
+                    "date": [
+                        "2023",
+                        "04",
+                        "Apr",
+                        "April"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "60",
+                    "date": [
+                        "2023",
+                        "05",
+                        "May",
+                        "May"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "60",
+                    "date": [
+                        "2023",
+                        "06",
+                        "Jun",
+                        "June"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "60",
+                    "date": [
+                        "2023",
+                        "07",
+                        "Jul",
+                        "July"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "60",
+                    "date": [
+                        "2023",
+                        "08",
+                        "Aug",
+                        "August"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "60",
+                    "date": [
+                        "2023",
+                        "09",
+                        "Sep",
+                        "September"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "60",
+                    "date": [
+                        "2023",
+                        "10",
+                        "Oct",
+                        "October"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "60",
+                    "date": [
+                        "2023",
+                        "11",
+                        "Nov",
+                        "November"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "60",
+                    "date": [
+                        "2023",
+                        "12",
+                        "Dec",
+                        "December"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "60",
+                    "date": [
+                        "2024",
+                        "01",
+                        "Jan",
+                        "January"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "60",
+                    "date": [
+                        "2024",
+                        "02",
+                        "Feb",
+                        "February"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "60",
+                    "date": [
+                        "2024",
+                        "03",
+                        "Mar",
+                        "March"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                }
+            ]
+        },
+        {
+            "id": "70",
+            "typeOfAccount": "OTHER INCOME",
+            "account": [],
+            "subtotal": [
+                {
+                    "accountTypeId": "70",
+                    "date": [
+                        "2023",
+                        "03",
+                        "Mar",
+                        "March"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "70",
+                    "date": [
+                        "2023",
+                        "04",
+                        "Apr",
+                        "April"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "70",
+                    "date": [
+                        "2023",
+                        "05",
+                        "May",
+                        "May"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "70",
+                    "date": [
+                        "2023",
+                        "06",
+                        "Jun",
+                        "June"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "70",
+                    "date": [
+                        "2023",
+                        "07",
+                        "Jul",
+                        "July"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "70",
+                    "date": [
+                        "2023",
+                        "08",
+                        "Aug",
+                        "August"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "70",
+                    "date": [
+                        "2023",
+                        "09",
+                        "Sep",
+                        "September"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "70",
+                    "date": [
+                        "2023",
+                        "10",
+                        "Oct",
+                        "October"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "70",
+                    "date": [
+                        "2023",
+                        "11",
+                        "Nov",
+                        "November"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "70",
+                    "date": [
+                        "2023",
+                        "12",
+                        "Dec",
+                        "December"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "70",
+                    "date": [
+                        "2024",
+                        "01",
+                        "Jan",
+                        "January"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "70",
+                    "date": [
+                        "2024",
+                        "02",
+                        "Feb",
+                        "February"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                },
+                {
+                    "accountTypeId": "70",
+                    "date": [
+                        "2024",
+                        "03",
+                        "Mar",
+                        "March"
+                    ],
+                    "totalDebit": 0,
+                    "totalCredit": 0,
+                    "totalBalance": 0
+                }
+            ]
+        }
+    ],
+    "total": [
+        {
+            "q": "SELECT SUM(j.debit) AS 'debit' , SUM(j.credit) AS 'credit', SUM(j.debit-j.credit) AS 'balance' \n            FROM journal AS j\n            JOIN journal_header AS h ON h.id = j.journalId  \n            JOIN account AS a ON a.id = j.accountId \n            WHERE  (   a.accountTypeId = '40'     OR  a.accountTypeId = '50'     OR  a.accountTypeId = '60'     OR  a.accountTypeId = '70'    ) AND  j.presence = 1 and h.presence = 1 AND   \n            YEAR(j.journalDate) = '2023' and  \n             MONTH(j.journalDate) = '03' ",
+            "date": [
+                "2023",
+                "03",
+                "Mar",
+                "March"
+            ],
+            "totalDebit": 0,
+            "totalCredit": 0,
+            "totalBalance": 0
+        },
+        {
+            "q": "SELECT SUM(j.debit) AS 'debit' , SUM(j.credit) AS 'credit', SUM(j.debit-j.credit) AS 'balance' \n            FROM journal AS j\n            JOIN journal_header AS h ON h.id = j.journalId  \n            JOIN account AS a ON a.id = j.accountId \n            WHERE  (   a.accountTypeId = '40'     OR  a.accountTypeId = '50'     OR  a.accountTypeId = '60'     OR  a.accountTypeId = '70'    ) AND  j.presence = 1 and h.presence = 1 AND   \n            YEAR(j.journalDate) = '2023' and  \n             MONTH(j.journalDate) = '04' ",
+            "date": [
+                "2023",
+                "04",
+                "Apr",
+                "April"
+            ],
+            "totalDebit": 0,
+            "totalCredit": 0,
+            "totalBalance": 0
+        },
+        {
+            "q": "SELECT SUM(j.debit) AS 'debit' , SUM(j.credit) AS 'credit', SUM(j.debit-j.credit) AS 'balance' \n            FROM journal AS j\n            JOIN journal_header AS h ON h.id = j.journalId  \n            JOIN account AS a ON a.id = j.accountId \n            WHERE  (   a.accountTypeId = '40'     OR  a.accountTypeId = '50'     OR  a.accountTypeId = '60'     OR  a.accountTypeId = '70'    ) AND  j.presence = 1 and h.presence = 1 AND   \n            YEAR(j.journalDate) = '2023' and  \n             MONTH(j.journalDate) = '05' ",
+            "date": [
+                "2023",
+                "05",
+                "May",
+                "May"
+            ],
+            "totalDebit": 0,
+            "totalCredit": 0,
+            "totalBalance": 0
+        },
+        {
+            "q": "SELECT SUM(j.debit) AS 'debit' , SUM(j.credit) AS 'credit', SUM(j.debit-j.credit) AS 'balance' \n            FROM journal AS j\n            JOIN journal_header AS h ON h.id = j.journalId  \n            JOIN account AS a ON a.id = j.accountId \n            WHERE  (   a.accountTypeId = '40'     OR  a.accountTypeId = '50'     OR  a.accountTypeId = '60'     OR  a.accountTypeId = '70'    ) AND  j.presence = 1 and h.presence = 1 AND   \n            YEAR(j.journalDate) = '2023' and  \n             MONTH(j.journalDate) = '06' ",
+            "date": [
+                "2023",
+                "06",
+                "Jun",
+                "June"
+            ],
+            "totalDebit": 0,
+            "totalCredit": 0,
+            "totalBalance": 0
+        },
+        {
+            "q": "SELECT SUM(j.debit) AS 'debit' , SUM(j.credit) AS 'credit', SUM(j.debit-j.credit) AS 'balance' \n            FROM journal AS j\n            JOIN journal_header AS h ON h.id = j.journalId  \n            JOIN account AS a ON a.id = j.accountId \n            WHERE  (   a.accountTypeId = '40'     OR  a.accountTypeId = '50'     OR  a.accountTypeId = '60'     OR  a.accountTypeId = '70'    ) AND  j.presence = 1 and h.presence = 1 AND   \n            YEAR(j.journalDate) = '2023' and  \n             MONTH(j.journalDate) = '07' ",
+            "date": [
+                "2023",
+                "07",
+                "Jul",
+                "July"
+            ],
+            "totalDebit": 0,
+            "totalCredit": 0,
+            "totalBalance": 0
+        },
+        {
+            "q": "SELECT SUM(j.debit) AS 'debit' , SUM(j.credit) AS 'credit', SUM(j.debit-j.credit) AS 'balance' \n            FROM journal AS j\n            JOIN journal_header AS h ON h.id = j.journalId  \n            JOIN account AS a ON a.id = j.accountId \n            WHERE  (   a.accountTypeId = '40'     OR  a.accountTypeId = '50'     OR  a.accountTypeId = '60'     OR  a.accountTypeId = '70'    ) AND  j.presence = 1 and h.presence = 1 AND   \n            YEAR(j.journalDate) = '2023' and  \n             MONTH(j.journalDate) = '08' ",
+            "date": [
+                "2023",
+                "08",
+                "Aug",
+                "August"
+            ],
+            "totalDebit": 0,
+            "totalCredit": 0,
+            "totalBalance": 0
+        },
+        {
+            "q": "SELECT SUM(j.debit) AS 'debit' , SUM(j.credit) AS 'credit', SUM(j.debit-j.credit) AS 'balance' \n            FROM journal AS j\n            JOIN journal_header AS h ON h.id = j.journalId  \n            JOIN account AS a ON a.id = j.accountId \n            WHERE  (   a.accountTypeId = '40'     OR  a.accountTypeId = '50'     OR  a.accountTypeId = '60'     OR  a.accountTypeId = '70'    ) AND  j.presence = 1 and h.presence = 1 AND   \n            YEAR(j.journalDate) = '2023' and  \n             MONTH(j.journalDate) = '09' ",
+            "date": [
+                "2023",
+                "09",
+                "Sep",
+                "September"
+            ],
+            "totalDebit": 0,
+            "totalCredit": 0,
+            "totalBalance": 0
+        },
+        {
+            "q": "SELECT SUM(j.debit) AS 'debit' , SUM(j.credit) AS 'credit', SUM(j.debit-j.credit) AS 'balance' \n            FROM journal AS j\n            JOIN journal_header AS h ON h.id = j.journalId  \n            JOIN account AS a ON a.id = j.accountId \n            WHERE  (   a.accountTypeId = '40'     OR  a.accountTypeId = '50'     OR  a.accountTypeId = '60'     OR  a.accountTypeId = '70'    ) AND  j.presence = 1 and h.presence = 1 AND   \n            YEAR(j.journalDate) = '2023' and  \n             MONTH(j.journalDate) = '10' ",
+            "date": [
+                "2023",
+                "10",
+                "Oct",
+                "October"
+            ],
+            "totalDebit": 0,
+            "totalCredit": 0,
+            "totalBalance": 0
+        },
+        {
+            "q": "SELECT SUM(j.debit) AS 'debit' , SUM(j.credit) AS 'credit', SUM(j.debit-j.credit) AS 'balance' \n            FROM journal AS j\n            JOIN journal_header AS h ON h.id = j.journalId  \n            JOIN account AS a ON a.id = j.accountId \n            WHERE  (   a.accountTypeId = '40'     OR  a.accountTypeId = '50'     OR  a.accountTypeId = '60'     OR  a.accountTypeId = '70'    ) AND  j.presence = 1 and h.presence = 1 AND   \n            YEAR(j.journalDate) = '2023' and  \n             MONTH(j.journalDate) = '11' ",
+            "date": [
+                "2023",
+                "11",
+                "Nov",
+                "November"
+            ],
+            "totalDebit": 0,
+            "totalCredit": 0,
+            "totalBalance": 0
+        },
+        {
+            "q": "SELECT SUM(j.debit) AS 'debit' , SUM(j.credit) AS 'credit', SUM(j.debit-j.credit) AS 'balance' \n            FROM journal AS j\n            JOIN journal_header AS h ON h.id = j.journalId  \n            JOIN account AS a ON a.id = j.accountId \n            WHERE  (   a.accountTypeId = '40'     OR  a.accountTypeId = '50'     OR  a.accountTypeId = '60'     OR  a.accountTypeId = '70'    ) AND  j.presence = 1 and h.presence = 1 AND   \n            YEAR(j.journalDate) = '2023' and  \n             MONTH(j.journalDate) = '12' ",
+            "date": [
+                "2023",
+                "12",
+                "Dec",
+                "December"
+            ],
+            "totalDebit": 0,
+            "totalCredit": 0,
+            "totalBalance": 0
+        },
+        {
+            "q": "SELECT SUM(j.debit) AS 'debit' , SUM(j.credit) AS 'credit', SUM(j.debit-j.credit) AS 'balance' \n            FROM journal AS j\n            JOIN journal_header AS h ON h.id = j.journalId  \n            JOIN account AS a ON a.id = j.accountId \n            WHERE  (   a.accountTypeId = '40'     OR  a.accountTypeId = '50'     OR  a.accountTypeId = '60'     OR  a.accountTypeId = '70'    ) AND  j.presence = 1 and h.presence = 1 AND   \n            YEAR(j.journalDate) = '2024' and  \n             MONTH(j.journalDate) = '01' ",
+            "date": [
+                "2024",
+                "01",
+                "Jan",
+                "January"
+            ],
+            "totalDebit": 0,
+            "totalCredit": 0,
+            "totalBalance": 0
+        },
+        {
+            "q": "SELECT SUM(j.debit) AS 'debit' , SUM(j.credit) AS 'credit', SUM(j.debit-j.credit) AS 'balance' \n            FROM journal AS j\n            JOIN journal_header AS h ON h.id = j.journalId  \n            JOIN account AS a ON a.id = j.accountId \n            WHERE  (   a.accountTypeId = '40'     OR  a.accountTypeId = '50'     OR  a.accountTypeId = '60'     OR  a.accountTypeId = '70'    ) AND  j.presence = 1 and h.presence = 1 AND   \n            YEAR(j.journalDate) = '2024' and  \n             MONTH(j.journalDate) = '02' ",
+            "date": [
+                "2024",
+                "02",
+                "Feb",
+                "February"
+            ],
+            "totalDebit": 0,
+            "totalCredit": 0,
+            "totalBalance": 0
+        },
+        {
+            "q": "SELECT SUM(j.debit) AS 'debit' , SUM(j.credit) AS 'credit', SUM(j.debit-j.credit) AS 'balance' \n            FROM journal AS j\n            JOIN journal_header AS h ON h.id = j.journalId  \n            JOIN account AS a ON a.id = j.accountId \n            WHERE  (   a.accountTypeId = '40'     OR  a.accountTypeId = '50'     OR  a.accountTypeId = '60'     OR  a.accountTypeId = '70'    ) AND  j.presence = 1 and h.presence = 1 AND   \n            YEAR(j.journalDate) = '2024' and  \n             MONTH(j.journalDate) = '03' ",
+            "date": [
+                "2024",
+                "03",
+                "Mar",
+                "March"
+            ],
+            "totalDebit": 0,
+            "totalCredit": 0,
+            "totalBalance": 0
+        }
+    ],
+    "listMonth": [
+        [
+            "2023",
+            "03",
+            "Mar",
+            "March"
+        ],
+        [
+            "2023",
+            "04",
+            "Apr",
+            "April"
+        ],
+        [
+            "2023",
+            "05",
+            "May",
+            "May"
+        ],
+        [
+            "2023",
+            "06",
+            "Jun",
+            "June"
+        ],
+        [
+            "2023",
+            "07",
+            "Jul",
+            "July"
+        ],
+        [
+            "2023",
+            "08",
+            "Aug",
+            "August"
+        ],
+        [
+            "2023",
+            "09",
+            "Sep",
+            "September"
+        ],
+        [
+            "2023",
+            "10",
+            "Oct",
+            "October"
+        ],
+        [
+            "2023",
+            "11",
+            "Nov",
+            "November"
+        ],
+        [
+            "2023",
+            "12",
+            "Dec",
+            "December"
+        ],
+        [
+            "2024",
+            "01",
+            "Jan",
+            "January"
+        ],
+        [
+            "2024",
+            "02",
+            "Feb",
+            "February"
+        ],
+        [
+            "2024",
+            "03",
+            "Mar",
+            "March"
+        ]
+    ]
+}

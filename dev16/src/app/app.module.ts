@@ -37,6 +37,7 @@ import { JournalByAccountComponent } from './generalLedger/journal-by-account/jo
 import { OutletAccountComponent } from './masterData/branch/outlet-account/outlet-account.component'; 
 import { HomeTabsComponent } from './home/home-tabs/home-tabs.component';
 import { HomeLeftSidebarComponent } from './home/home-left-sidebar/home-left-sidebar.component';
+import { FinancialStatementsComponent } from './report/financial-statements/financial-statements.component'; 
 
 @NgModule({
   declarations: [
@@ -59,7 +60,7 @@ import { HomeLeftSidebarComponent } from './home/home-left-sidebar/home-left-sid
     JournalCreateComponent,  JournalDetailComponent, 
     JournalListReportComponent, ProfitAndLossReportComponent, BalanceSheetReportComponent, 
     AccountImportComponent, LedgerComponent, TrailBalanceComponent, TrailBalanceDetailComponent, 
-    JournalByAccountComponent, OutletAccountComponent, HomeTabsComponent, HomeLeftSidebarComponent,
+    JournalByAccountComponent, OutletAccountComponent, HomeTabsComponent, HomeLeftSidebarComponent, FinancialStatementsComponent, 
   ],
   imports: [
     BrowserModule,

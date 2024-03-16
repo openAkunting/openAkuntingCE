@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { LanguageService } from 'src/app/service/language.service';
@@ -25,12 +26,16 @@ export class AccountImportComponent implements OnInit {
     private http: HttpClient,
     private configService: ConfigService,
     private modalService: NgbModal,
+    private router:Router,
     public lang: LanguageService
   ) { }
   ngOnInit(): void {
     this.resetAccount();
   }
 
+  back(){
+    history.back();
+  }
   onFileChange(event: any): void {
     this.file = event.target.files[0];
     this.readExcelFile();
@@ -157,16 +162,17 @@ export class AccountImportComponent implements OnInit {
         sheetData: this.sheetData
       }
       console.log(body);
-      // this.http.post<any>(environment.api + "account/onImportCoA", body, {
-      //   headers: this.configService.headers(),
-      // }).subscribe(
-      //   data => {
-      //     console.log(data);
-      //   },
-      //   error => {
-      //     console.log(error);
-      //   }
-      // )
+      this.http.post<any>(environment.api + "account/onImportCoA", body, {
+        headers: this.configService.headers(),
+      }).subscribe(
+        data => {
+          console.log(data);
+          this.router.navigate(['/md/a']);
+        },
+        error => {
+          console.log(error);
+        }
+      )
     }else{
       alert("ERROR SUBMIT");
     }

@@ -47,7 +47,8 @@ class Reports extends BaseController
         $totalDays = $interval->days;
 
         if ($totalDays < $this->maxDay) {
-            $data = self::report($this->request->getVar(), " profitAndLoss = 1 ");
+           // $data = self::report($this->request->getVar(), "profitAndLoss = 1");
+            $data = self::reportByMonth($this->request->getVar(), "profitAndLoss = 1");
         } else {
             $data = array(
                 "error" => true,
@@ -271,12 +272,13 @@ class Reports extends BaseController
             $accountSummaryQuery = "SELECT SUM(j.debit) AS 'debit' , SUM(j.credit) AS 'credit', SUM(j.debit-j.credit) AS 'balance' 
             FROM journal AS j
             JOIN journal_header AS h ON h.id = j.journalId  
-            JOIN account AS a ON a.id = j.accountId
+            JOIN account AS a ON a.id = j.accountId 
             WHERE  ( $accounTypeIdWhere ) AND  j.presence = 1 and h.presence = 1 AND   
             YEAR(j.journalDate) = '" . $has[0] . "' and  
              MONTH(j.journalDate) = '" . $has[1] . "' ";
             $accountSummary = $this->db->query($accountSummaryQuery)->getResultArray()[0];
             $total[] = array(
+                "q" => $accountSummaryQuery ,
                 "date" => $has,
                 "totalDebit" => (float) $accountSummary['debit'],
                 "totalCredit" => (float) $accountSummary['credit'],

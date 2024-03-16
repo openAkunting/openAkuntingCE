@@ -2,7 +2,8 @@
   <div class="row g-1 py-2">
     <div class="col-12">
       <div class="px-3">
-        <strong>Import Chart Of Account</strong>
+       <button class="btn btn-sm btn-outline-dark" (click)="back()"> Back</button>
+       <strong class="mx-2">Import Chart Of Account</strong>
       </div>
     </div>
 
@@ -43,7 +44,7 @@
         </div>
 
 
-        <div class="my-2">
+        <div class="container-fluid my-2">
           <div class="row g-1">
             <div class="col-8" *ngIf="sheetData.length > 0">
               <div class="content-custom-2 border shadow-sm">
@@ -60,11 +61,11 @@
                       <td>Column #{{i+1}}</td>
                       <td>{{item.name}}</td>
                       <td>
-                        <select class="form-control form-control-sm border" [(ngModel)]="item.field" 
+                        <select class="form-control form-control-sm border" [(ngModel)]="item.field"
                           (change)="updateSelectAccount();">
                           <option selected value="">- Disable - </option>
                           <option [value]="a.name" *ngFor="let a of selectAccount" [hidden]="a.status == true">
-                            {{a.label}}</option> 
+                            {{a.label}}</option>
                         </select>
                       </td>
                     </tr>
@@ -73,13 +74,13 @@
               </div>
             </div>
             <div class="col-4">
-             
+
               <div class="card mx-3">
                 <div class="card-header">
                   <small>Check list requirement</small>
                 </div>
                 <div class="card-body">
-                  <div class="row g-1" *ngFor="let x of selectAccount; let i = index"> 
+                  <div class="row g-1" *ngFor="let x of selectAccount; let i = index">
                     <div class="col-1">{{i+1}}</div>
                     <div class="col-9">{{x.label}} <span [hidden]="!x.required">*</span></div>
                     <div class="col-1">
@@ -87,30 +88,38 @@
                         <div class="text-danger" *ngIf="x.status == false">
                           <i class="bi bi-exclamation-lg"></i>
                         </div>
-                       
+
                       </div>
                       <div *ngIf="x.status == true">
                         <i class="bi bi-check-lg"></i>
                       </div>
                     </div>
-                   
+
                   </div>
                 </div>
               </div>
-            
+
             </div>
 
           </div>
         </div>
 
-
+ 
 
         <div class="col-12" *ngIf="sheetData.length > 0">
           <div class="content-custom-1">
             <table class="table table-sm table-bordered ">
+
               <tbody>
                 <tr *ngFor="let row of sheetData; let i = index" [ngClass]="{'sticky-top': i == 0 }">
-                  <td [ngClass]="{'bg-light': i == 0, 'border-bottom': i == 0, }" *ngFor="let cell of row">{{ cell }}
+                  <td style="min-width: 100px;" [ngClass]="{'bg-light': i == 0, 'border-bottom': i == 0, }" *ngFor="let cell of row; let n = index">
+                    <div *ngIf="i==0">
+                      <strong>
+                        <small [hidden]="sheetHeader[n]['field']"> Column #{{ n+1 }}</small>  
+                        <small  [hidden]="!sheetHeader[n]['field']"> {{sheetHeader[n]['field'] }}</small> 
+                      </strong> 
+                    </div>
+                    <div> {{ cell }} </div>
                   </td>
                 </tr>
               </tbody>
@@ -118,9 +127,7 @@
           </div>
         </div>
       </div>
-
-
-
+ 
       <!--default case when there are no matches -->
       <div *ngSwitchDefault>
 
@@ -131,8 +138,9 @@
             <!-- <div class="mx-1"> <button class="btn btn-sm btn-dark" (click)="readExcelFile()">Read Excel</button> </div> -->
           </div>
 
-          <div class="p-5 text-center mt-2 mb-3 border bg-light">
+          <div class="p-5 text-center mt-2 mb-3 border bg-light"> 
             <em><small>Please select *.xlsx or *.csv file</small></em>
+            
           </div>
 
         </div>

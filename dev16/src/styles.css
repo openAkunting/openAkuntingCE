@@ -146,8 +146,9 @@ select:disabled {
 .left-sidebar {
   height: 100vh;
   overflow-y: scroll;
-  background-color: #f4f6f9;
-  /* background-color: #eceff8; */
+  /* background-color: #f4f6f9; */
+   background-color: #fff; 
+ 
 
 }
 
@@ -161,7 +162,7 @@ select:disabled {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f4f6f9;
+  background: #fff;
   /* color of the tracking area */
 }
 
@@ -170,7 +171,7 @@ select:disabled {
   /* color of the scroll thumb */
   border-radius: 5px;
   /* roundness of the scroll thumb */
-  border: 1px solid #f4f6f9;
+  border: 1px solid #fff;
   /* creates padding around scroll thumb */
 }
 
