@@ -127,4 +127,23 @@ export class FinancialStatementsComponent implements OnInit {
   filterDate(){
     this.httpGet();
   }
+
+  saveToJson(){
+    const body = {
+      controller : this.controller,
+      startDate: this.range.startDate['year'] + "-" + this.range.startDate['month'].toString().padStart(2, '0') + "-" + this.range.startDate['day'],
+      endDate: this.range.endDate['year'] + "-" + this.range.endDate['month'].toString().padStart(2, '0') + "-" + this.range.endDate['day'],
+
+    }
+    this.http.post<any>(environment.api+"Reports/saveToJson", body,{
+      headers:this.configService.headers(), 
+    }).subscribe(
+      data=>{ 
+        console.log(data);
+      },
+      error=>{
+        console.log(error);
+      }
+    )
+  }
 }

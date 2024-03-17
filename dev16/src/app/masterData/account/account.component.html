@@ -21,10 +21,9 @@
                         <th>Code</th>
                         <th>Name Account </th>
                         <th>Parent Id</th>
-                        <th>Type of Account</th>
-                        <th>Normal Balance</th>
+                        <th>Type of Account</th> 
                         <th>Position</th>
-                        <th>Cash Bank
+                        <th class="text-center">Cash Bank
                             <div *ngIf="!disable"> 
                                 <div *ngIf="checkAllCashBank == false" (click)="onCheckBoxAllCashBank(false)">
                                     <i class="bi bi-square"></i>
@@ -35,7 +34,7 @@
                                 </div>
                             </div>
                         </th>
-                        <th>Status
+                        <th class="text-center">Status
 
                             <div *ngIf="!disable"> 
                                 <div *ngIf="checkAllStatus == false" (click)="onCheckBoxAllStatus(false)">
@@ -63,22 +62,21 @@
                             </div>
 
                         </td>
-                        <td *ngIf="!disable"> <a href="javascript:;" (click)="open(content, x)">Add Child</a> </td>
+                        <td *ngIf="!disable"> <a href="javascript:;" class="btn btn-sm py-0 btn-primary" (click)="open(content, x)">Add Child</a> </td>
 
                         <td> <span [innerHTML]="countPossibleIPs(x.id, getLevel(x.id,accountTree) )"></span> {{x.id}}
                         </td>
 
-                        <td> <input type="text" class="form-control form-control-sm" [(ngModel)]="x.name"
+                        <td> <input type="text" class="form-control form-control-sm " [(ngModel)]="x.name"
                                 [disabled]="disable"> </td>
                         <td><small><code>[{{getLevel(x.id,accountTree)}}]</code></small> {{x.parent}}</td>
                         <td>
-                            <select class="form-control form-control-sm" [disabled]="disable"
+                            <select class="form-control form-control-sm " [disabled]="disable"
                                 (change)="updateParentStatus(x.id, x.accountTypeId)" [(ngModel)]="x.accountTypeId">
                                 <option [value]="a.id" *ngFor="let a of accountType">{{a.name}}</option>
                             </select>
                         </td>
-
-                        <td>{{fnDetailAccountType(x.accountTypeId, 'normalBalance')}}</td>
+  
                         <td>{{fnDetailAccountType(x.accountTypeId, 'position')}}</td>
 
 
@@ -132,13 +130,11 @@
 <ng-template #content let-modal>
     <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
         <div class="modal-header">
-            <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+            <strong class="modal-title" id="modal-basic-title">Update</strong>
             <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
         </div>
-        <div class="modal-body">
-
-
-
+        <div class="modal-body"> 
+ 
             <div class="mb-3">
                 <label for="id">Parent Account</label>
                 <div class="form-control  bg-light">{{item.name}} &nbsp;</div>
@@ -180,12 +176,7 @@
                 </div>
             </div>
 
-            <div class="mb-3">
-                <label for="name">Normal Balance</label>
-                <div class="form-control  bg-light">{{fnDetailAccountType(newCoA.accountTypeId, 'normalBalance')}}
-                    &nbsp; </div>
-            </div>
-
+          
             <div class="mb-3">
                 <label for="name">Position</label>
                 <div class="form-control  bg-light">{{fnDetailAccountType(newCoA.accountTypeId, 'position')}} &nbsp;

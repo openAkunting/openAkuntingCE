@@ -47,7 +47,7 @@ class Reports extends BaseController
         $totalDays = $interval->days;
 
         if ($totalDays < $this->maxDay) {
-           // $data = self::report($this->request->getVar(), "profitAndLoss = 1");
+            // $data = self::report($this->request->getVar(), "profitAndLoss = 1");
             $data = self::reportByMonth($this->request->getVar(), "profitAndLoss = 1");
         } else {
             $data = array(
@@ -192,21 +192,21 @@ class Reports extends BaseController
 
                     $balance = $this->db->query($balanceQ)->getResultArray()[0];
 
-                  //  $account[$i]['level'] = model("Account")->getLevel($rec['id'], $dataAccount); 
-                  //  $account[$i]['level22'] = model("Account")->totalChild($rec['id']); 
-                    
+                    //  $account[$i]['level'] = model("Account")->getLevel($rec['id'], $dataAccount); 
+                    //  $account[$i]['level22'] = model("Account")->totalChild($rec['id']); 
+
                     // $account[$i]['balance'] = $balance['balance'];
                     $i++;
-                    $dataByDate[] = array( 
+                    $dataByDate[] = array(
                         "startDate" => array(
-                            "year" => (int)date("Y", strtotime($has[0] . "-" . $has[1] . "-01")),
-                            "month" => (int)date("m", strtotime($has[0] . "-" . $has[1] . "-01")),
-                            "day" => (int)date("d", strtotime($has[0] . "-" . $has[1] . "-01"))
+                            "year" => (int) date("Y", strtotime($has[0] . "-" . $has[1] . "-01")),
+                            "month" => (int) date("m", strtotime($has[0] . "-" . $has[1] . "-01")),
+                            "day" => (int) date("d", strtotime($has[0] . "-" . $has[1] . "-01"))
                         ),
                         "endDate" => array(
-                            "year" => (int)date("Y", strtotime($has[0] . "-" . $has[1] . "-01")),
-                            "month" => (int)date("m", strtotime($has[0] . "-" . $has[1] . "-01")),
-                            "day" => (int)date("t", strtotime($has[0] . "-" . $has[1] . "-01"))
+                            "year" => (int) date("Y", strtotime($has[0] . "-" . $has[1] . "-01")),
+                            "month" => (int) date("m", strtotime($has[0] . "-" . $has[1] . "-01")),
+                            "day" => (int) date("t", strtotime($has[0] . "-" . $has[1] . "-01"))
                         ),
 
                         "debit" => (float) $balance['debit'],
@@ -278,7 +278,6 @@ class Reports extends BaseController
              MONTH(j.journalDate) = '" . $has[1] . "' ";
             $accountSummary = $this->db->query($accountSummaryQuery)->getResultArray()[0];
             $total[] = array(
-                "q" => $accountSummaryQuery ,
                 "date" => $has,
                 "totalDebit" => (float) $accountSummary['debit'],
                 "totalCredit" => (float) $accountSummary['credit'],
@@ -303,6 +302,54 @@ class Reports extends BaseController
         return $rest;
     }
 
+
+    function saveToJson()
+    {
+
+        $json = file_get_contents('php://input');
+        $post = json_decode($json, true);
+        $data = [
+            "error" => true,
+            "code" => 400,
+            "post" => $post,
+        ];
+        if ($post) {
+            $startDate = $post['startDate'];
+            $endDate = $post['endDate'];
+
+
+            $dateObj1 = date_create($startDate);
+            $dateObj2 = date_create($endDate); 
+            $interval = date_diff($dateObj1, $dateObj2);
+            $totalDays = $interval->days;
+
+            if ($totalDays < $this->maxDay) { 
+                $data = self::reportByMonth($post, $post['controller']." = 1"); 
+
+                $nameFile = $post['controller'].$data['startDate'].'To'.$data['startDate'];
+
+                $jsonData = json_encode($data);
+                $filePath = FCPATH  . 'upload\\'.$nameFile.'.json';
+                if (file_put_contents($filePath, $jsonData)) {
+                    
+                    $note = "The JSON data was successfully saved to the file.";
+                } else {
+                    $note = "Failed to save JSON data into file.";
+                }
+
+            }else {
+               $note =  "Max " . $this->maxDay . " day";
+            }
+
+            $data = array(
+                "error" => true,
+                "note" =>  $note
+            );
+        }
+
+
+        return $this->response->setJSON($data);
+    }
 
 
     function test()

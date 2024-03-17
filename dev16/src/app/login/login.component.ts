@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit{
                 //this.router.navigate(['home']).then(
                //   ()=>{
                     location.reload();
-                    this.router.navigate(['home'])
+                 //   this.router.navigate(['home'])
                 //  }
                // );
               } else {
