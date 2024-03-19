@@ -37,7 +37,9 @@ import { JournalByAccountComponent } from './generalLedger/journal-by-account/jo
 import { OutletAccountComponent } from './masterData/branch/outlet-account/outlet-account.component'; 
 import { HomeTabsComponent } from './home/home-tabs/home-tabs.component';
 import { HomeLeftSidebarComponent } from './home/home-left-sidebar/home-left-sidebar.component';
-import { FinancialStatementsComponent } from './report/financial-statements/financial-statements.component'; 
+import { FinancialStatementsComponent } from './report/financial-statements/financial-statements.component';
+import { TestComponent } from './test/test.component'; 
+import { Select2Module } from 'ng-select2-component';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,7 @@ import { FinancialStatementsComponent } from './report/financial-statements/fina
     JournalCreateComponent,  JournalDetailComponent, 
     JournalListReportComponent, ProfitAndLossReportComponent, BalanceSheetReportComponent, 
     AccountImportComponent, LedgerComponent, TrailBalanceComponent, TrailBalanceDetailComponent, 
-    JournalByAccountComponent, OutletAccountComponent, HomeTabsComponent, HomeLeftSidebarComponent, FinancialStatementsComponent, 
+    JournalByAccountComponent, OutletAccountComponent, HomeTabsComponent, HomeLeftSidebarComponent, FinancialStatementsComponent, TestComponent, 
   ],
   imports: [
     BrowserModule,
@@ -69,7 +71,8 @@ import { FinancialStatementsComponent } from './report/financial-statements/fina
     HttpClientModule,
     CommonModule,
     NgbModule,
-    NgxCurrencyDirective
+    NgxCurrencyDirective,
+    Select2Module 
   ],
   providers: [LanguageService],
   bootstrap: [AppComponent]

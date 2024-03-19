@@ -1,0 +1,6 @@
+<p>test works!</p>
+<select2 [data]="data" class="" [placeholder]="'aaaa'" [value]="value"   (update)="update($event)"> </select2>
+<hr>
+<select class="form-control form-control-sm">
+    <option *ngFor="let item of data">{{item.label}}</option>
+</select>

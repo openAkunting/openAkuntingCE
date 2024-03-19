@@ -20,13 +20,13 @@
 
             <div class="row mb-2 g-1">
                 <div class="col-4 align-self-center">
-                    Reference 
+                    Reference
                 </div>
                 <div class="col-8">
                     <input type="text" class="form-control form-control-sm" [(ngModel)]="model.ref">
                 </div>
             </div>
- 
+
 
             <div class="row mb-2 g-1">
                 <div class="col-4 align-self-center"> Recurring of journal </div>
@@ -132,11 +132,11 @@
                     </div>
                 </div>
             </div>
- 
-            <div class="row  mb-2 g-1"> 
+
+            <div class="row  mb-2 g-1">
                 <div class="col-12">
                     <div>Note</div>
-                    <textarea [(ngModel)]="model.note"  class="form-control form-control-sm" rows="3"></textarea>
+                    <textarea [(ngModel)]="model.note" class="form-control form-control-sm" rows="3"></textarea>
                 </div>
             </div>
         </div>
@@ -147,77 +147,8 @@
         </div>
         <div class="form-journal bg-white  py-2 border-style-primary">
 
-            <!-- JOURNAL -->
-            <div class="col-12" *ngIf="typeOfJournal == 'journal' ">
-                <div class="row g-0">
-                    <div class="col-2">
-                        <div class="px-2"> Outlet</div>
-                    </div>
-                    <div class="col-3 align-self-center">
-                        <div class="px-2"> Account</div>
-                    </div>
-                    <div class="col-3 align-self-center">
-                        <div class="px-2"> Description</div>
-                    </div>
-                    <div class="col-4">
-                        <div class="row g-0">
-                            <div class="col-5 text-end">
-                                <div class="px-2"> Debit</div>
-                            </div>
-                            <div class="col-5 text-end">
-                                <div class="px-2"> Credit</div>
-                            </div>
-                            <div class="col-2">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row g-0" *ngFor="let x of items; let i = index">
-                    <div class="col-2">
-                        <select class="form-control form-control-sm" [(ngModel)]="x.outletId"
-                            (change)="onSelectOutlet(x.outletId, i);">
-                            <option [value]="a.id" *ngFor="let a of selectOutlet">{{a.branch+" : "+a.name}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-3 align-self-center">
-                        <select class="form-control form-control-sm" [(ngModel)]="x.accountId" (change)="calculation()">
-                            <optgroup [label]="a.name" *ngFor="let a of x.selectAccount">
-                                <option [hidden]="c.status != '1' " [value]="c.id" *ngFor="let c of a.coa">
-                                    {{c.id+" : "+c.name}}
-                                </option>
-                            </optgroup>
-                        </select>
-                    </div>
-                    <div class="col-3 align-self-center">
-                        <input type="text" maxlength="250" class="form-control form-control-sm"
-                            [(ngModel)]="x.description">
-                    </div>
-                    <div class="col-4">
-                        <div class="row g-0">
-                            <div class="col-5">
-                                <input type="text" currencyMask [options]="currencyOptions"
-                                    (keypress)="keyPress(x,'debit')" class="form-control form-control-sm"
-                                    [(ngModel)]="x.debit">
-                            </div>
-                            <div class="col-5">
-                                <input type="text" currencyMask [options]="currencyOptions"
-                                    (keypress)="keyPress(x,'credit')" class="form-control form-control-sm"
-                                    [(ngModel)]="x.credit">
-                            </div>
-                            <div class="col-2 text-center">
-                                <i *ngIf="i<2" class="bi bi-lock"></i>
-                                <a *ngIf="i>1" (click)="removeRow(i);"><i class="bi bi-trash3"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div> 
-            </div>
-
-            <!-- CASH BANK -->
+            <!-- IF CASH BANK -->
             <div class="col-12" *ngIf="typeOfJournal == 'cashbank'  ">
-
                 <div class="row mb-3">
                     <div class="col-6">
                         <div class="form-floating">
@@ -231,71 +162,74 @@
                         </div>
                     </div>
 
+                </div>
+            </div>
 
-                    <div class="col-3">
+            <div class="row g-0">
+                <div class="col-2">
+                    <div class="px-2"> Outlet</div>
+                </div>
+                <div class="col-3 align-self-center">
+                    <div class="px-2"> Account</div>
+                </div>
+                <div class="col-3 align-self-center">
+                    <div class="px-2"> Description</div>
+                </div>
+                <div class="col-4">
+                    <div class="row g-0">
+                        <div class="col-5 text-end">
+                            <div class="px-2"> Debit</div>
+                        </div>
+                        <div class="col-5 text-end">
+                            <div class="px-2"> Credit</div>
+                        </div>
+                        <div class="col-2">
 
-                        <div class="form-floating">
-                            <select class="form-select form-control-sm" [(ngModel)]="cashbank.position"
-                                id="cashbankPosition">
-                                <option value="debit">Debit</option>
-                                <option value="credit">Credit</option>
-                            </select>
-                            <label for="cashbankPosition"> Position</label>
                         </div>
                     </div>
                 </div>
-
-                <div class="row g-0">
-                    <div class="col-2">
-                        <div class="px-2"> Outlet</div>
-                    </div>
-                    <div class="col-3 align-self-center">
-                        <div class="px-2"> Account</div>
-                    </div>
-                    <div class="col-4 align-self-center">
-                        <div class="px-2"> Description</div>
-                    </div>
-                    <div class="col-2">
-                        <div class="px-2"> Amount</div>
-                    </div>
-                    <div class="col-1">
-
-                    </div>
-                </div>
-                
-                <div class="row g-0" *ngFor="let x of items; let i = index">
-                    <div class="col-2">
-                        <select class="form-control form-control-sm" [(ngModel)]="x.outletId"
-                            (change)="onSelectOutlet(x.outletId, i);">
-                            <option [value]="a.id" *ngFor="let a of selectOutlet">{{a.branch+" : "+a.name}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-3 align-self-center">
-                        <select class="form-control form-control-sm" [(ngModel)]="x.accountId" (change)="calculation()">
-                            <optgroup [label]="a.name" *ngFor="let a of x.selectAccount">
-                                <option [hidden]="c.status != '1' " [value]="c.id" *ngFor="let c of a.coa">
-                                    {{c.id+" : "+c.name}}
-                                </option>
-                            </optgroup>
-                        </select>
-                    </div>
-                    <div class="col-4 align-self-center">
-                        <input type="text" maxlength="250" class="form-control form-control-sm"
-                            [(ngModel)]="x.description">
-                    </div>
-                    <div class="col-2">
-                        <input type="text" currencyMask [options]="currencyOptions" (keypress)="keyPress(x,'debit')"
-                            class="form-control form-control-sm" [(ngModel)]="x.debit">
-
-                    </div>
-                    <div class="col-1 text-center">
-                        <i *ngIf="i<2" class="bi bi-lock"></i>
-                        <a *ngIf="i>1" (click)="removeRow(i);"><i class="bi bi-trash3"></i></a>
-                    </div>
-                </div>
-
             </div>
+            <div class="row g-0" *ngFor="let x of items; let i = index">
+                <div class="col-2">
+                    <select class="form-control form-control-sm" [(ngModel)]="x.outletId"
+                        (change)="onSelectOutlet(x.outletId, i);">
+                        <option [value]="a.id" *ngFor="let a of selectOutlet">{{a.branch+" : "+a.name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-3 align-self-center">
+                    <select class="form-control form-control-sm" [(ngModel)]="x.accountId" (change)="calculation()">
+                        <optgroup [label]="a.name" *ngFor="let a of x.selectAccount">
+                            <option [hidden]="c.status != '1' " [value]="c.id" *ngFor="let c of a.coa">
+                                {{c.id+" : "+c.name}}
+                            </option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="col-3 align-self-center">
+                    <input type="text" maxlength="250" class="form-control form-control-sm" [(ngModel)]="x.description">
+                </div>
+                <div class="col-4">
+                    <div class="row g-0">
+                        <div class="col-5">
+                            <input type="text" currencyMask [options]="currencyOptions" (keypress)="keyPress(x,'debit')"
+                                class="form-control form-control-sm" [(ngModel)]="x.debit">
+                        </div>
+                        <div class="col-5">
+                            <input type="text" currencyMask [options]="currencyOptions"
+                                (keypress)="keyPress(x,'credit')" class="form-control form-control-sm"
+                                [(ngModel)]="x.credit">
+                        </div>
+                        <div class="col-2 text-center">
+                            <i *ngIf="i<2" class="bi bi-lock"></i>
+                            <a *ngIf="i>1" (click)="removeRow(i);"><i class="bi bi-trash3"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
 
             <div class="row g-0 mt-3">
                 <div class="offset-10 col-2 d-grid text-end">
@@ -308,45 +242,35 @@
 
     <!-- SUMMARY -->
     <div class="row">
-        
+
         <div class="offset-8 col-4">
-            <div *ngIf="typeOfJournal=='journal'">
-                <div class="row g-0 mb-2 border-bottom">
-                    <div class="col-4"> <strong>Total debit</strong> </div>
-                    <div class="col-8">
-                        <div class="text-end"><strong>{{summary.debit | number}}</strong></div>
-                    </div>
-                </div>
-                <div class="row g-0 mb-2 border-bottom">
-                    <div class="col-4"> <strong>Total credit</strong> </div>
-                    <div class="col-8">
-                        <div class="text-end"><strong> {{summary.credit | number}}</strong></div>
-                    </div>
-                </div>
-                <div class="row g-0 mb-2 border-bottom">
-                    <div class="col-4"> <strong>Balance</strong> <span
-                            *ngIf="summary.balance == 0 && (summary.debit > 0 || summary.cedit > 0)"><i
-                                class="bi bi-check-lg"></i></span> </div>
-                    <div class="col-8">
-                        <div class="text-end" [ngClass]="{'text-danger': summary.balance != 0}"> <strong>
-                                {{summary.balance | number}}</strong></div>
-                    </div>
-                </div>
 
-            </div>
-
-            <div *ngIf="typeOfJournal=='cashbank'">
-                <div class="row g-0 mb-2 border-bottom">
-                    <div class="col-4"> <strong>Total</strong> </div>
-                    <div class="col-8">
-                        <div class="text-end"> <strong> {{summary.credit + summary.debit | number}} </strong></div>
-                    </div>
+            <div class="row g-0 mb-2 border-bottom">
+                <div class="col-4"> <strong>Total debit</strong> </div>
+                <div class="col-8">
+                    <div class="text-end"><strong>{{summary.debit | number}}</strong></div>
                 </div>
             </div>
+            <div class="row g-0 mb-2 border-bottom">
+                <div class="col-4"> <strong>Total credit</strong> </div>
+                <div class="col-8">
+                    <div class="text-end"><strong> {{summary.credit | number}}</strong></div>
+                </div>
+            </div>
+            <div class="row g-0 mb-2 border-bottom" *ngIf="typeOfJournal =='journal'">
+                <div class="col-4"> <strong>Balance</strong> <span
+                        *ngIf="summary.balance == 0 && (summary.debit > 0 || summary.cedit > 0)"><i
+                            class="bi bi-check-lg"></i></span> </div>
+                <div class="col-8">
+                    <div class="text-end" [ngClass]="{'text-danger': summary.balance != 0}"> <strong>
+                            {{summary.balance | number}}</strong></div>
+                </div>
+            </div>
+
         </div>
 
     </div>
-   
+
     <div *ngIf="!prod">
         model:
         {{typeOfJournal}}
@@ -356,9 +280,15 @@
 
 </div>
 <div class="modal-footer">
-
+    {{summary | json }}
     <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
-    <button type="button" class="btn btn-dark" [disabled]="!submit ||  summary.balance !=0 "
-        (click)="onSubmit();">submit</button>
+
+    <button type="button" class="btn btn-primary" *ngIf="typeOfJournal == 'journal'"
+        [disabled]="!submit || summary.balance !=0 " (click)="onSubmit();">Submit</button>
+
+    <button type="button" class="btn btn-success" *ngIf="typeOfJournal == 'cashbank'"
+        [disabled]="(summary.debit == 0 && summary.credit == 0) || cashbank.accountId == '' " (click)="onSubmit();">Submit</button>
+
+
 
 </div>
