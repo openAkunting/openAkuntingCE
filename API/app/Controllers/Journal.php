@@ -599,28 +599,46 @@ class Journal extends BaseController
 
 
             if ($post['typeOfJournal'] == "cashbank") {
-                $newItem = [];
-                $balance = 0;
-                foreach ($post['items'] as $row) {
-                    $isDebit = (float) $row['amount'];
-                    if ($isDebit > 0) {
-                        if ($post['cashbank']['position'] == 'credit') {
-                            $row['debit'] = (float) $isDebit;
-                            $row['credit'] = 0;
-                        } else if ($post['cashbank']['position'] == 'debit') {
-                            $row['debit'] = 0;
-                            $row['credit'] = (float) $isDebit;
-                        }
-                        $balance += (float) $isDebit;
-                        $newItem[] = $row;
-                    }
+                // $newItem = [];
+                // $balance = 0;
+                // foreach ($post['items'] as $row) {
+                //     $isDebit = (float) $row['amount'];
+                //     if ($isDebit > 0) {
+                //         if ($post['cashbank']['position'] == 'credit') {
+                //             $row['debit'] = (float) $isDebit;
+                //             $row['credit'] = 0;
+                //         } else if ($post['cashbank']['position'] == 'debit') {
+                //             $row['debit'] = 0;
+                //             $row['credit'] = (float) $isDebit;
+                //         }
+                //         $balance += (float) $isDebit;
+                //         $newItem[] = $row;
+                //     }
+                // }
+                // $newItem[] = array(
+                //     "id" => $post['cashbank']['id'],
+                //     "accountId" => $post['cashbank']['accountId'],
+                //     "credit" => $post['cashbank']['position'] == 'credit' ? $balance : 0,
+                //     "debit" => $post['cashbank']['position'] == 'debit' ? $balance : 0,
+                //     "description" => "",
+                //     "outletId" => "",
+                // );
+                // $post['items'] = $newItem;
+
+                $totalDebit = 0;
+                $totalCredit = 0;
+                foreach ($post['items'] as $row) { 
+                    $totalDebit += (float)$row['debit'];
+                    $totalCredit += (float)$row['credit']; 
+                    $newItem[] = $row;
                 }
+                $abs = abs($totalDebit - $totalCredit);
                 $newItem[] = array(
                     "id" => $post['cashbank']['id'],
                     "accountId" => $post['cashbank']['accountId'],
-                    "credit" => $post['cashbank']['position'] == 'credit' ? $balance : 0,
-                    "debit" => $post['cashbank']['position'] == 'debit' ? $balance : 0,
-                    "description" => "",
+                    "debit" =>   $totalDebit - $totalCredit < 0 ?  $abs : 0 ,
+                    "credit" =>   $totalCredit - $totalDebit < 0 ? $abs : 0,
+                    "description" => "Cash Bank",
                     "outletId" => "",
                 );
                 $post['items'] = $newItem;
