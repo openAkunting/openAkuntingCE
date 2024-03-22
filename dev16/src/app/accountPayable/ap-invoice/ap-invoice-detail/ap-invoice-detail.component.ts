@@ -24,7 +24,7 @@ export class NewInvoiceDetail {
 export class NewInvoicePayment {
   constructor(
     public amount: string,
-    public paymentDate: any, 
+    public paymentDate: any,
   ) { }
 }
 
@@ -45,7 +45,7 @@ export class ApInvoiceDetailComponent implements OnInit {
   selectSupplier: any = [];
   newInvoiceDetail: any = new NewInvoiceDetail("", "", "");
   newInvoicePayment: any = new NewInvoicePayment("", "");
-  
+
   currencyOptions: any = { prefix: '', thousands: '.', decimal: ',', precision: 0, }
   addRowDetail: boolean = false;
   addRowPayment: boolean = false;
@@ -63,6 +63,13 @@ export class ApInvoiceDetailComponent implements OnInit {
     this.invoiceId = this.activeRouter.snapshot.queryParams['id'];
     this.httpGetInvoice();
     this.httpGet();
+  }
+
+  updateLink(id:string){
+    this.invoiceId = id;
+    this.router.navigate(['ap/invoice/detail'], {queryParams:{id:id}}).then( () => {
+      this.httpGet();
+    })
   }
 
   httpGetInvoice() {
@@ -124,6 +131,8 @@ export class ApInvoiceDetailComponent implements OnInit {
   }
 
   checkBoxAllDetail: boolean = false;
+  checkBoxAllPayment: boolean = false;
+  
   onCheckBoxAllDetail() {
     if (this.checkBoxAllDetail == false) {
       this.checkBoxAllDetail = true;
@@ -149,6 +158,33 @@ export class ApInvoiceDetailComponent implements OnInit {
 
     this.checkBoxAllDetail = false;
   }
+
+  onCheckBoxAllPayment() {
+    if (this.checkBoxAllPayment == false) {
+      this.checkBoxAllPayment = true;
+
+    }
+    else if (this.checkBoxAllPayment == true) {
+      this.checkBoxAllPayment = false;
+    }
+
+    for (let i = 0; i < this.itemPayments.length; i++) {
+      this.itemPayments[i]['checkBox'] = this.checkBoxAllPayment;
+    }
+  }
+
+  onCheckBoxPayment(i: number, item: any) {
+    console.log(i, item);
+    if (item['checkBox'] == true) {
+      this.itemPayments[i]['checkBox'] = '';
+    }
+    else if (item['checkBox'] != true) {
+      this.itemPayments[i]['checkBox'] = true;
+    }
+
+    this.checkBoxAllPayment = false;
+  }
+
 
   onDeleteDetail() {
     const body = {
@@ -195,6 +231,25 @@ export class ApInvoiceDetailComponent implements OnInit {
     }
   }
 
-
+  onInsertNewInvoicePayment() {
+    const body = {
+      data: this.newInvoicePayment,
+      invoiceId: this.invoiceId,
+    }
+    this.http.post<any>(environment.api + "ap/onInsertNewInvoicePayment", body, {
+      headers: this.configService.headers(),
+    }).subscribe(
+      data => {
+        console.log(data);
+        if (data['error'] == false) {
+          this.httpGet();
+        }
+        this.newInvoicePayment.amount = "0";
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
 
 }

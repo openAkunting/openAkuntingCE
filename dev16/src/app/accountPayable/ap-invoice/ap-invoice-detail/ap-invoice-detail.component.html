@@ -1,6 +1,7 @@
 <div class="wrapper border bg-white">
     <div class="sub-sidebar border bg-white">
-        <div *ngFor="let x of items">
+
+        <div *ngFor="let x of items" (click)="updateLink(x.id)" class=" px-2" [ngClass]="{'bg-primary': x.id==invoiceId,'text-white':x.id==invoiceId}">
             {{x.id}}
         </div>
     </div>
@@ -8,7 +9,7 @@
 
     <div style="margin-left: 15.5rem;" class="wrapper-global-height">
 
-        <div class="container-fluid">
+        <div class="container-fluid mb-3">
             <div class="row g-1 py-2">
                 <div class="col-3">
                     <strong>Supplier Invoice</strong>
@@ -50,184 +51,184 @@
                             </tr>
                             <tr>
                                 <td>Outstanding</td>
-                                <td>{{item.amount - item.paid | number }} </td>
+                                <td class="text-danger">{{item.amount - item.paid | number }} </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+            <hr>
+
+            <div class="row">
+                <small>Detail</small>
+                <form (ngSubmit)="onInsertNewInvoiceDetail()" #heroForm="ngForm">
+    
+                    <div class="col-12">
+                        <table class="table table-sm table-bordered table-hover ">
+                            <thead class="sticky-top  style-color-primary">
+                                <tr>
+                                    <th>
+                                        <div class="text-primary" *ngIf="checkBoxAllDetail === true "
+                                            (click)="onCheckBoxAllDetail()"> <i class="bi bi-check-square-fill"></i> </div>
+                                        <div *ngIf="checkBoxAllDetail !== true " (click)="onCheckBoxAllDetail()"> <i
+                                                class="bi bi-square"></i> </div>
+                                    </th>
+                                    <th class="">#</th>
+                                    <th class="">Good received note</th>
+                                    <th class="">Purchase order</th>
+                                    <th class="text-end">Amount </th>
+                                    <th class="">Input date </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let x of itemDetails; let i = index ">
+                                    <td>
+                                        <div class="text-primary" *ngIf="x.checkBox === true "
+                                            (click)="onCheckBoxDetail(i, x)"> <i class="bi bi-check-square-fill"></i> </div>
+                                        <div *ngIf="x.checkBox !== true " (click)="onCheckBoxDetail(i, x)"> <i
+                                                class="bi bi-square"></i> </div>
+                                    </td>
+                                    <td class="">#{{i+1}}</td>
+                                    <td class="">{{x.gnrNo}}</td>
+                                    <td class="">{{x.poNo}}</td>
+                                    <td class="text-end">{{x.amount | number}} </td>
+                                    <td class="">{{x.inputDate}}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot *ngIf="addRowDetail">
+                                <tr>
+                                    <td colspan="6"></td>
+                                </tr>
+                                <tr>
+                                    <td class=""></td>
+                                    <td class=""> </td>
+                                    <td class="">
+                                        <input type="text" class="form-control form-control-sm" placeholder="GRN number"
+                                            [(ngModel)]="newInvoiceDetail.gnrNo" name="gnrNo" #gnrNo="ngModel">
+                                    </td>
+                                    <td class="">
+                                        <input type="text" class="form-control form-control-sm" placeholder="PO number"
+                                            [(ngModel)]="newInvoiceDetail.poNo" name="poNo" #poNo="ngModel">
+                                    </td>
+                                    <td class="text-end">
+                                        <input type="text" class="form-control form-control-sm" currencyMask
+                                            [options]="currencyOptions" required [(ngModel)]="newInvoiceDetail.amount"
+                                            name="amount" #amount="ngModel">
+                                        <small [hidden]="amount.valid || amount.pristine" class="text-danger">
+                                            Amount is required
+                                        </small>
+                                    </td>
+    
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+    
+                    <div class="text-end me-2">
+                        <button type="button" class="btn btn-sm btn-outline-danger mx-1" (click)="onDeleteDetail()"><i
+                                class="bi bi-trash3"></i></button>
+    
+                        <button type="submit" *ngIf="addRowDetail" class="btn btn-sm btn-primary mx-1"
+                            [disabled]="!heroForm.form.valid">Submit</button>
+                        <button type="submit" *ngIf="addRowDetail" class="btn btn-sm btn-dark mx-1"
+                            (click)="addRowDetail=false">Finish</button>
+    
+                        <button type="button" *ngIf="!addRowDetail" (click)="addRowDetail=true"
+                            class="btn btn-sm btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+    
+            <hr>
+    
+            <div class="row">
+                <small>Payment</small>
+                <form (ngSubmit)="onInsertNewInvoicePayment()" #heroForm2="ngForm">
+    
+                    <div class="col-12">
+                        <table class="table table-sm table-bordered table-hover ">
+                            <thead class="sticky-top  style-color-primary">
+                                <tr>
+                                    <th>
+                                        <div class="text-primary" *ngIf="checkBoxAllPayment === true "
+                                            (click)="onCheckBoxAllPayment()"> <i class="bi bi-check-square-fill"></i> </div>
+                                        <div *ngIf="checkBoxAllPayment !== true " (click)="onCheckBoxAllPayment()"> <i
+                                                class="bi bi-square"></i> </div>
+                                    </th>
+                                    <th class="">#</th>
+                                    <th class="">Payment Id</th>
+                                    <th class="">Payment date</th>
+                                    <th class="text-end">Amount </th>
+                                    <th class="">Input date </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let x of itemPayments; let i = index ">
+                                    <td>
+                                        <div class="text-primary" *ngIf="x.checkBox === true "
+                                            (click)="onCheckBoxPayment(i, x)"> <i class="bi bi-check-square-fill"></i> </div>
+                                        <div *ngIf="x.checkBox !== true " (click)="onCheckBoxPayment(i, x)"> <i
+                                                class="bi bi-square"></i> </div>
+                                    </td>
+                                    <td class="">{{i+1}}</td>
+                                    <td class="">{{x.id}}</td>
+                                    <td class="">{{x.paymentDate}}</td>
+                                    <td class="text-end">{{x.amount | number}} </td>
+    
+                                    <td class="">{{x.inputDate}}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot *ngIf="addRowPayment">
+                                <tr>
+                                    <td colspan="6"></td>
+                                </tr>
+                                <tr>
+                                    <td class=""></td>
+                                    <td class=""></td>
+                                    <td class=""></td>
+                                    <td class="">
+    
+    
+                                        <div class="input-group">
+                                            <input class="form-control form-control-sm" required placeholder="Payment Date"
+                                                name="dp" [(ngModel)]="newInvoicePayment.paymentDate" ngbDatepicker
+                                                #d12="ngbDatepicker" style="width: 100px;" />
+                                            <button class="btn btn-sm btn-outline-secondary bi bi-calendar3"
+                                                (click)="d12.toggle()" type="button"></button>
+                                        </div>
+                                    </td>
+    
+                                    <td class="text-end">
+                                        <input type="text" class="form-control form-control-sm" currencyMask
+                                            [options]="currencyOptions" required [(ngModel)]="newInvoicePayment.amount"
+                                            name="amount" #amount="ngModel">
+                                        <small [hidden]="amount.valid || amount.pristine" class="text-danger">
+                                            Amount is required
+                                        </small>
+                                    </td>
+    
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+    
+                    <div class="text-end me-2">
+                        <button type="button" class="btn btn-sm btn-outline-danger mx-1" (click)="onDeletePayment()"><i
+                                class="bi bi-trash3"></i></button>
+    
+                        <button type="submit" *ngIf="addRowPayment" class="btn btn-sm btn-primary mx-1"
+                            [disabled]="!heroForm2.form.valid">Submit</button>
+                        <button type="submit" *ngIf="addRowPayment" class="btn btn-sm btn-dark mx-1"
+                            (click)="addRowPayment=false">Finish</button>
+    
+                        <button type="button" *ngIf="!addRowPayment" (click)="addRowPayment=true"
+                            class="btn btn-sm btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
         </div>
 
-
-        <hr>
-
-
-        <div class="row">
-            <small>Detail</small>
-            <form (ngSubmit)="onInsertNewInvoiceDetail()" #heroForm="ngForm">
-
-                <div class="col-12">
-                    <table class="table table-sm table-bordered table-hover ">
-                        <thead class="sticky-top  style-color-primary">
-                            <tr>
-                                <th>
-                                    <div class="text-primary" *ngIf="checkBoxAllDetail === true "
-                                        (click)="onCheckBoxAllDetail()"> <i class="bi bi-check-square-fill"></i> </div>
-                                    <div *ngIf="checkBoxAllDetail !== true " (click)="onCheckBoxAllDetail()"> <i
-                                            class="bi bi-square"></i> </div>
-                                </th>
-                                <th class="">#</th>
-                                <th class="">Good received note</th>
-                                <th class="">Purchase order</th>
-                                <th class="text-end">Amount </th>
-                                <th class="">Input date </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let x of itemDetails; let i = index ">
-                                <td>
-                                    <div class="text-primary" *ngIf="x.checkBox === true "
-                                        (click)="onCheckBoxDetail(i, x)"> <i class="bi bi-check-square-fill"></i> </div>
-                                    <div *ngIf="x.checkBox !== true " (click)="onCheckBoxDetail(i, x)"> <i
-                                            class="bi bi-square"></i> </div>
-                                </td>
-                                <td class="">#{{i+1}}</td>
-                                <td class="">{{x.gnrNo}}</td>
-                                <td class="">{{x.poNo}}</td>
-                                <td class="text-end">{{x.amount | number}} </td>
-                                <td class="">{{x.inputDate}}</td>
-                            </tr>
-                        </tbody>
-                        <tfoot *ngIf="addRowDetail">
-                            <tr>
-                                <td colspan="6"></td>
-                            </tr>
-                            <tr>
-                                <td class=""></td>
-                                <td class=""> </td>
-                                <td class="">
-                                    <input type="text" class="form-control form-control-sm" placeholder="GRN number"
-                                        [(ngModel)]="newInvoiceDetail.gnrNo" name="gnrNo" #gnrNo="ngModel">
-                                </td>
-                                <td class="">
-                                    <input type="text" class="form-control form-control-sm" placeholder="PO number"
-                                        [(ngModel)]="newInvoiceDetail.poNo" name="poNo" #poNo="ngModel">
-                                </td>
-                                <td class="text-end">
-                                    <input type="text" class="form-control form-control-sm" currencyMask
-                                        [options]="currencyOptions" required [(ngModel)]="newInvoiceDetail.amount"
-                                        name="amount" #amount="ngModel">
-                                    <small [hidden]="amount.valid || amount.pristine" class="text-danger">
-                                        Amount is required
-                                    </small>
-                                </td>
-
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-
-                <div class="text-end me-2">
-                    <button type="button" class="btn btn-sm btn-outline-danger mx-1" (click)="onDeleteDetail()"><i
-                            class="bi bi-trash3"></i></button>
-
-                    <button type="submit" *ngIf="addRowDetail" class="btn btn-sm btn-primary mx-1"
-                        [disabled]="!heroForm.form.valid">Submit</button>
-                    <button type="submit" *ngIf="addRowDetail" class="btn btn-sm btn-dark mx-1"
-                        (click)="addRowDetail=false">Finish</button>
-
-                    <button type="button" *ngIf="!addRowDetail" (click)="addRowDetail=true"
-                        class="btn btn-sm btn-primary">Add</button>
-                </div>
-            </form>
-        </div>
-
-        <hr>
-        <div class="row">
-            <small>Payment</small>
-            <form (ngSubmit)="onInsertNewInvoiceDetail()" #heroForm="ngForm">
-
-                <div class="col-12">
-                    <table class="table table-sm table-bordered table-hover ">
-                        <thead class="sticky-top  style-color-primary">
-                            <tr>
-                                <th>
-                                    <div class="text-primary" *ngIf="checkBoxAllDetail === true "
-                                        (click)="onCheckBoxAllDetail()"> <i class="bi bi-check-square-fill"></i> </div>
-                                    <div *ngIf="checkBoxAllDetail !== true " (click)="onCheckBoxAllDetail()"> <i
-                                            class="bi bi-square"></i> </div>
-                                </th>
-                                <th class="">#</th>
-                                <th class="">Payment Id</th>
-                                <th class="">Payment date</th>
-                                <th class="text-end">Amount </th>
-                                <th class="">Input date </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let x of itemPayments; let i = index ">
-                                <td>
-                                    <div class="text-primary" *ngIf="x.checkBox === true "
-                                        (click)="onCheckBoxDetail(i, x)"> <i class="bi bi-check-square-fill"></i> </div>
-                                    <div *ngIf="x.checkBox !== true " (click)="onCheckBoxDetail(i, x)"> <i
-                                            class="bi bi-square"></i> </div>
-                                </td>
-                                <td class="">{{i+1}}</td>
-                                <td class="">{{x.id}}</td>
-                                <td class="">{{x.paymentDate}}</td>
-                                <td class="text-end">{{x.amount | number}} </td>
-
-                                <td class="">{{x.inputDate}}</td>
-                            </tr>
-                        </tbody>
-                        <tfoot *ngIf="addRowPayment">
-                            <tr>
-                                <td colspan="6"></td>
-                            </tr>
-                            <tr>
-                                <td class=""></td>
-                                <td class=""></td>
-                                <td class=""></td>
-                                <td class="">
-                                  
-
-                                    <div class="input-group">
-                                        <input class="form-control form-control-sm" required placeholder="Payment Date"
-                                            name="dp" [(ngModel)]="newInvoicePayment.paymentDate" ngbDatepicker #d12="ngbDatepicker"
-                                            style="width: 100px;" />
-                                        <button class="btn btn-sm btn-outline-secondary bi bi-calendar3"
-                                            (click)="d12.toggle()" type="button"></button>
-                                    </div>
-                                </td>
-
-                                <td class="text-end">
-                                    <input type="text" class="form-control form-control-sm" currencyMask
-                                        [options]="currencyOptions" required [(ngModel)]="newInvoicePayment.amount"
-                                        name="amount" #amount="ngModel">
-                                    <small [hidden]="amount.valid || amount.pristine" class="text-danger">
-                                        Amount is required
-                                    </small>
-                                </td>
-
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-
-                <div class="text-end me-2">
-                    <button type="button" class="btn btn-sm btn-outline-danger mx-1" (click)="onDeletePayment()"><i
-                            class="bi bi-trash3"></i></button>
-
-                    <button type="submit" *ngIf="addRowPayment" class="btn btn-sm btn-primary mx-1"
-                        [disabled]="!heroForm.form.valid">Submit</button>
-                    <button type="submit" *ngIf="addRowPayment" class="btn btn-sm btn-dark mx-1"
-                        (click)="addRowPayment=false">Finish</button>
-
-                    <button type="button" *ngIf="!addRowPayment" (click)="addRowPayment=true"
-                        class="btn btn-sm btn-primary">Add</button>
-                </div>
-            </form>
-        </div>
+       
 
 
     </div>

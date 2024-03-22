@@ -18,12 +18,12 @@ class Ap extends BaseController
         $tblJournal = $this->prefix . 'journal';
 
 
-       /* $startDate = $this->request->getVar()['startDate'];
-        $endDate = $this->request->getVar()['endDate'];
+        /* $startDate = $this->request->getVar()['startDate'];
+         $endDate = $this->request->getVar()['endDate'];
 
-        $rangeDate = model("Core")->rangeDate($startDate, $endDate);
-        $date = " AND (h.journalDate >= '$startDate' AND  h.journalDate <= '$endDate' )";
-*/
+         $rangeDate = model("Core")->rangeDate($startDate, $endDate);
+         $date = " AND (h.journalDate >= '$startDate' AND  h.journalDate <= '$endDate' )";
+ */
         $rest = [];
         $q = "SELECT * FROM ap_invoice WHERE presence = 1  order by id DESC ";
         $items = $this->db->query($q)->getResultArray();
@@ -108,7 +108,7 @@ class Ap extends BaseController
 
         $q2 = "SELECT * FROM supplier WHERE presence = 1     order by id DESC ";
         $selectSupplier = $this->db->query($q2)->getResultArray();
-   
+
         $q5 = "SELECT * , '' as 'checkBox' FROM ap_invoice_payment 
         WHERE presence = 1 AND invoiceId =  '$invoiceId' order by id DESC ";
         $itemPayment = $this->db->query($q5)->getResultArray();
@@ -119,7 +119,7 @@ class Ap extends BaseController
             "item" => $items,
             "itemDetails" => $detail,
             "itemPayments" => $itemPayment,
-            
+
             "selectSupplier" => $selectSupplier,
         ];
         return $this->response->setJSON($data);
@@ -148,6 +148,7 @@ class Ap extends BaseController
                 "inputDate" => date("Y-m-d H:i:s"),
                 "inputBy" => model("Token")->userId(),
             ]);
+            self::updateInvoiceAmount($post['invoiceId']);
             $data = [
                 "error" => false,
                 "code" => 200
@@ -157,6 +158,7 @@ class Ap extends BaseController
 
         return $this->response->setJSON($data);
     }
+
     public function onDeleteDetail()
     {
         $json = file_get_contents('php://input');
@@ -166,7 +168,7 @@ class Ap extends BaseController
             "code" => 400
         ];
         if ($post) {
-             $this->db->transStart();
+            $this->db->transStart();
             foreach ($post['data'] as $row) {
                 if ($row['checkBox'] == 'true') {
                     $this->db->table($this->prefix . "ap_invoice_detail")->update([
@@ -177,13 +179,7 @@ class Ap extends BaseController
                 }
             }
             $invoiceId = $post['invoiceId'];
-            $totalAmount = model("Core")->select("sum(amount)", "ap_invoice_detail", "presence = 1 and invoiceId = '$invoiceId' ");
-
-            $this->db->table($this->prefix . "ap_invoice")->update([
-                "amount" => $totalAmount,
-                "updateDate" => date("Y-m-d H:i:s"),
-                "updateBy" => model("Token")->userId(),
-            ], " id = '" . $invoiceId . "' ");
+            self::updateInvoiceAmount($invoiceId);
 
             if ($this->db->transStatus() != false) {
                 $this->db->transComplete();
@@ -200,4 +196,94 @@ class Ap extends BaseController
 
         return $this->response->setJSON($data);
     }
+
+    public function onInsertNewInvoicePayment()
+    {
+        $json = file_get_contents('php://input');
+        $post = json_decode($json, true);
+        $data = [
+            "error" => true,
+            "code" => 400
+        ];
+        if ($post) {
+            $id = model("Core")->number("ap_invoice_payment");
+            $this->db->table($this->prefix . "ap_invoice_payment")->insert([
+                'id' => $post['invoiceId'] . '-' . $id,
+                "invoiceId" => $post['invoiceId'],
+                /// "dueDate" => $post['data']['dueDate']['year'] . "-" . $post['data']['dueDate']['month'] . "-" . $post['data']['dueDate']['day'],
+                "paymentDate" => $post['data']['paymentDate']['year'] . "-" . $post['data']['paymentDate']['month'] . "-" . $post['data']['paymentDate']['day'],
+
+                "amount" => $post['data']['amount'] < 0 ? $post['data']['amount'] * -1 : $post['data']['amount'],
+
+                "presence" => 1,
+                "updateDate" => date("Y-m-d H:i:s"),
+                "updateBy" => model("Token")->userId(),
+                "inputDate" => date("Y-m-d H:i:s"),
+                "inputBy" => model("Token")->userId(),
+            ]);
+
+            self::updateInvoiceAmount($post['invoiceId']);
+
+            $data = [
+                "error" => false,
+                "code" => 200
+            ];
+
+        }
+
+        return $this->response->setJSON($data);
+    }
+    public function onDeletePayment()
+    {
+        $json = file_get_contents('php://input');
+        $post = json_decode($json, true);
+        $data = [
+            "error" => true,
+            "code" => 400
+        ];
+        if ($post) {
+            $this->db->transStart();
+            foreach ($post['data'] as $row) {
+                if ($row['checkBox'] == 'true') {
+                    $this->db->table($this->prefix . "ap_invoice_payment")->update([
+                        "presence" => 0,
+                        "updateDate" => date("Y-m-d H:i:s"),
+                        "updateBy" => model("Token")->userId(),
+                    ], " id = '" . $row['id'] . "' ");
+                }
+            }
+            $invoiceId = $post['invoiceId'];
+            self::updateInvoiceAmount($invoiceId);
+
+            if ($this->db->transStatus() != false) {
+                $this->db->transComplete();
+            } else {
+                $this->db->transRollback();
+            }
+            $data = [
+                "error" => false,
+                "code" => 200,
+                "transaction" => $this->db->transStatus() === false ? false : true,
+            ];
+
+        }
+
+        return $this->response->setJSON($data);
+    }
+    private function updateInvoiceAmount($id = "")
+    {
+        $totalAmount = model("Core")->select("sum(amount)", "ap_invoice_detail", "presence = 1 and invoiceId = '$id' ");
+        $totalPaid = model("Core")->select("sum(amount)", "ap_invoice_payment", "presence = 1 and invoiceId = '$id' ");
+
+        $this->db->table($this->prefix . "ap_invoice")->update([
+            "amount" => $totalAmount,
+            "paid" => $totalPaid,
+            "updateDate" => date("Y-m-d H:i:s"),
+            "updateBy" => model("Token")->userId(),
+        ], " id = '" . $id . "' ");
+
+        return true;
+    }
 }
+
+

@@ -30,6 +30,7 @@ small {
 
 .wrapper-global-height{
   height: calc(100vh - 40px);
+  overflow-y: scroll;
 }
 
 .wrapper .sub-sidebar {
@@ -37,7 +38,7 @@ small {
   left: 0px;
   top: 0px;
   width: 15rem;
-  height: calc(100vh - 44px);
+  height: calc(100vh - 40px);
   overflow-y: scroll;
 }
 .main {
