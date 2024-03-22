@@ -20,6 +20,9 @@ export class HomeLeftSidebarComponent implements OnInit {
   public isMasterData = true;
   public isGeneralLedger = true;
   public isReport = true;
+  public isAP = true;
+  public isAR = true;
+  public isFixedAsset = true;
   
   constructor( 
     private router: Router,

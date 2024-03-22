@@ -1,0 +1,154 @@
+<div class="wrapper border bg-white">
+    <div class="container-fluid">
+        <div class="row g-1 py-2">
+            <div class="col-3">
+                <strong>Supplier Invoice</strong>
+            </div>
+            <div class="col-9 text-end">
+                <div class="d-flex justify-content-end">
+                    <div class="align-self-center ">Start : </div>
+                    <div class="me-1">
+                        <div class="input-group">
+                            <input class="form-control form-control-sm" placeholder="Start Date" name="dp"
+                                [(ngModel)]="range.startDate" (dateSelect)="onCheckRange();" ngbDatepicker
+                                #d1="ngbDatepicker" style="width: 100px;" />
+                            <button class="btn btn-sm btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()"
+                                type="button"></button>
+                        </div>
+                    </div>
+
+                    <div class="align-self-center ">- End : </div>
+                    <div class="me-1">
+                        <div class="input-group">
+                            <input class="form-control form-control-sm" placeholder="End Date" name="dp"
+                                [(ngModel)]="range.endDate" ngbDatepicker (dateSelect)="onCheckRange();"
+                                [minDate]="range.startDate" #d2="ngbDatepicker" style="width: 100px;" />
+                            <button class="btn btn-sm btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()"
+                                type="button"></button>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-dark" (click)="filterDate();">Filter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <form (ngSubmit)="onInsertNewInvoice()" #heroForm="ngForm">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Supplier : </td>
+                                <td>
+                                    <select class="form-control form-control-sm" required
+                                        [(ngModel)]="newInvoice.supplierId" name="supplierId" #supplierId="ngModel">
+                                        <option [value]="x.id" *ngFor="let x of selectSupplier">{{x.id+' '+x.name}}
+                                        </option>
+                                    </select>
+                                    <small [hidden]="supplierId.valid || supplierId.pristine" class="text-danger">
+                                        Supplier Id is required
+                                    </small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Invoice date : </td>
+                                <td>
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm" required placeholder="Invoice date"
+                                            name="dp" [(ngModel)]="newInvoice.invoiceDate" ngbDatepicker
+                                            #d11="ngbDatepicker" style="width: 100px;" />
+                                        <button class="btn btn-sm btn-outline-secondary bi bi-calendar3"
+                                            (click)="d11.toggle()" type="button"></button>
+                                    </div>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Due : </td>
+                                <td>
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm" required placeholder="Due Date"
+                                            name="dp" [(ngModel)]="newInvoice.due" ngbDatepicker #d12="ngbDatepicker"
+                                            style="width: 100px;" />
+                                        <button class="btn btn-sm btn-outline-secondary bi bi-calendar3"
+                                            (click)="d12.toggle()" type="button"></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Good Recieved Note : </td>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm text-end" name="gnrNo" #gnrNo="ngModel"
+                                        [(ngModel)]="newInvoice.gnrNo" placeholder="Number/Id">
+                                     
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Purchased Order : </td>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm text-end" name="poNo" #poNo="ngModel"
+                                    [(ngModel)]="newInvoice.poNo" placeholder="Number/Id">
+                                 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Amount : </td>
+                                <td>
+                                    <input type="text" currencyMask [options]="currencyOptions" required
+                                        class="form-control form-control-sm text-end" name="amount" #amount="ngModel"
+                                        [(ngModel)]="newInvoice.amount">
+                                    <small [hidden]="amount.valid || amount.pristine" class="text-danger">
+                                        Amount  is required
+                                    </small>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="2">
+                                    <button type="submit" class="btn btn-success"  [disabled]="!heroForm.form.valid">Submit</button>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </form>
+               
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-sm table-bordered table-hover ">
+                <thead class="sticky-top  style-color-primary">
+                    <tr>
+                        <th class="">Invoice Id</th>
+                        <th class="">Supplier</th>
+                        <th class="">Invoice date</th>
+                        <th class="">Due </th>
+                        <th class="text-end">Amount </th>
+                        <th class="text-end">Paid </th>
+                        <th class="text-end">Outstanding </th>
+                        
+                        <th class="">Status </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let x of items" (click)="detail(x);">
+                        <td>{{x.id}}</td>
+                        <td>{{x.supplierId}}</td>
+                        <td>{{x.invoiceDate}}</td>
+                        <td>{{x.dueDate}}</td>
+                        <td class="text-end">{{x.amount | number}}</td>
+                        <td class="text-end">0</td>
+                        <td class="text-end">{{ x.paid  - x.amount | number}}</td>
+                       
+                        <td>{{x.statusId}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

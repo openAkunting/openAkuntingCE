@@ -14,6 +14,7 @@ small {
 .wrapper {
   background-color: var(--bs-white);
   border: 1px solid var(--bs-gray-500);
+  position: relative;
 }
 
 .content-body {
@@ -27,6 +28,18 @@ small {
   width: 15rem;
 }
 
+.wrapper-global-height{
+  height: calc(100vh - 40px);
+}
+
+.wrapper .sub-sidebar {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 15rem;
+  height: calc(100vh - 44px);
+  overflow-y: scroll;
+}
 .main {
   margin-left: 15rem;
 }

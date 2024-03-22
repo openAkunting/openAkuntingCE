@@ -40,6 +40,9 @@ import { HomeLeftSidebarComponent } from './home/home-left-sidebar/home-left-sid
 import { FinancialStatementsComponent } from './report/financial-statements/financial-statements.component';
 import { TestComponent } from './test/test.component'; 
 import { Select2Module } from 'ng-select2-component';
+import { ApInvoiceComponent } from './accountPayable/ap-invoice/ap-invoice.component';
+import { ApInvoiceDetailComponent } from './accountPayable/ap-invoice/ap-invoice-detail/ap-invoice-detail.component';
+import { ApPaymentComponent } from './accountPayable/ap-payment/ap-payment.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +65,7 @@ import { Select2Module } from 'ng-select2-component';
     JournalCreateComponent,  JournalDetailComponent, 
     JournalListReportComponent, ProfitAndLossReportComponent, BalanceSheetReportComponent, 
     AccountImportComponent, LedgerComponent, TrailBalanceComponent, TrailBalanceDetailComponent, 
-    JournalByAccountComponent, OutletAccountComponent, HomeTabsComponent, HomeLeftSidebarComponent, FinancialStatementsComponent, TestComponent, 
+    JournalByAccountComponent, OutletAccountComponent, HomeTabsComponent, HomeLeftSidebarComponent, FinancialStatementsComponent, TestComponent, ApInvoiceComponent, ApInvoiceDetailComponent, ApPaymentComponent, 
   ],
   imports: [
     BrowserModule,

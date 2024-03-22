@@ -112,7 +112,48 @@
     </div>
 </div>
 <hr>
+<div class="a-menu p-1">
+    <div class="a-menu-header" (click)="collapse3.toggle()" [attr.aria-expanded]="!isAP">
+        <strong>Account Payable</strong>
+    </div>
+    <div #collapse3="ngbCollapse" [(ngbCollapse)]="isAP">
+        <ul>
+            <li> <a [ngClass]="{'active': active == 'ap/invoice'}" [routerLink]="[ '/ap/invoice' ]">
+                    <span class="a-menu-icon">
+                        <i class="bi bi-people"></i>
+                    </span>
+                    <span class="a-menu-title"> Invoice</span></a>
+            </li>
 
+            <li> <a [ngClass]="{'active': active == 'ap/payment'}" [routerLink]="[ '/ap/payment' ]">
+                    <span class="a-menu-icon">
+                        <i class="bi bi-people"></i>
+                    </span>
+                    <span class="a-menu-title"> Payment</span></a>
+            </li>
+
+        </ul>
+    </div>
+</div>
+<hr>
+<div class="a-menu p-1">
+    <div class="a-menu-header" (click)="collapse4.toggle()" [attr.aria-expanded]="!isAR">
+        <strong>Account Receivable</strong>
+    </div>
+    <div #collapse4="ngbCollapse" [(ngbCollapse)]="isAR">
+        <small>On Progress</small>
+    </div>
+</div>
+<hr>
+<div class="a-menu p-1">
+    <div class="a-menu-header" (click)="collapse5.toggle()" [attr.aria-expanded]="!isFixedAsset">
+        <strong>Fixed Assets</strong>
+    </div>
+    <div #collapse5="ngbCollapse" [(ngbCollapse)]="isFixedAsset">
+        <small>On Progress</small>
+    </div>
+</div>
+<hr>
 
 <div class="a-menu p-1">
     <div class="a-menu-header" (click)="collapse3.toggle()" [attr.aria-expanded]="!isReport">
@@ -149,6 +190,8 @@
     </div>
 </div>
 <hr>
+
+
 <div class="a-menu p-3 mb-3">
     <div class="d-grid">
         <button type="button" class="btn btn-dark btn-sm" (click)="logout()">Logout</button>
