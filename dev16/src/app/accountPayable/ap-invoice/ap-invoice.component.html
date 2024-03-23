@@ -142,8 +142,8 @@
                         <td>{{x.invoiceDate}}</td>
                         <td>{{x.dueDate}}</td>
                         <td class="text-end">{{x.amount | number}}</td>
-                        <td class="text-end">0</td>
-                        <td class="text-end">{{ x.paid  - x.amount | number}}</td>
+                        <td class="text-end">{{x.paid | number}}</td>
+                        <td class="text-end text-danger">{{ x.paid  - x.amount | number}}</td>
                        
                         <td>{{x.statusId}}</td>
                     </tr>

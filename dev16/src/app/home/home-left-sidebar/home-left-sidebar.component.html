@@ -156,10 +156,10 @@
 <hr>
 
 <div class="a-menu p-1">
-    <div class="a-menu-header" (click)="collapse3.toggle()" [attr.aria-expanded]="!isReport">
+    <div class="a-menu-header" (click)="collapse99.toggle()" [attr.aria-expanded]="!isReport">
         <strong>Report</strong>
     </div>
-    <div #collapse3="ngbCollapse" [(ngbCollapse)]="isReport">
+    <div #collapse99="ngbCollapse" [(ngbCollapse)]="isReport">
         <ul>
             <li> <a [ngClass]="{'active': active == 'report/journalList'}" [routerLink]="[ '/report/journalList' ]"
                     [queryParams]="{startDate: startDate, endDate:endDate}">

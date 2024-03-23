@@ -49,7 +49,7 @@ export class ApInvoiceDetailComponent implements OnInit {
   currencyOptions: any = { prefix: '', thousands: '.', decimal: ',', precision: 0, }
   addRowDetail: boolean = false;
   addRowPayment: boolean = false;
-
+  tabs : string = '';
   constructor(
     private http: HttpClient,
     private configService: ConfigService,

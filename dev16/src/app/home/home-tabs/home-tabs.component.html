@@ -1,9 +1,9 @@
 <div class="container-fluid position-fixed  header-tab-main bg-light">
     <div class="default-tab  ">
         <ul class="nav nav-tabs">
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <span class="nav-link" [ngClass]="{'active': active == '' }" ><a [routerLink]="[ '/', ]">Home</a></span>
-            </li> 
+            </li>  -->
             <li class="nav-item" *ngFor="let item of tabHistory">
                 <span class="nav-link " [ngClass]="{'active': active == item.active }">
                     <a href="javascript:;" (click)="navigate(item)" >{{item.name}}</a>  

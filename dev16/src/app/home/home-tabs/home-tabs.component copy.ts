@@ -3,9 +3,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TabsService } from 'src/app/service/tabs.service';
 import { Router, NavigationError, ActivationStart, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { ConfigService } from 'src/app/service/config.service';
 
 @Component({
   selector: 'app-home-tabs',
@@ -20,10 +17,7 @@ export class HomeTabsComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private modalService: NgbModal,
-    private tabs: TabsService, 
-    private http: HttpClient,
-    
-    private configService: ConfigService,
+    private tabs: TabsService
   ) {
 
     this.routerEventsSubscription = this.router.events.subscribe(event => {
@@ -36,24 +30,24 @@ export class HomeTabsComponent implements OnInit, OnDestroy {
       }
       else if (event instanceof NavigationEnd) {
         // Handling NavigationEnd event
-        console.log(event); 
-        // let str = event.url;
-        // if (str.charAt(0) === '/') {
-        //   // Menghapus karakter '/' di awal string
-        //   str = str.substring(1); 
-        // } 
-        // // Mencari posisi pertama tanda tanya untuk memotong string
-        // const index = str.indexOf('?'); 
-        // // Jika tanda tanya ditemukan, maka kita memotong string dari awal hingga sebelum tanda tanya
-        // const result = index !== -1 ? str.split('?')[0] : str;
-       
-        // this.active = result;
 
-        // //console.log('Navigasi selesai - NavigationEnd:', event.url);
-        // if (event.url != '') {
-        //   this.tabs.addTabs(event.url);
-        //   this.tabHistory = this.tabs.getTabs();
-        // }
+        let str = event.url;
+        if (str.charAt(0) === '/') {
+          // Menghapus karakter '/' di awal string
+          str = str.substring(1); 
+        } 
+        // Mencari posisi pertama tanda tanya untuk memotong string
+        const index = str.indexOf('?'); 
+        // Jika tanda tanya ditemukan, maka kita memotong string dari awal hingga sebelum tanda tanya
+        const result = index !== -1 ? str.split('?')[0] : str;
+       
+        this.active = result;
+
+        //console.log('Navigasi selesai - NavigationEnd:', event.url);
+        if (event.url != '') {
+          this.tabs.addTabs(event.url);
+          this.tabHistory = this.tabs.getTabs();
+        }
       }
       else if (event instanceof NavigationError) {
         // Handling NavigationError event
@@ -61,7 +55,6 @@ export class HomeTabsComponent implements OnInit, OnDestroy {
       }
     });
   }
-
   ngOnDestroy(): void {
     // Menghentikan langganan ketika komponen dihancurkan
     this.routerEventsSubscription.unsubscribe();
@@ -70,22 +63,9 @@ export class HomeTabsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.modalService.dismissAll();
-   // this.tabHistory = this.tabs.getTabs();
+    this.tabHistory = this.tabs.getTabs();
     //console.log(this.tabs.getTabs()); 
-    this.httpGet();
   }
-
-  httpGet(){
-    this.http.get<any>(environment.api+"user/getTabs",{
-      headers:this.configService.headers()
-    }).subscribe(
-      data=>{
-         this.tabHistory = data['items'];
-        console.log(data);
-      }
-    );
-  }
-
 
   addTab(path: string) {
     this.tabs.addTabs(path);

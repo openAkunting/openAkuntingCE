@@ -3,6 +3,8 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfigService } from 'src/app/service/config.service';
 import { filter } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home-left-sidebar',
@@ -27,7 +29,8 @@ export class HomeLeftSidebarComponent implements OnInit {
   constructor( 
     private router: Router,
     private configService: ConfigService,
-    private modalService: NgbModal,
+    private modalService: NgbModal, 
+    private http: HttpClient,
   ) { 
     
   }
@@ -37,10 +40,21 @@ export class HomeLeftSidebarComponent implements OnInit {
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       // Mengakses data yang didefinisikan dalam rute saat ini setiap kali rute berubah
-      this.activeRouteData = this.router.routerState.root.firstChild;
-      console.log(this.activeRouteData.data['_value']); // Output: { active: "home" }
+      this.activeRouteData = this.router.routerState.root.firstChild; 
       this.active = this.activeRouteData.data['_value']['active'];
+      this.tabsSave(this.activeRouteData.data['_value']);
     });
+  }
+
+  tabsSave(data : any){
+    console.log(data);
+    this.http.post<any>(environment.api+"user/tabs",data,{
+      headers: this.configService.headers(),
+    }).subscribe(
+      data=>{
+        console.log(data);
+      }
+    )
   }
   logout() {
     console.log("logout");

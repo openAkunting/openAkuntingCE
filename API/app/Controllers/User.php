@@ -29,6 +29,53 @@ class User extends BaseController
         return $this->response->setJSON($data);
     }
 
+    public function tabs()
+    {
+        $json = file_get_contents('php://input');
+        $post = json_decode($json, true);
+        $data = [
+            "error" => true,
+            "code" => 400
+        ];
+        if ($post) {
+            $jti = model("Token")->checkValidToken();
+            if ($post['tabs'] == true && model("Core")->select("count(id)","user_tabs","jti = '$jti'") < 6) { 
+                
+                $this->db->table($this->prefix . "user_tabs")->insert([
+                    "jti" => $jti,
+                    "name" => $post['name'],
+                    "active" => $post['active'],
+                    "role" => $post['role'],
+                    "note" => json_encode($post),
+                    "inputDate" => date("Y-m-d H:i:s"),
+                ]);
+
+            }
+            $data = [
+                "error" => false,
+                "code" => 200
+            ];
+        }
+
+        return $this->response->setJSON($data);
+    }
+ 
+    public function getTabs()
+    {
+        $jti = model("Token")->checkValidToken();
+        $user = "SELECT  *
+        FROM  " . $this->prefix . "user_tabs  
+        WHERE  jti = '$jti'
+        ORDER BY sorting ASC"; 
+
+        $data = [
+            "error" => false,
+            "items" => $this->db->query($user)->getResult(),  
+        ];
+        return $this->response->setJSON($data);
+    }
+
+
     public function detail()
     {
         $id = $this->request->getVar()['id'];
@@ -161,7 +208,7 @@ class User extends BaseController
             $user = "SELECT  * FROM  " . $this->prefix . "module ";
 
             foreach ($this->db->query($user)->getResultArray() as $row) {
-                if (!model("Core")->select("id", "user_role_access", "moduleId = '" . $row['id'] . "' and userRulesId = '$userRulesId' ")) { 
+                if (!model("Core")->select("id", "user_role_access", "moduleId = '" . $row['id'] . "' and userRulesId = '$userRulesId' ")) {
                     $this->db->table($this->prefix . "user_role_access")->insert([
                         "userRulesId" => $userRulesId,
                         "moduleId" => $row['id'],
