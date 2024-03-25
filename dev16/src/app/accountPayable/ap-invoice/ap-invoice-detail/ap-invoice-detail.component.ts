@@ -73,12 +73,11 @@ export class ApInvoiceDetailComponent implements OnInit {
   }
 
   httpGetInvoice() {
-    this.http.get<any>(environment.api + "ap/index", {
+    this.http.get<any>(environment.api + "ApInvoice/index", {
       headers: this.configService.headers(),
     }).subscribe(
       data => {
-        this.items = data['items'];
-
+        this.items = data['items']; 
         console.log(data);
       },
       error => {
@@ -87,7 +86,7 @@ export class ApInvoiceDetailComponent implements OnInit {
     )
   }
   httpGet() {
-    this.http.get<any>(environment.api + "ap/detail", {
+    this.http.get<any>(environment.api + "ApInvoice/detail", {
       headers: this.configService.headers(),
       params: {
         invoiceId: this.invoiceId,
@@ -114,7 +113,7 @@ export class ApInvoiceDetailComponent implements OnInit {
       data: this.newInvoiceDetail,
       invoiceId: this.invoiceId,
     }
-    this.http.post<any>(environment.api + "ap/onInsertNewInvoiceDetail", body, {
+    this.http.post<any>(environment.api + "ApInvoice/onInsertNewInvoiceDetail", body, {
       headers: this.configService.headers(),
     }).subscribe(
       data => {
@@ -193,7 +192,7 @@ export class ApInvoiceDetailComponent implements OnInit {
     }
     if (confirm("Delete checkbox item detail ? ")) {
 
-      this.http.post<any>(environment.api + "ap/onDeleteDetail", body, {
+      this.http.post<any>(environment.api + "ApInvoice/onDeleteDetail", body, {
         headers: this.configService.headers(),
       }).subscribe(
         data => {
@@ -215,7 +214,7 @@ export class ApInvoiceDetailComponent implements OnInit {
     }
     if (confirm("Delete checkbox item detail ? ")) {
 
-      this.http.post<any>(environment.api + "ap/onDeletePayment", body, {
+      this.http.post<any>(environment.api + "ApInvoice/onDeletePayment", body, {
         headers: this.configService.headers(),
       }).subscribe(
         data => {
@@ -236,7 +235,7 @@ export class ApInvoiceDetailComponent implements OnInit {
       data: this.newInvoicePayment,
       invoiceId: this.invoiceId,
     }
-    this.http.post<any>(environment.api + "ap/onInsertNewInvoicePayment", body, {
+    this.http.post<any>(environment.api + "ApInvoice/onInsertNewInvoicePayment", body, {
       headers: this.configService.headers(),
     }).subscribe(
       data => {

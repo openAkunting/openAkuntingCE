@@ -43,6 +43,7 @@ import { Select2Module } from 'ng-select2-component';
 import { ApInvoiceComponent } from './accountPayable/ap-invoice/ap-invoice.component';
 import { ApInvoiceDetailComponent } from './accountPayable/ap-invoice/ap-invoice-detail/ap-invoice-detail.component';
 import { ApPaymentComponent } from './accountPayable/ap-payment/ap-payment.component';
+import { ApPaymentDetailComponent } from './accountPayable/ap-payment/ap-payment-detail/ap-payment-detail.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,7 @@ import { ApPaymentComponent } from './accountPayable/ap-payment/ap-payment.compo
     JournalCreateComponent,  JournalDetailComponent, 
     JournalListReportComponent, ProfitAndLossReportComponent, BalanceSheetReportComponent, 
     AccountImportComponent, LedgerComponent, TrailBalanceComponent, TrailBalanceDetailComponent, 
-    JournalByAccountComponent, OutletAccountComponent, HomeTabsComponent, HomeLeftSidebarComponent, FinancialStatementsComponent, TestComponent, ApInvoiceComponent, ApInvoiceDetailComponent, ApPaymentComponent, 
+    JournalByAccountComponent, OutletAccountComponent, HomeTabsComponent, HomeLeftSidebarComponent, FinancialStatementsComponent, TestComponent, ApInvoiceComponent, ApInvoiceDetailComponent, ApPaymentComponent, ApPaymentDetailComponent, 
   ],
   imports: [
     BrowserModule,

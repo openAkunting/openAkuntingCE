@@ -65,7 +65,7 @@ export class ApInvoiceComponent implements OnInit {
     this.httpGet();
   }
   httpGet(){
-    this.http.get<any>(environment.api+"ap/index",{
+    this.http.get<any>(environment.api+"ApInvoice/index",{
       headers:this.configService.headers(),
       params: {
         startDate: this.range.startDate['year'] + "-" + this.range.startDate['month'].toString().padStart(2, '0') + "-" + this.range.startDate['day'],
@@ -125,7 +125,7 @@ export class ApInvoiceComponent implements OnInit {
     const body = { 
       data: this.newInvoice, 
     }
-    this.http.post<any>(environment.api + "ap/onInsertNewInvoice", body, {
+    this.http.post<any>(environment.api + "ApInvoice/onInsertNewInvoice", body, {
       headers: this.configService.headers(),
     }).subscribe(
       data => {

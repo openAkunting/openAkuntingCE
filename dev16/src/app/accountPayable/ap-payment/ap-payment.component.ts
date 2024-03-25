@@ -13,12 +13,14 @@ export class Ranges {
   ) { }
 }
 
-export class NewInvoice {
+export class NewPayment {
   constructor(
     public supplierId: string,
-    public invoiceDate: any,
-    public due: any,
+    public accountId: string, 
+    public paymentDate: any,
+    public dueDate: any,
     public amount: string,  
+    public memo : string,
   ) { }
 }
 @Component({
@@ -27,13 +29,17 @@ export class NewInvoice {
   styleUrls: ['./ap-payment.component.css']
 })
 export class ApPaymentComponent implements OnInit { 
-  items : any = [];
+  invoice : any = [];
+  payment : any = [];
+  
   params : any = [];
   balance : any = [];
   range: any = new Ranges([], []);
   warning: string = "";
   selectSupplier : any = [];
-  newInvoice : any = new NewInvoice("",[],[],"");
+  selectAccount : any = [];
+  
+  newPayment : any = new NewPayment("","",[],"","","");
   currencyOptions: any = { prefix: '', thousands: '.', decimal: ',', precision: 0, }
   constructor(
     private http: HttpClient,
@@ -61,7 +67,7 @@ export class ApPaymentComponent implements OnInit {
     this.httpGet();
   }
   httpGet(){
-    this.http.get<any>(environment.api+"ap/index",{
+    this.http.get<any>(environment.api+"ApPayment/index",{
       headers:this.configService.headers(),
       params: {
         startDate: this.range.startDate['year'] + "-" + this.range.startDate['month'].toString().padStart(2, '0') + "-" + this.range.startDate['day'],
@@ -69,8 +75,10 @@ export class ApPaymentComponent implements OnInit {
       }
     }).subscribe(
       data=>{ 
-        this.items = data['items'];
+        this.payment = data['payment']; 
+        
         this.selectSupplier = data['selectSupplier'];
+       // this.selectAccount = data['selectAccount'];
         
         console.log(data);
       },
@@ -80,9 +88,20 @@ export class ApPaymentComponent implements OnInit {
     )
   }
 
+  accountName(id:string){ 
+
+    const index = this.selectSupplier.findIndex((item: { [x: string]: string; }) => item['id'] === id);
+
+    if (index !== -1) {
+      this.newPayment['accountId']  = this.selectSupplier[index]['accountId'];
+      return this.selectSupplier[index]['accountId']+" : "+this.selectSupplier[index]['account'];
+    } else {
+      return null;
+    } 
+  }
   detail(x :any){
     console.log(x);
-    this.router.navigate(['ap/payment'], {queryParams:{ id : x.id}});
+    this.router.navigate(['ap/payment/detail'], {queryParams:{ id : x.id}});
   }
 
   onCheckRange() {
@@ -117,11 +136,11 @@ export class ApPaymentComponent implements OnInit {
     
   }
 
-  onInsertNewInvoice(){ 
+  onInsertNewPayment(){ 
     const body = { 
-      data: this.newInvoice, 
+      data: this.newPayment, 
     }
-    this.http.post<any>(environment.api + "ap/onInsertNewInvoice", body, {
+    this.http.post<any>(environment.api + "ApPayment/onInsertNewPayment", body, {
       headers: this.configService.headers(),
     }).subscribe(
       data => {
@@ -129,7 +148,7 @@ export class ApPaymentComponent implements OnInit {
         if(data['error'] == false){
           this.httpGet();
         }
-        this.newInvoice.amount = "";
+        this.newPayment.amount = "";
 
       },
       error => {

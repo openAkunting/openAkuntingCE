@@ -75,6 +75,23 @@ class Account extends BaseController
         return $this->response->setJSON($data);
     }
 
+    function cashBank(){
+        $q33 = "SELECT id, name, cashbank
+        FROM  account AS t1
+        WHERE cashbank = 1 and presence = 1 and NOT EXISTS (
+           SELECT 1
+           FROM account AS t2
+           WHERE t2.parentId = t1.id
+        ) 
+        ORDER BY id ASC";
+        $selectAccount = $this->db->query($q33)->getResultArray(); 
+        $data = [
+            "error" => false,
+            "items" => $selectAccount, 
+        ];
+        return $this->response->setJSON($data);
+    }
+
     function test()
     {
         $q = "SELECT id, parentId, name

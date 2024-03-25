@@ -1,0 +1,137 @@
+<div class="wrapper border bg-white">
+    <div class="container-fluid mb-3">
+        <div class="row g-1 py-2">
+            <div class="col-12">
+                <strong>Account Payable Payment Detail</strong>
+            </div>
+        </div>
+
+        <div class="row g-1 py-2">
+            <div class="col-6">
+                <table class="table table-sm">
+                    <tbody>
+                        <tr>
+                            <td>Supplier</td>
+                            <td>{{item.supplierId}} : {{item.supplier}}</td>
+                        </tr> 
+                        <tr>
+                            <td>Payment Id</td>
+                            <td>{{item.id}}</td>
+                        </tr> 
+                        <tr>
+                            <td>AP Account </td>
+                            <td>{{item.accountId}}</td>
+                        </tr>
+                        <tr>
+                            <td>Payment date</td>
+                            <td>{{item.dueDate}} </td>
+                        </tr> 
+                       
+                        <tr>
+                            <td>Memo</td>
+                            <td>{{item.memo}} </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+ 
+
+        <div class="row">
+            <small>Payment</small>
+            <form (ngSubmit)="onInsertNewInvoiceDetail()" #heroForm2="ngForm">
+
+                <div class="col-12">
+                    <table class="table table-sm table-bordered table-hover ">
+                        <thead class="sticky-top  style-color-primary">
+                            <tr>
+                                <th>
+                                    <div class="text-primary" *ngIf="checkBoxAllDetail === true "
+                                        (click)="onCheckBoxAllDetail()"> <i class="bi bi-check-square-fill"></i> </div>
+                                    <div *ngIf="checkBoxAllDetail !== true " (click)="onCheckBoxAllDetail()"> <i
+                                            class="bi bi-square"></i> </div>
+                                </th>
+                                <th class="">#</th>
+                                <th class="">Invoice Id</th>
+                                <th class="text-end">Outstanding </th>
+                                <th class="text-end">Paid </th>
+                                <th class="text-end">Payment </th>
+                                <th class="text-end">Adjustment </th>
+                                <th class="text-end">Adjustment CoA </th>
+                        
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let x of itemPayments; let i = index ">
+                                <td>
+                                    <div class="text-primary" *ngIf="x.checkBox === true "
+                                        (click)="onCheckBoxDetail(i, x)"> <i class="bi bi-check-square-fill"></i> </div>
+                                    <div *ngIf="x.checkBox !== true " (click)="onCheckBoxDetail(i, x)"> <i
+                                            class="bi bi-square"></i> </div>
+                                </td>
+                                <td class="">{{i+1}}</td>
+                                <td class="">{{x.id}}</td>
+                                <td class="">{{x.paymentDate}}</td>
+                                <td class="text-end">{{x.amount | number}} </td>
+ 
+                            </tr>
+                        </tbody>
+                        <tfoot *ngIf="addRowPayment">
+                            <tr>
+                                <td colspan="6"></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td class="">
+                                    <select class="form-control form-control-sm" name="invoiceId" [(ngModel)]="newPaymentDetail.invoiceId" >
+                                        <option [value]="x.id" *ngFor="let x of selectInvoice">{{x.id}} </option>
+                                    </select>
+                                </td>
+                                <td class=""></td>
+                                <td class=""></td>
+                                <td class=""></td>
+
+                                <td class="text-end">
+                                    <input type="text" class="form-control form-control-sm" currencyMask
+                                        [options]="currencyOptions" required [(ngModel)]="newPaymentDetail.amount"
+                                        name="amount" #amount="ngModel">
+                                    <small [hidden]="amount.valid || amount.pristine" class="text-danger">
+                                        Amount is required
+                                    </small>
+                                </td>
+                                <td>
+                                    <select class="form-control form-control-sm" name="adjustmentAccountId" [(ngModel)]="newPaymentDetail.adjustmentAccountId" >
+                                        <option [value]="x.id" *ngFor="let x of selectAccount">{{x.id+' : ' + x.name}} </option>
+                                    </select>
+                                </td>
+
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <code>{{newPaymentDetail | json}}</code>
+                </div>
+
+                <div class="text-end me-2">
+                    <button type="button" class="btn btn-sm btn-outline-danger mx-1" (click)="onDeleteDetail()"><i
+                            class="bi bi-trash3"></i></button>
+
+                    <button type="submit" *ngIf="addRowPayment" class="btn btn-sm btn-primary mx-1"
+                        [disabled]="!heroForm2.form.valid">Submit</button>
+                    <button type="submit" *ngIf="addRowPayment" class="btn btn-sm btn-dark mx-1"
+                        (click)="addRowPayment=false">Finish</button>
+
+                    <button type="button" *ngIf="!addRowPayment" (click)="addRowPayment=true"
+                        class="btn btn-sm btn-primary">Add</button>
+                </div>
+            </form>
+        </div>
+
+
+
+
+
+
+
+    </div>
+</div>

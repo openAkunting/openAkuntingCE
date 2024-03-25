@@ -23,6 +23,7 @@ import { TestComponent } from './test/test.component';
 import { ApInvoiceComponent } from './accountPayable/ap-invoice/ap-invoice.component';
 import { ApInvoiceDetailComponent } from './accountPayable/ap-invoice/ap-invoice-detail/ap-invoice-detail.component';
 import { ApPaymentComponent } from './accountPayable/ap-payment/ap-payment.component';
+import { ApPaymentDetailComponent } from './accountPayable/ap-payment/ap-payment-detail/ap-payment-detail.component';
 
 const routes: Routes = [
   { path: "", component: HomeComponent, data: { active: "home" }, canActivate: [authGuard] },
@@ -52,6 +53,7 @@ const routes: Routes = [
   { path: "ap/invoice", component: ApInvoiceComponent, data: { active: "ap/invoice", tabs: true, name: 'AP Invoice', role: 'ap' }, canActivate: [authGuard] },
   { path: "ap/invoice/detail", component: ApInvoiceDetailComponent, data: { active: "ap/invoice/detail", tabs: true, name: 'AP Invoice Detail', role: 'ap' }, canActivate: [authGuard] },
   { path: "ap/payment", component: ApPaymentComponent, data: { active: "ap/payment", tabs: true, name: 'AP payment', role: 'ap' }, canActivate: [authGuard] },
+  { path: "ap/payment/detail", component: ApPaymentDetailComponent, data: { active: "ap/payment", tabs: true, name: 'AP payment', role: 'ap' }, canActivate: [authGuard] },
 
 
 
