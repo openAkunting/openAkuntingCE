@@ -5,14 +5,14 @@ import { LanguageService } from 'src/app/service/language.service';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
- 
- 
+
+
 export class NewPaymentDetail {
   constructor(
-    public invoiceId : string,
+    public invoiceId: string,
     public payment: string,
     public adjustment: string,
-    public adjustmentAccountId: string, 
+    public adjustmentAccountId: string,
     public paymentDate: any,
   ) { }
 }
@@ -24,21 +24,21 @@ export class NewPaymentDetail {
 export class ApPaymentDetailComponent implements OnInit {
   items: any = [];
   item: any = [];
-  detail : any = [];
+  detail: any = [];
   id: any = [];
   itemDetails: any = [];
   itemPayments: any = [];
-  selectAccount : any = [];
-  active = 1; 
+  selectAccount: any = [];
+  active = 1;
   warning: string = "";
   selectSupplier: any = [];
-  newPaymentDetails: any = []; 
-  account : any = [];
+  newPaymentDetails: any = [];
+  account: any = [];
   currencyOptions: any = { prefix: '', thousands: '.', decimal: ',', precision: 0, }
- // addRowDetail: boolean = false;
+  // addRowDetail: boolean = false;
   addRowPayment: boolean = true;
-  tabs : string = '';
-  selectInvoice : any = [];
+  tabs: string = '';
+  selectInvoice: any = [];
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
@@ -49,44 +49,49 @@ export class ApPaymentDetailComponent implements OnInit {
   ) {
   }
   ngOnInit() {
-    this.iniVar();
+    //this.iniVar();
     this.id = this.activeRouter.snapshot.queryParams['id'];
     this.httpGetAccountCashBank();
     this.httpGet();
   }
 
-  iniVar(){
-    this.newPaymentDetails = [
-      {
-         invoiceId : "",
-         payment: "",
-         adjustment: "",
-         adjustmentAccountId: "",
-         paymentDate: "",
-      }, 
-    ]
+  addRow() {
+    const body = { 
+      id: this.id,
+    }
+    this.http.post<any>(environment.api + "ApPayment/addRowInvoiceDetail", body, {
+      headers: this.configService.headers(),
+    }).subscribe(
+      data => {
+        console.log(data);
+        if (data['error'] == false) {
+          this.httpGet();
+        }
+
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
 
-  addRow(){
-    const newPaymentDetails = 
-      {
-         invoiceId : "",
-         payment: "",
-         adjustment: "",
-         adjustmentAccountId: "",
-         paymentDate: "",
-      } 
-    ;
+  // addRow() {
+  //  const newPaymentDetail = {
+  //   invoiceId: "",
+  //   payment: "",
+  //   adjustment: "",
+  //   adjustmentAccountId: "",
+  //   paymentDate: ""
+  // };
+  // this.newPaymentDetails.push(newPaymentDetail);
+  // }
 
-      this.newPaymentDetails.push(newPaymentDetails);
-  }
-
-  removeAddRow(i : number){
+  removeAddRow(i: number) {
     this.newPaymentDetails.splice(i, 1)
   }
-  updateLink(id:string){
+  updateLink(id: string) {
     this.id = id;
-    this.router.navigate(['ap/invoice/detail'], {queryParams:{id:id}}).then( () => {
+    this.router.navigate(['ap/invoice/detail'], { queryParams: { id: id } }).then(() => {
       this.httpGet();
     })
   }
@@ -96,7 +101,7 @@ export class ApPaymentDetailComponent implements OnInit {
       headers: this.configService.headers(),
     }).subscribe(
       data => {
-        this.selectAccount= data['items'];  
+        this.selectAccount = data['items'];
         console.log(data);
       },
       error => {
@@ -113,8 +118,8 @@ export class ApPaymentDetailComponent implements OnInit {
     }).subscribe(
       data => {
         this.item = data['item'];
-        this.itemDetails = data['itemDetails'];
-     //   this.itemPayments = data['itemPayments'];
+        this.itemDetails = data['detail'];
+        //   this.itemPayments = data['itemPayments'];
 
         this.selectInvoice = data['selectInvoice'];
         console.log(data);
@@ -124,8 +129,24 @@ export class ApPaymentDetailComponent implements OnInit {
       }
     )
   }
+  updateDetail(x:any){
+    const body = { 
+      item:  x,
+    }
+    this.http.post<any>(environment.api + "ApPayment/updateDetail", body, {
+      headers: this.configService.headers(),
+    }).subscribe(
+      data => {
+        console.log(data);
+        
 
-  outstanding(i : number){
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+  outstanding(i: number) {
 
     const index = this.selectInvoice.findIndex((item: { [x: string]: any; }) => item['id'] === this.newPaymentDetails[i]['invoiceId']);
 
@@ -134,7 +155,7 @@ export class ApPaymentDetailComponent implements OnInit {
     } else {
       return 0;
     }
-  
+
   }
 
   onInsertNewInvoiceDetail() {
@@ -150,7 +171,7 @@ export class ApPaymentDetailComponent implements OnInit {
         if (data['error'] == false) {
           this.httpGet();
         }
-        
+
       },
       error => {
         console.log(error);
@@ -158,8 +179,8 @@ export class ApPaymentDetailComponent implements OnInit {
     )
   }
 
-  checkBoxAllDetail: boolean = false; 
-  
+  checkBoxAllDetail: boolean = false;
+
   onCheckBoxAllDetail() {
     if (this.checkBoxAllDetail == false) {
       this.checkBoxAllDetail = true;
@@ -185,7 +206,7 @@ export class ApPaymentDetailComponent implements OnInit {
 
     this.checkBoxAllDetail = false;
   }
- 
+
   onDeleteDetail() {
     const body = {
       id: this.id,
@@ -208,6 +229,6 @@ export class ApPaymentDetailComponent implements OnInit {
       )
     }
   }
-   
+
 }
 
