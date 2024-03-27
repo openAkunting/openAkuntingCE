@@ -7,7 +7,7 @@
         </div>
 
         <div class="row g-1 py-2">
-            <div class="col-6">
+            <div class="col-12">
                 <table class="table table-sm">
                     <tbody>
                         <tr>
@@ -19,8 +19,24 @@
                             <td>{{item.id}}</td>
                         </tr>
                         <tr>
-                            <td>AP Account </td>
-                            <td>{{item.accountId}}</td>
+                            <td>AP Account (Debit) </td>
+                            <td>  
+                                <select class="form-control form-control-sm" [(ngModel)]="item.debitAccountId"  [ngModelOptions]="{standalone: true}">
+                                    <optgroup [label]="a.name" *ngFor="let a of selectAccount">
+                                        <option [hidden]="c.status != '1' " [value]="c.id" *ngFor="let c of a.coa">
+                                            {{c.id+" : "+c.name}}
+                                        </option>
+                                    </optgroup>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Cash Bank (Credit) </td>
+                            <td>  
+                                <select class="form-control form-control-sm" name="creditAccountId"  [(ngModel)]="item.creditAccountId" [ngModelOptions]="{standalone: true}">
+                                    <option [value]="n.id" *ngFor="let n of selectCashBank">{{n.id+' : ' + n.name}} </option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td>Payment date</td>
@@ -33,13 +49,18 @@
                         </tr>
                     </tbody>
                 </table>
+
+                
+            </div>
+            <div class="col-12">
+                {{item | json}}
             </div>
         </div>
 
 
         <div class="row">
-            <small>Payment</small>
-            <form (ngSubmit)="onInsertNewInvoiceDetail()" #heroForm2="ngForm">
+
+            <form (ngSubmit)="onSubmitPaymentDetail()" #heroForm2="ngForm">
 
                 <div class="col-12">
                     <table class="table table-sm table-bordered table-hover ">
@@ -56,10 +77,10 @@
                                 <th class="text-end">Amount </th>
                                 <th class="text-end">Outstanding </th>
                                 <th class="text-end">Payment </th>
-                                <th class="text-end">Adjustment </th>
-                                <th class="text-end">Adjustment CoA </th>
-                                <th class="text-end">Date </th>
-
+                                
+                                <th class="text-center" colspan="2">Adjustment &  CashBank </th>
+                                <th style="min-width: 150px;">Date </th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -71,67 +92,126 @@
                                             class="bi bi-square"></i> </div>
                                 </td>
                                 <td class="">{{i+1}}</td>
-                                <td class="">{{x.id}}</td>
-                                <td class="">{{x.paymentDate}}</td>
-                                <td class="text-end">{{x.amount | number}} </td> 
-                            </tr>
-                            <tr>
-                                <td colspan="6"></td>
-                            </tr>
-                        </tbody>
-                        <tfoot > 
-                            <tr *ngFor="let x of newPaymentDetails; let i = index">
-                                <td></td>
-                                <td></td>
-                                <td> 
-                                     <select class="form-control form-control-sm" name="invoiceId"  [(ngModel)]="x.invoiceId" [ngModelOptions]="{standalone: true}">
-                                        <option [value]="n.id" *ngFor="let n  of selectInvoice">{{n.id}} </option>
-                                    </select>  
-                                </td>
-                                <td class="text-end">{{outstanding(i) | number}}</td>
-                                <td class="text-end">{{ (outstanding(i) - (x.payment + x.adjustment) ) < 0 ? 0 : outstanding(i) - (x.payment + x.adjustment)  | number}}</td>
-                              
-                               
-                                <td>
-                                  <input type="text" class="form-control form-control-sm" currencyMask [ngModelOptions]="{standalone: true}"
-                                        [options]="currencyOptions" required [(ngModel)]="x.payment"
-                                        name="payment" #payment="ngModel">
+                                <td class="">{{x.invoiceId}}</td>
+                                <td class="text-end">{{x.amount | number}} </td>
+                                <td class="text-end"></td>
+                                <td class="text-end">
+                                    <input type="text" class="form-control form-control-sm" currencyMask
+                                        [ngModelOptions]="{standalone: true}" [options]="currencyOptions" required
+                                        [(ngModel)]="x.payment" name="payment" #payment="ngModel">
                                     <small [hidden]="payment.valid || payment.pristine" class="text-danger">
                                         Payment Amount is required
-                                    </small> 
+                                    </small>
+
                                 </td>
-                                
+                                <td class="text-end">
+                                    <input type="text" class="form-control form-control-sm" currencyMask
+                                        [ngModelOptions]="{standalone: true}" [options]="currencyOptions" required
+                                        [(ngModel)]="x.adjustment" name="adjustment" #adjustment="ngModel">
+                                    <small [hidden]="adjustment.valid || adjustment.pristine" class="text-danger">
+                                        Adjustment Amount is required
+                                    </small>
+                                </td>
+
+                                <td class="">
+                                    <select class="form-control form-control-sm" name="adjustmentAccountId"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="x.adjustmentAccountId">
+                                        <option [value]="n.id" *ngFor="let n of selectCashBank">{{n.id+' : ' + n.name}}
+                                        </option>
+                                    </select>
+                                </td>
+
+                                <td>
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm" placeholder="Payment date" name="dp"
+                                            [(ngModel)]="x.paymentDate" ngbDatepicker
+                                            [ngModelOptions]="{standalone: true}" #d2="ngbDatepicker"
+                                            style="width: 100px;" />
+                                        <button class="btn btn-sm   bi bi-calendar3 rounded-0" (click)="d2.toggle()"
+                                            type="button"></button>
+                                    </div>
+                                </td>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                        </tbody>
+                        <tfoot>
+                            <tr *ngFor="let x of newPaymentDetails; let i = index">
+                                <td> </td>
+                                <td> {{i+itemDetails.length+1}}</td>
+                                <td>
+                                    <select class="form-control form-control-sm" name="invoiceId"
+                                        [(ngModel)]="x.invoiceId" [ngModelOptions]="{standalone: true}">
+                                        <option [value]="n.id" *ngFor="let n  of selectInvoice">{{n.id}} </option>
+                                    </select>
+                                </td>
+                                <td class="text-end">{{outstanding(i) | number}}</td>
+                                <td class="text-end">{{ (outstanding(i) - (x.payment + x.adjustment) ) < 0 ? 0 :
+                                        outstanding(i) - (x.payment + x.adjustment) | number}}</td>
+
+
+                                <td>
+                                    <input type="text" class="form-control form-control-sm" currencyMask
+                                        [ngModelOptions]="{standalone: true}" [options]="currencyOptions" required
+                                        [(ngModel)]="x.payment" name="payment" #payment="ngModel">
+                                    <small [hidden]="payment.valid || payment.pristine" class="text-danger">
+                                        Payment Amount is required
+                                    </small>
+                                </td>
+
 
                                 <td class="text-end">
-                                   <input type="text" class="form-control form-control-sm" currencyMask [ngModelOptions]="{standalone: true}"
-                                        [options]="currencyOptions" required [(ngModel)]="x.adjustment"
-                                        name="adjustment" #adjustment="ngModel">
+                                    <input type="text" class="form-control form-control-sm" currencyMask
+                                        [ngModelOptions]="{standalone: true}" [options]="currencyOptions" required
+                                        [(ngModel)]="x.adjustment" name="adjustment" #adjustment="ngModel">
                                     <small [hidden]="adjustment.valid || adjustment.pristine" class="text-danger">
-                                       Adjustment Amount is required
+                                        Adjustment Amount is required
                                     </small>
                                 </td>
                                 <td>
-                                   <select class="form-control form-control-sm" name="adjustmentAccountId" [ngModelOptions]="{standalone: true}"
-                                        [(ngModel)]="x.adjustmentAccountId">
-                                        <option [value]="n.id" *ngFor="let n of selectAccount">{{n.id+' : ' + n.name}}
+                                    <select class="form-control form-control-sm" name="adjustmentAccountId"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="x.adjustmentAccountId">
+                                        <option [value]="n.id" *ngFor="let n of selectCashBank">{{n.id+' : ' + n.name}}
                                         </option>
-                                    </select> 
+                                    </select>
                                 </td>
+
                                 <td>
-                                  <a href="javascript:;" (click)="removeAddRow(i);"> {{i}} <i class="bi bi-trash3-fill"></i></a>
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm" placeholder="Payment date" name="dp"
+                                            [(ngModel)]="x.paymentDate" ngbDatepicker
+                                            [ngModelOptions]="{standalone: true}" #d2="ngbDatepicker"
+                                            style="width: 100px;" />
+                                        <button class="btn btn-sm   bi bi-calendar3 rounded-0" (click)="d2.toggle()"
+                                            type="button"></button>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <a href="javascript:;" (click)="removeAddRow(i);"> <i
+                                            class="bi bi-trash3-fill"></i></a>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="9" class="text-end">
-                                    <button type="button" class="btn btn-sm btn-primary" (click)="addRow();">Add row</button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger mx-1"
+                                        (click)="onDeleteDetail();"> <i class="bi bi-trash3"></i></button>
+
+                                    <button type="button" class="btn btn-sm btn-primary" (click)="addRow();">Add
+                                        row</button>
                                 </td>
                             </tr>
                         </tfoot>
                     </table>
+                    itemDetails
+                    {{itemDetails | json}}
+                    <hr>
                     <code>{{newPaymentDetails | json}}</code>
                     <hr>
                     <code>{{selectInvoice | json}}</code>
-                    
+
                 </div>
 
                 <div class="row">

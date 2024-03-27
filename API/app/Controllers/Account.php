@@ -75,7 +75,7 @@ class Account extends BaseController
         return $this->response->setJSON($data);
     }
 
-    function cashBank(){
+    function coa(){
         $q33 = "SELECT id, name, cashbank
         FROM  account AS t1
         WHERE cashbank = 1 and presence = 1 and NOT EXISTS (
@@ -84,10 +84,36 @@ class Account extends BaseController
            WHERE t2.parentId = t1.id
         ) 
         ORDER BY id ASC";
-        $selectAccount = $this->db->query($q33)->getResultArray(); 
+        $cashBank = $this->db->query($q33)->getResultArray(); 
+
+
+        $account = [];
+        $accountTypeQuery = "SELECT t.id, t.name, COUNT(a.accountTypeId) AS 'total' 
+        FROM  " . $this->prefix . "account_type AS t
+        LEFT JOIN  " . $this->prefix . "account AS a ON a.accountTypeId = t.id
+        WHERE a.presence = 1 AND a.`status` = 1 
+        GROUP BY a.accountTypeId";
+        $account = $this->db->query($accountTypeQuery)->getResultArray();
+        $i = 0;
+        foreach ($account as $rec) { 
+            $q = "SELECT id, name,  status
+            FROM " . $this->prefix . "account AS t1
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM account AS t2
+                WHERE t2.parentId = t1.id
+            ) and accountTypeId = '" . $rec['id'] . "'
+            ORDER BY id ASC"; 
+
+            $account[$i]['coa'] = $this->db->query($q)->getResultArray();
+            $i++;
+        }
+
+
         $data = [
             "error" => false,
-            "items" => $selectAccount, 
+            "cashBank" => $cashBank, 
+            "account" => $account,
         ];
         return $this->response->setJSON($data);
     }

@@ -64,7 +64,7 @@ class ApPayment extends BaseController
             $this->db->table($this->prefix . "ap_payment")->insert([
                 "id" => $id,
                 "supplierId" => $post['data']['supplierId'],
-                "accountId" => $post['data']['accountId'],
+                "debitAccountId" => $post['data']['accountId'],
 
                 "memo" => $post['data']['memo'],
                 "paymentDate" => $post['data']['paymentDate']['year'] . "-" . $post['data']['paymentDate']['month'] . "-" . $post['data']['paymentDate']['day'],
@@ -95,7 +95,7 @@ class ApPayment extends BaseController
         $rest = [];
         $q = "SELECT p.*, a.name AS 'account', s.name as 'supplier' 
         FROM ap_payment   AS p
-        LEFT JOIN account AS a ON a.id = p.accountId 
+        LEFT JOIN account AS a ON a.id = p.debitAccountId 
         left join supplier as s on s.id = p.supplierId
         WHERE  p.id =  '$id' 
         order by p.id ASC ";
@@ -120,52 +120,6 @@ class ApPayment extends BaseController
         return $this->response->setJSON($data);
     }
 
-
-
-    public function accountCashBank()
-    {
-        $q33 = "SELECT id, name, cashbank
-        FROM  account AS t1
-        WHERE cashbank = 1 and presence = 1 and NOT EXISTS (
-           SELECT 1
-           FROM account AS t2
-           WHERE t2.parentId = t1.id
-        ) 
-        ORDER BY id ASC";
-        $selectAccount = $this->db->query($q33)->getResultArray();
-        $data = [
-            "error" => false,
-            "items" => $selectAccount,
-        ];
-        return $this->response->setJSON($data);
-    }
-
-    public function addRowInvoiceDetail()
-    {
-        $json = file_get_contents('php://input');
-        $post = json_decode($json, true);
-        $data = [
-            "error" => true,
-            "code" => 400
-        ];
-        if ($post) {
-            $this->db->table($this->prefix . "ap_payment_detail")->insert([
-                "paymentId" => $post['id'],
-                "presence" => 1,
-                "updateDate" => date("Y-m-d H:i:s"),
-                "updateBy" => model("Token")->userId(),
-                "inputDate" => date("Y-m-d H:i:s"),
-                "inputBy" => model("Token")->userId(),
-            ]);
-            $data = [
-                "error" => false,
-                "code" => 200
-            ];
-
-        }
-
-        return $this->response->setJSON($data);
-    }
     function updateDetail()
     {
         $json = file_get_contents('php://input');
@@ -176,21 +130,21 @@ class ApPayment extends BaseController
         ];
         if ($post) {
             $id = $post['item']['id'];
-            $this->db->table($this->prefix . "ap_payment_detail")->update([ 
+            $this->db->table($this->prefix . "ap_payment_detail")->update([
                 "invoiceId" => $post['item']['invoiceId'],
-                 "adjustmentAccountId" => $post['item']['adjustmentAccountId'],
-                
+                "adjustmentAccountId" => $post['item']['adjustmentAccountId'],
+
                 "presence" => 1,
                 "updateDate" => date("Y-m-d H:i:s"),
                 "updateBy" => model("Token")->userId(),
                 "inputDate" => date("Y-m-d H:i:s"),
                 "inputBy" => model("Token")->userId(),
-            ]," id = '$id' ");
+            ], " id = '$id' ");
 
             $data = [
                 "error" => false,
                 "code" => 200,
-                "post"=> $post,
+                "post" => $post,
             ];
 
         }
@@ -199,7 +153,7 @@ class ApPayment extends BaseController
     }
 
 
-    public function onInsertNewInvoiceDetail()
+    public function onSubmitPaymentDetail()
     {
         $json = file_get_contents('php://input');
         $post = json_decode($json, true);
@@ -208,25 +162,58 @@ class ApPayment extends BaseController
             "code" => 400
         ];
         if ($post) {
-            $id = model("Core")->number("ap_payment_detail");
+            $this->db->transStart();
+         
+         //   $journalId = model("Core")->select("journalId", "ap_payment_detail", "id = '" . $post['id'] . "'");
+            
+            foreach ($post['newDetail'] as $row) {
+                $this->db->table($this->prefix . "ap_payment_detail")->insert([
+                    "paymentId" => $post['id'],
+                    "invoiceId" => $row['invoiceId'],
+                    "adjustment" => $row['adjustment'],
+                    "payment" => $row['payment'],
+                    "amount" => (float)$row['adjustment'] + (float)$row['payment'],
+                    "adjustmentAccountId" => $row['adjustmentAccountId'],
+                    //"paymentDate" => $row['paymentDate'], 
+                    "presence" => 1,
+                    "updateDate" => date("Y-m-d H:i:s"),
+                    "updateBy" => model("Token")->userId(),
+                    "inputDate" => date("Y-m-d H:i:s"),
+                    "inputBy" => model("Token")->userId(),
+                ]);
+            }
 
-            $this->db->table($this->prefix . "ap_payment_detail")->insert([
-                'id' => $post['invoiceId'] . '-' . $id,
-                "invoiceId" => $post['invoiceId'],
-                "gnrNo" => $post['data']['gnrNo'],
-                "poNo" => $post['data']['poNo'],
-                "amount" => $post['data']['amount'] < 0 ? $post['data']['amount'] * -1 : $post['data']['amount'],
+            if($post['item']['creditAccountId'] != ''){
+                $journalId = model("Core")->number("journal");
+                $this->db->table($this->prefix . "ap_payment")->update([
+                    "journalId" => $journalId, 
+                    "creditAccountId" => $post['item']['creditAccountId'],
+                ], " id = '" . $post['id'] . "'  ");
+ 
+                model("Journal")->InsertJournalAP($journalId, $post['id']);
+            }
 
-                "presence" => 1,
+            $this->db->table($this->prefix . "ap_payment")->update([ 
+                "amount" => model("Core")->select("sum(amount)", "ap_payment_detail", " presence = 1 and paymentId = '" . $post['id'] . "'"),
                 "updateDate" => date("Y-m-d H:i:s"),
                 "updateBy" => model("Token")->userId(),
-                "inputDate" => date("Y-m-d H:i:s"),
-                "inputBy" => model("Token")->userId(),
-            ]);
-            self::updateInvoiceAmount($post['invoiceId']);
+            ], " id = '" . $post['id'] . "'  ");
+
+            
+       
+
+
+            if ($this->db->transStatus() != false) {
+                $this->db->transComplete();
+            } else {
+                $this->db->transRollback();
+            }
+
             $data = [
                 "error" => false,
-                "code" => 200
+                "code" => 200,
+                "post" => $post,
+                "transaction" => $this->db->transStatus() === false ? false : true,
             ];
 
         }
@@ -253,8 +240,6 @@ class ApPayment extends BaseController
                     ], " id = '" . $row['id'] . "' ");
                 }
             }
-            $invoiceId = $post['invoiceId'];
-            self::updateInvoiceAmount($invoiceId);
 
             if ($this->db->transStatus() != false) {
                 $this->db->transComplete();
