@@ -13,14 +13,7 @@ export class Ranges {
   ) { }
 }
 
-export class NewInvoiceDetail {
-  constructor(
-    public gnrNo: string,
-    public poNo: any,
-    public amount: string,
-  ) { }
-}
-
+ 
 export class NewInvoicePayment {
   constructor(
     public amount: string,
@@ -43,11 +36,13 @@ export class ApInvoiceDetailComponent implements OnInit {
   range: any = new Ranges([], []);
   warning: string = "";
   selectSupplier: any = [];
-  newInvoiceDetail: any = new NewInvoiceDetail("", "", "");
+  newInvoiceDetail: any = [];
   newInvoicePayment: any = new NewInvoicePayment("", "");
 
   currencyOptions: any = { prefix: '', thousands: '.', decimal: ',', precision: 0, }
-  addRowDetail: boolean = false;
+ 
+  selectAccount: any = [];
+  selectCashBank: any = [];
   addRowPayment: boolean = false;
   tabs : string = '';
   constructor(
@@ -72,6 +67,15 @@ export class ApInvoiceDetailComponent implements OnInit {
     })
   }
 
+  addRowDetail(){
+    this.newInvoiceDetail.push({
+      gnr : "",
+      po : "",
+      accountId : "",
+      amount : "",
+    });
+  }
+
   httpGetInvoice() {
     this.http.get<any>(environment.api + "ApInvoice/index", {
       headers: this.configService.headers(),
@@ -85,6 +89,7 @@ export class ApInvoiceDetailComponent implements OnInit {
       }
     )
   }
+
   httpGet() {
     this.http.get<any>(environment.api + "ApInvoice/detail", {
       headers: this.configService.headers(),
@@ -98,6 +103,23 @@ export class ApInvoiceDetailComponent implements OnInit {
         this.itemPayments = data['itemPayments'];
 
         this.selectSupplier = data['selectSupplier'];
+        console.log(data);
+        this.httpGetAccount();
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  httpGetAccount() {
+    this.http.get<any>(environment.api + "account/coa", {
+      headers: this.configService.headers(),
+    }).subscribe(
+      data => {
+        this.selectAccount = data['account'];
+        this.selectCashBank = data['cashBank'];
+
         console.log(data);
       },
       error => {
@@ -120,8 +142,9 @@ export class ApInvoiceDetailComponent implements OnInit {
         console.log(data);
         if (data['error'] == false) {
           this.httpGet();
-        }
-        this.newInvoiceDetail.amount = "0";
+          this.newInvoiceDetail = [];
+        } 
+
       },
       error => {
         console.log(error);

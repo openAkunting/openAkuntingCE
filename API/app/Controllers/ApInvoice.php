@@ -17,21 +17,22 @@ class ApInvoice extends BaseController
         $tblAccount = $this->prefix . 'account';
         $tblJournal = $this->prefix . 'journal';
 
-
         /* $startDate = $this->request->getVar()['startDate'];
          $endDate = $this->request->getVar()['endDate'];
 
          $rangeDate = model("Core")->rangeDate($startDate, $endDate);
          $date = " AND (h.journalDate >= '$startDate' AND  h.journalDate <= '$endDate' )";
- */
+        */
         $rest = [];
         $q = "SELECT * FROM ap_invoice WHERE presence = 1  order by id ASC ";
         $items = $this->db->query($q)->getResultArray();
 
-
-        $q2 = "SELECT * FROM supplier WHERE presence = 1  order by id ASC ";
+        $q2 = "SELECT s.* , a.name AS 'creditAccountName'
+        FROM supplier as s 
+        LEFT JOIN account AS a ON a.id = s.creditAccountId
+        WHERE s.presence = 1  
+        order by s.name ASC ";
         $selectSupplier = $this->db->query($q2)->getResultArray();
-
 
         $data = [
             "error" => false,
@@ -51,12 +52,15 @@ class ApInvoice extends BaseController
         ];
         if ($post) {
             $id = model("Core")->number("ap_invoice");
+            $creditAccountId = model("Core")->select("creditAccountId", "supplier", "id = '" . $post['data']['supplierId'] . "' ");
             $this->db->table($this->prefix . "ap_invoice")->insert([
                 "id" => $id,
                 "supplierId" => $post['data']['supplierId'],
-                "invoiceDate" => $post['data']['invoiceDate']['year'] . "-" . $post['data']['invoiceDate']['month'] . "-" . $post['data']['invoiceDate']['day'],
-                "dueDate" => $post['data']['due']['year'] . "-" . $post['data']['due']['month'] . "-" . $post['data']['due']['day'],
-                "amount" => $post['data']['amount'] < 0 ? $post['data']['amount'] * -1 : $post['data']['amount'],
+                "creditAccountId" => $creditAccountId,
+
+                "invoiceDate" => $post['data']['invoiceDate'],
+                "dueDate" => $post['data']['due'],
+                //"amount" => $post['data']['amount'] < 0 ? $post['data']['amount'] * -1 : $post['data']['amount'],
 
                 "presence" => 1,
                 "updateDate" => date("Y-m-d H:i:s"),
@@ -65,20 +69,20 @@ class ApInvoice extends BaseController
                 "inputBy" => model("Token")->userId(),
             ]);
 
-            $id = model("Core")->number("ap_invoice_detail");
-            $this->db->table($this->prefix . "ap_invoice_detail")->insert([
-                "id" => $id,
-                "invoiceId" => $id,
-                "gnrNo" => $post['data']['gnrNo'],
-                "poNo" => $post['data']['poNo'],
-                "amount" => $post['data']['amount'] < 0 ? $post['data']['amount'] * -1 : $post['data']['amount'],
+            // $id = model("Core")->number("ap_invoice_detail");
+            // $this->db->table($this->prefix . "ap_invoice_detail")->insert([
+            //     "id" => $id,
+            //     "invoiceId" => $id,
+            //     "gnrNo" => $post['data']['gnrNo'],
+            //     "poNo" => $post['data']['poNo'],
+            //     "amount" => $post['data']['amount'] < 0 ? $post['data']['amount'] * -1 : $post['data']['amount'],
 
-                "presence" => 1,
-                "updateDate" => date("Y-m-d H:i:s"),
-                "updateBy" => model("Token")->userId(),
-                "inputDate" => date("Y-m-d H:i:s"),
-                "inputBy" => model("Token")->userId(),
-            ]);
+            //     "presence" => 1,
+            //     "updateDate" => date("Y-m-d H:i:s"),
+            //     "updateBy" => model("Token")->userId(),
+            //     "inputDate" => date("Y-m-d H:i:s"),
+            //     "inputBy" => model("Token")->userId(),
+            // ]);
             $data = [
                 "error" => false,
                 "code" => 200
@@ -109,7 +113,7 @@ class ApInvoice extends BaseController
         $q2 = "SELECT * FROM supplier WHERE presence = 1     order by id ASC ";
         $selectSupplier = $this->db->query($q2)->getResultArray();
 
-        $q5 = "SELECT * , '' as 'checkBox' FROM ap_payment 
+        $q5 = "SELECT * , '' as 'checkBox' FROM ap_payment_detail 
         WHERE presence = 1 AND invoiceId =  '$invoiceId' order by id ASC ";
         $itemPayment = $this->db->query($q5)->getResultArray();
 
@@ -119,7 +123,6 @@ class ApInvoice extends BaseController
             "item" => $items,
             "itemDetails" => $detail,
             "itemPayments" => $itemPayment,
-
             "selectSupplier" => $selectSupplier,
         ];
         return $this->response->setJSON($data);
@@ -134,21 +137,22 @@ class ApInvoice extends BaseController
             "code" => 400
         ];
         if ($post) {
-            $id = model("Core")->number("ap_invoice_detail");
-            $this->db->table($this->prefix . "ap_invoice_detail")->insert([
-                'id' => $post['invoiceId'] . '-' . $id,
-                "invoiceId" => $post['invoiceId'],
-                "gnrNo" => $post['data']['gnrNo'],
-                "poNo" => $post['data']['poNo'],
-                "amount" => $post['data']['amount'] < 0 ? $post['data']['amount'] * -1 : $post['data']['amount'],
-
-                "presence" => 1,
-                "updateDate" => date("Y-m-d H:i:s"),
-                "updateBy" => model("Token")->userId(),
-                "inputDate" => date("Y-m-d H:i:s"),
-                "inputBy" => model("Token")->userId(),
-            ]);
-            self::updateInvoiceAmount($post['invoiceId']);
+            foreach ($post['data'] as $row) { 
+                $id = model("Core")->number("ap_invoice_detail");
+                $this->db->table($this->prefix . "ap_invoice_detail")->insert([
+                    'id' => $post['invoiceId'] . '-' . $id,
+                    "invoiceId" => $post['invoiceId'],
+                    "gnr" => $row['gnr'],
+                    "po" => $row['po'],
+                    "amount" => $row['amount'], 
+                    "accountId" => $row['accountId'],
+                    "presence" => 1,
+                    "updateDate" => date("Y-m-d H:i:s"),
+                    "updateBy" => model("Token")->userId(),
+                    "inputDate" => date("Y-m-d H:i:s"),
+                    "inputBy" => model("Token")->userId(),
+                ]);
+            }
             $data = [
                 "error" => false,
                 "code" => 200

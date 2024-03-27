@@ -34,9 +34,9 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-6">
+            <div class="col-12">
                 <form (ngSubmit)="onInsertNewInvoice()" #heroForm="ngForm">
-                    <table>
+                    <table class="table table-sm">
                         <tbody>
                             <tr>
                                 <td>Supplier : </td>
@@ -49,8 +49,17 @@
                                     <small [hidden]="supplierId.valid || supplierId.pristine" class="text-danger">
                                         Supplier Id is required
                                     </small>
+                                     
                                 </td>
                             </tr>
+                            <tr>
+                                <td>AP Account (Debit)  : </td>
+                                <td>
+                                     {{apAccount()}}
+                                </td>
+                            </tr>
+
+
                             <tr>
                                 <td>Invoice date : </td>
                                 <td>
@@ -75,47 +84,20 @@
                                             (click)="d12.toggle()" type="button"></button>
                                     </div>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td>Good Recieved Note : </td>
-                                <td>
-                                    <input type="text" class="form-control form-control-sm text-end" name="gnrNo" #gnrNo="ngModel"
-                                        [(ngModel)]="newInvoice.gnrNo" placeholder="Number/Id">
-                                     
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Purchased Order : </td>
-                                <td>
-                                    <input type="text" class="form-control form-control-sm text-end" name="poNo" #poNo="ngModel"
-                                    [(ngModel)]="newInvoice.poNo" placeholder="Number/Id">
-                                 
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Amount : </td>
-                                <td>
-                                    <input type="text" currencyMask [options]="currencyOptions" required
-                                        class="form-control form-control-sm text-end" name="amount" #amount="ngModel"
-                                        [(ngModel)]="newInvoice.amount">
-                                    <small [hidden]="amount.valid || amount.pristine" class="text-danger">
-                                        Amount  is required
-                                    </small>
-
-                                </td>
-                            </tr>
+                            </tr> 
                         </tbody>
                         <tfoot>
                             <tr>
                                 <th colspan="2">
-                                    <button type="submit" class="btn btn-success"  [disabled]="!heroForm.form.valid">Submit</button>
+                                    <button type="submit" class="btn btn-success"  [disabled]="!heroForm.form.valid">Next</button>
                                 </th>
                             </tr>
                         </tfoot>
                     </table>
                 </form>
-               
+               <code> {{selectSupplier | json}}</code>
+                newInvoice
+               <code>{{newInvoice | json}}</code>
             </div>
         </div>
     </div>
